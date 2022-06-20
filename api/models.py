@@ -21,7 +21,11 @@ class Profile(models.Model):
     apple_music_username = models.CharField(default='', max_length=255)
     apple_music_password = models.CharField(default='', max_length=255)
     apple_music_created_at = models.DateTimeField()
-    followers = models.ManyToManyField(User, related_name='followers')
+    friends = models.ManyToManyField(User, related_name='friends', blank=True)
+    followers = models.ManyToManyField(User, related_name='followers', blank=True)
+
+    def friend_count(self):
+        return self.friends.count()
 
     def follower_count(self):
         return self.followers.count()
@@ -35,7 +39,7 @@ class Mixtape(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     creator = models.ForeignKey(User, related_name='creator', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
-    is_public = models.BooleanField(default=False)
+    is_public = models.BooleanField(default=True)
     description = models.TextField()
     modified_at = models.DateTimeField(auto_now=True)
     favorited_by = models.ManyToManyField(User, related_name='favorite_mixtapes', blank=True)
