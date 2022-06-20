@@ -13,6 +13,8 @@ django-filter = "*"
 django-extensions = "*"
 djoser = "*"
 django-cors-headers = "*"
+django-on-heroku = "*"
+gunicorn = "*"
 
 [dev-packages]
 
