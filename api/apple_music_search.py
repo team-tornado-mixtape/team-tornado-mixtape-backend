@@ -1,5 +1,6 @@
 import datetime
 import jwt
+from urllib.parse import urlencode
 
 
 secret = """-----BEGIN PRIVATE KEY-----
@@ -33,5 +34,15 @@ if __name__ == "__main__":
     print("----TOKEN----")
     print(token)
 
+    search = "Walk the Walk"
+
+    endpoint = "https://api.music.apple.com/v1/catalog/US/search"
+
+    data = urlencode({
+        "types": "songs",
+        "term": f"{search}",
+        "limit": 1
+        })
+
     print("----CURL----")
-    print("curl -v -H 'Authorization: Bearer %s' \"https://api.music.apple.com/v1/catalog/us/artists/36954\" " % (token))
+    print(f"curl -v -H 'Authorization: Bearer %s' \"{endpoint}?{data}\" " % (token))
