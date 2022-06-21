@@ -1,7 +1,7 @@
 from api.models import Mixtape
 from rest_framework.viewsets import ModelViewSet
 from api.serializers import MixtapeDetailSerializer,MixtapeListSerializer
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from api.permissions import IsCreatorOrReadOnly
 from django.db.models import Count
 
@@ -37,7 +37,7 @@ class MixtapeViewSet(ModelViewSet):
 
 
 
-class UserMixtapeListView(ListAPIView):
+class UserMixtapeListView(RetrieveUpdateDestroyAPIView):
     queryset           = Mixtape.objects.all()
     serializer_class   = MixtapeDetailSerializer
     permission_classes = [IsCreatorOrReadOnly]
