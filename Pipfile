@@ -17,6 +17,7 @@ django-on-heroku = "*"
 gunicorn = "*"
 requests = "*"
 pyjwt = {extras = ["crypto"], version = "*"}
+pillow = "*"
 
 [dev-packages]
 flake8 = "*"
