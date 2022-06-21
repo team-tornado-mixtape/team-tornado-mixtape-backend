@@ -15,5 +15,5 @@ class MixtapeListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model  = Mixtape
-        fields = ['id','title','created_at']
+        fields = ['id','title','created_at','total_songs']
 
