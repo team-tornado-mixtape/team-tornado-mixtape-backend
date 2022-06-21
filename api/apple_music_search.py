@@ -34,14 +34,15 @@ if __name__ == "__main__":
     print("----TOKEN----")
     print(token)
 
-    search = "Walk the Walk"
+    search = input("search terms: ")
+    limit = input("limit: ")
 
     endpoint = "https://api.music.apple.com/v1/catalog/US/search"
 
     data = urlencode({
-        "types": "songs",
+        "types": "songs,artists",
         "term": f"{search}",
-        "limit": 1
+        "limit": f"{limit}"
         })
 
     print("----CURL----")
