@@ -43,10 +43,11 @@ import requests
 import datetime
 
 
-class Spotify:
-    client_id = '1e6071d60ecc4bcaa9e077b9be068df2'
-    client_secret = 'fbd694a6c13048059bc032386f5eee36'
-    token_url = "https://accounts.spotify.com/api/token"
+class SpotifyAPI:
+    def __init__(self, client_id, client_secret):
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.token_url = "https://accounts.spotify.com/api/token"
 
     def token_data(self):
         return {"grant_type": "client_credentials"}
@@ -60,7 +61,7 @@ class Spotify:
     def token_headers(self):
         client_creds_b64 = self.client_credentials()
         return {
-            "Authorization": "Basic {client_creds_b64}"
+            "Authorization": f"Basic {client_creds_b64}"
         }
 
     def authenticate(self):
@@ -68,6 +69,7 @@ class Spotify:
         token_data = self.token_data()
         token_headers = self.token_headers()
         req = requests.post(token_url, data=token_data, headers=token_headers)
+        print(req.json)
 
         token_response_data = req.json()
         access_token = token_response_data['access_token']
@@ -75,3 +77,14 @@ class Spotify:
 
         self.access_token = access_token
         return token_response_data
+
+
+client_id = '1e6071d60ecc4bcaa9e077b9be068df2'
+client_secret = 'fbd694a6c13048059bc032386f5eee36'
+
+spotify_client = SpotifyAPI(client_id, client_secret)
+print(spotify_client.__init__(client_id, client_secret))
+print(spotify_client.client_credentials())
+print(spotify_client.token_data())
+print(spotify_client.token_headers())
+print(spotify_client.authenticate())
