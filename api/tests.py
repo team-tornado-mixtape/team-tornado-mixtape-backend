@@ -40,6 +40,7 @@
 
 import base64
 import requests
+import json
 from urllib.parse import urlencode
 
 
@@ -82,13 +83,17 @@ headers = {'Authorization': f"Bearer {access_token}"}
 
 endpoint = "https://api.spotify.com/v1/search"
 
+search = "Walk the Walk"
+
 data = urlencode({
-    "q": "TheWeeknd",
-    "type": "track"
+    "q": f"{search}",
+    "type": "track",
+    "limit": 1
 })
 
 lookup_url = f"{endpoint}?{data}"
 
 req = requests.get(lookup_url, headers=headers)
 
-print(req.json())
+# print(json.dumps(req.json(), sort_keys=4, indent=4))
+print(req.json()['tracks']['items'][0]['uri'])
