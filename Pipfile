@@ -15,8 +15,10 @@ djoser = "*"
 django-cors-headers = "*"
 django-on-heroku = "*"
 gunicorn = "*"
+requests = "*"
 
 [dev-packages]
+flake8 = "*"
 
 [requires]
 python_version = "3.10"
