@@ -2,7 +2,7 @@ from api.models import Mixtape
 from rest_framework.viewsets import ModelViewSet
 from api.serializers import MixtapeDetailSerializer,MixtapeListSerializer
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
-from api.permissions import IsCreatorOrReadOnly
+from .custom_permissions import IsCreatorOrReadOnly
 from django.db.models import Count
 
 # Create your views here.
