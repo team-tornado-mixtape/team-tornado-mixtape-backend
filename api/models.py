@@ -16,7 +16,7 @@ class Profile(models.Model):
     user        = models.OneToOneField(User, on_delete=models.CASCADE)
     created_at  = models.DateTimeField(auto_now_add=True)
     followers   = models.ManyToManyField(User, related_name='followers')
-    image       = models.ImageField(upload_to=None, height_field=None, width_field=None, max_length=100,)
+    image       = models.ImageField(upload_to='files/profilepics')
 
     def follower_count(self):
         return self.followers.count()
