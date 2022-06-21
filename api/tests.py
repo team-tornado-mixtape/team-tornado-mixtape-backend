@@ -53,22 +53,14 @@ class SpotifyAPI:
         return {"grant_type": "client_credentials"}
 
     def client_credentials(self):
-        client_id = self.client_id
-        client_secret = self.client_secret
-        client_creds = f"{client_id}:{client_secret}"
+        client_creds = f"{self.client_id}:{self.client_secret}"
         return base64.b64encode(client_creds.encode())
 
     def token_headers(self):
-        client_creds_b64 = self.client_credentials()
-        return {
-            "Authorization": f"Basic {client_creds_b64}"
-        }
+        return {"Authorization": f"Basic {self.client_credentials().decode()}"}
 
     def authenticate(self):
-        token_url = self.token_url
-        token_data = self.token_data()
-        token_headers = self.token_headers()
-        req = requests.post(token_url, data=token_data, headers=token_headers)
+        req = requests.post(self.token_url, data=self.token_data(), headers=self.token_headers())
         print(req.json)
 
         token_response_data = req.json()
