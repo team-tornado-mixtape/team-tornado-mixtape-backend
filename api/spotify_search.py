@@ -78,17 +78,24 @@ headers = {'Authorization': f"Bearer {access_token}"}
 
 endpoint = "https://api.spotify.com/v1/search"
 
-search = "Walk the Walk"
-
+search = input("Search terms: ")
+limit = input("limit: ")
 data = urlencode({
     "q": f"{search}",
     "type": "track",
-    "limit": 1
+    "limit": f"{limit}"
 })
 
 lookup_url = f"{endpoint}?{data}"
 
 req = requests.get(lookup_url, headers=headers)
 
-# print(json.dumps(req.json(), sort_keys=4, indent=4))
-print(req.json()['tracks']['items'][0]['uri'])
+for i in range(len(req.json()['tracks']['items'])):
+    print("spotify_id: ", req.json()['tracks']['items'][i]['id'])
+    print("spotify_title: ", req.json()['tracks']['items'][i]['name'])
+    print("spotify_album: ", req.json()['tracks']['items'][i]['album']['name'])
+    print("spotify_artist: ", req.json()['tracks']['items'][i]['artists'][0]['name'])
+    print("spotify_uri: ", req.json()['tracks']['items'][i]['uri'], '\n')
+
+# print(json.dumps(req.json(), sort_keys=4, indent=4)['tracks']['items'])
+# print(req.json()['tracks']['items'][0]['uri'])
