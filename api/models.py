@@ -13,10 +13,26 @@ class User(AbstractUser):
 
 
 class Profile(models.Model):
+<<<<<<< HEAD
     user        = models.OneToOneField(User, on_delete=models.CASCADE)
     created_at  = models.DateTimeField(auto_now_add=True)
     followers   = models.ManyToManyField(User, related_name='followers')
     image       = models.ImageField(upload_to='files/profilepics')
+=======
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    spotify_username = models.CharField(default='', max_length=255)
+    spotify_password = models.CharField(default='', max_length=255)
+    spotify_created_at = models.DateTimeField()
+    apple_music_username = models.CharField(default='', max_length=255)
+    apple_music_password = models.CharField(default='', max_length=255)
+    apple_music_created_at = models.DateTimeField()
+    friends = models.ManyToManyField(User, related_name='friends', blank=True)
+    followers = models.ManyToManyField(User, related_name='followers', blank=True)
+
+    def friend_count(self):
+        return self.friends.count()
+>>>>>>> b9034b67c91053273e0f3a26f25974b7d6993997
 
     def follower_count(self):
         return self.followers.count()
@@ -33,12 +49,21 @@ class Profile(models.Model):
 
 
 class Mixtape(models.Model):
+<<<<<<< HEAD
     created_at   = models.DateTimeField(auto_now_add=True)
     creator      = models.ForeignKey(User, related_name='creator', on_delete=models.CASCADE)
     title        = models.CharField(max_length=255)
     is_public    = models.BooleanField(default=False)
     description  = models.TextField()
     modified_at  = models.DateTimeField(auto_now=True)
+=======
+    created_at = models.DateTimeField(auto_now_add=True)
+    creator = models.ForeignKey(User, related_name='creator', on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    is_public = models.BooleanField(default=True)
+    description = models.TextField()
+    modified_at = models.DateTimeField(auto_now=True)
+>>>>>>> b9034b67c91053273e0f3a26f25974b7d6993997
     favorited_by = models.ManyToManyField(User, related_name='favorite_mixtapes', blank=True)
 
     def favorite_count(self):
