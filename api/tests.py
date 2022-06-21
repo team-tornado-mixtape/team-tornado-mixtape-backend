@@ -40,7 +40,7 @@
 
 import base64
 import requests
-import datetime
+from urllib.parse import urlencode
 
 
 class SpotifyAPI:
@@ -48,6 +48,7 @@ class SpotifyAPI:
         self.client_id = client_id
         self.client_secret = client_secret
         self.token_url = "https://accounts.spotify.com/api/token"
+        self.authenticate()
 
     def token_data(self):
         return {"grant_type": "client_credentials"}
@@ -75,8 +76,19 @@ client_id = '1e6071d60ecc4bcaa9e077b9be068df2'
 client_secret = 'fbd694a6c13048059bc032386f5eee36'
 
 spotify_client = SpotifyAPI(client_id, client_secret)
-print(spotify_client.__init__(client_id, client_secret))
-print(spotify_client.client_credentials())
-print(spotify_client.token_data())
-print(spotify_client.token_headers())
-print(spotify_client.authenticate())
+access_token = spotify_client.access_token
+
+headers = {'Authorization': f"Bearer {access_token}"}
+
+endpoint = "https://api.spotify.com/v1/search"
+
+data = urlencode({
+    "q": "TheWeeknd",
+    "type": "track"
+})
+
+lookup_url = f"{endpoint}?{data}"
+
+req = requests.get(lookup_url, headers=headers)
+
+print(req.json())
