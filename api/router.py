@@ -8,8 +8,8 @@ router = routers.DefaultRouter()
 router.register('mixtapes',api_views.MixtapeViewSet)
 router.register('users',api_views.UserViewSet,basename='users')
 router.register('profiles',api_views.ProfileViewSet,basename='profiles')
-users_router = routers.NestedSimpleRouter(router,'songs', lookup='song')
-users_router.register(
+mixtapes_router = routers.NestedSimpleRouter(router,'mixtapes', lookup='mixtape')
+mixtapes_router.register(
     'songs',
     api_views.SongViewSet,
     basename='songs',

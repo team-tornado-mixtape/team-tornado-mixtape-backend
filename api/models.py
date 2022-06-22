@@ -57,11 +57,11 @@ class Mixtape(models.Model):
 
 class Song(models.Model):
     created_at      = models.DateTimeField(auto_now_add=True)
-    title           = models.TextField(max_length=255)
-    artist          = models.TextField(max_length=255)
-    album           = models.TextField(max_length=255)
-    spotify_id      = models.TextField(max_length=255)
-    apple_id        = models.TextField(max_length=255)
+    title           = models.TextField(max_length=255,default='')
+    artist          = models.TextField(max_length=255,default='')
+    album           = models.TextField(max_length=255,default='')
+    spotify_id      = models.TextField(max_length=255,default='')
+    apple_id        = models.TextField(max_length=255,default='')
     mixtapes        = models.ManyToManyField(Mixtape, related_name='mixtapes', blank=True)
     favorited_by    = models.ManyToManyField(User, related_name='favorite_songs')
 
