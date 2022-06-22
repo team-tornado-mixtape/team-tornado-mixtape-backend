@@ -1,6 +1,6 @@
-from api.models import Mixtape, User, Profile
+from api.models import Mixtape, User, Profile, Song
 from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
-from api.serializers import MixtapeDetailSerializer,MixtapeListSerializer, ProfileSerializer, Userserializer
+from api.serializers import MixtapeDetailSerializer,MixtapeListSerializer, ProfileSerializer, SongSerializer, Userserializer
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
 from django.db.models import Count
@@ -75,4 +75,12 @@ class UserProfileView(RetrieveUpdateDestroyAPIView):
 
 
 
-class SongView
+class SongViewSet(ModelViewSet):
+    queryset            = Song.objects.all()
+    serializer_class    = SongSerializer
+
+    def perform_update(self, serializer):
+        pass
+
+    def perform_destroy(self, instance):
+        pass

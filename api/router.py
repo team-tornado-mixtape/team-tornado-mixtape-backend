@@ -11,7 +11,7 @@ router.register('profiles',api_views.ProfileViewSet,basename='profiles')
 users_router = routers.NestedSimpleRouter(router,'songs', lookup='song')
 users_router.register(
     'songs',
-    api_views.MyListView,
+    api_views.SongViewSet,
     basename='songs',
 )
 
