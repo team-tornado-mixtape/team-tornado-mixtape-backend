@@ -70,5 +70,5 @@ def apple_music_search(search, limit=10):
     return results
 
 
-apple_search_results = apple_music_search("Enter Galactic", limit=3)
+apple_search_results = apple_music_search("Enter Galactic")
 print(apple_search_results)
