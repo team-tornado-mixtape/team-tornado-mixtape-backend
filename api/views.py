@@ -51,7 +51,7 @@ class UserViewSet(ReadOnlyModelViewSet):
     serializer_class    = Userserializer
 
 
-class ProfileView(ModelViewSet):
+class ProfileViewSet(ModelViewSet):
     queryset            = Profile.objects.all()
     serializer_class    = ProfileSerializer  
     permission_classes  = [IsUserOrReadOnly]
