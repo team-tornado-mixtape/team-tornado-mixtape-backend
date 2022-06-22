@@ -46,7 +46,7 @@ class UserMixtapeListView(RetrieveUpdateDestroyAPIView):
         return Mixtape.objects.filter(creator_id=self.kwargs["creator_pk"])
 
 
-class UserView(ReadOnlyModelViewSet):
+class UserViewSet(ReadOnlyModelViewSet):
     queryset            = User.objects.all()
     serializer_class    = Userserializer
 
