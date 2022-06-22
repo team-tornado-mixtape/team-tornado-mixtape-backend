@@ -1,9 +1,19 @@
 from api.models import Mixtape, User, Profile, Song
-from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
-from api.serializers import MixtapeDetailSerializer,MixtapeListSerializer, ProfileSerializer, SongSerializer, Userserializer
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from api.serializers import (
+    MixtapeDetailSerializer,
+    MixtapeListSerializer,
+    ProfileSerializer,
+    SongSerializer,
+    Userserializer,
+    SearchSerializer,
+    )
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
 from django.db.models import Count
+from rest_framework.generics import ListAPIView
+from spotify_search import SearchSpotifyAPI
+from apple_music_search import SearchAppleMusicAPI
 
 # Create your views here.
 
@@ -84,3 +94,20 @@ class SongViewSet(ModelViewSet):
 
     def perform_destroy(self, instance):
         pass
+
+
+class SearchView(ListAPIView):
+    serializer_class = SearchSerializer
+
+    def get_queryset(self):
+        query_params = self.request.query_params
+        query_params.is_valid(raise_exception=True)
+
+        apple_results = SearchAppleMusicAPI(query_params)
+        spotify_results = SearchSpotifyAPI(query_params)
+
+        results = []
+        for i in range(len(spotify_results)):
+            for j in range(len(apple_results)):
+                if spotify_results[i]['spotify_title'] in apple_results[j]['apple_title'] and spotify_results[i]['spotify_artist'] in apple_results[j]['apple_artist']:
+                    breakpoint()

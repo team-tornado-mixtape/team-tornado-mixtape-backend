@@ -18,7 +18,14 @@ key_ID = env('apple_key_ID')
 team_ID = env('apple_team_ID')
 alg = "ES256"
 
-secret = ""
+secret = """
+-----BEGIN PRIVATE KEY-----
+MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgzWJ1tPxyB39nEjUn
+WCjymhCf2sfZF6IO3VJPNqpmRFOgCgYIKoZIzj0DAQehRANCAARE/4mbn57GPe8n
+/yd3zQ005COG7hj0A8L4f/4KoU4eDj1piuShHjdY3rle6TnAqw+srQBxjcCkvA2v
+692QycXe
+-----END PRIVATE KEY-----
+"""
 
 
 def SearchAppleMusicAPI(search, limit=10):

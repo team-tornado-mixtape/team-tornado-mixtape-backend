@@ -13,5 +13,7 @@ urlpatterns = [
 
     path('api/', include(router.urls)),
     path('api/users/<int:creator_pk>/mixtapes', api_views.UserMixtapeListView.as_view(), name='user_mixtapes'),
-    path('api/users/<int:user_pk>/profile', api_views.UserProfileView.as_view(),name="user_profile")
+    path('api/users/<int:user_pk>/profile', api_views.UserProfileView.as_view(),name="user_profile"),
+
+    path('api/search', api_views.SearchView.as_view(), name="search")
 ]
