@@ -1,9 +1,8 @@
 from api.models import Mixtape, User, Profile, Song
 from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
+from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
 from api.serializers import MixtapeDetailSerializer,MixtapeListSerializer, ProfileSerializer, SongSerializer, Userserializer
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
-from django.db.models import Count
 
 # Create your views here.
 
@@ -22,9 +21,7 @@ class MixtapeViewSet(ModelViewSet):
         if search_term is not None:
             results = Mixtape.objects.filter(title__icontains=self.request.query_params.get("search"))
         else:
-            results = Mixtape.objects.annotate(
-                total_songs=Count('songs')
-            )
+            results = Mixtape.objects.all()
         return results
 
     def perform_destroy(self, instance):
@@ -37,14 +34,14 @@ class MixtapeViewSet(ModelViewSet):
 
 
 
-class UserMixtapeListView(RetrieveUpdateDestroyAPIView):
+class UserMixtapeListView(ListCreateAPIView):
     queryset           = Mixtape.objects.all()
-    serializer_class   = MixtapeDetailSerializer
+    serializer_class   = MixtapeListSerializer
     permission_classes = [IsCreatorOrReadOnly]
-
+    
     def get_queryset(self):
-        return Mixtape.objects.filter(creator_id=self.kwargs["creator_pk"])
-
+        return Mixtape.objects.filter(creator=self.request.user)
+    
 
 class UserViewSet(ReadOnlyModelViewSet):
     queryset            = User.objects.all()
@@ -65,13 +62,13 @@ class ProfileViewSet(ModelViewSet):
         return results
 
 
-class UserProfileView(RetrieveUpdateDestroyAPIView):
+class UserProfileView(ListCreateAPIView):
     queryset            = Profile.objects.all()
     serializer_class    = ProfileSerializer
     permission_classes  = [IsUserOrReadOnly]
 
     def get_queryset(self):
-        return Profile.objects.filter(user_id=self.kwargs["user_pk"])
+        return Profile.objects.filter(user=self.request.user)
 
 
 

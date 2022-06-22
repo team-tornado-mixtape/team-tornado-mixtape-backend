@@ -62,7 +62,7 @@ class Song(models.Model):
     album           = models.TextField(max_length=255,default='')
     spotify_id      = models.TextField(max_length=255,default='')
     apple_id        = models.TextField(max_length=255,default='')
-    mixtapes        = models.ManyToManyField(Mixtape, related_name='mixtapes', blank=True)
+    mixtapes        = models.ManyToManyField(Mixtape, related_name='songs', blank=True)
     favorited_by    = models.ManyToManyField(User, related_name='favorite_songs')
 
     def favorite_count(self):
