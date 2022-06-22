@@ -62,17 +62,17 @@ class Song(models.Model):
     album           = models.TextField(max_length=255,default='')
     spotify_id      = models.TextField(max_length=255,default='')
     apple_id        = models.TextField(max_length=255,default='')
-    mixtapes        = models.ManyToManyField(Mixtape, related_name='mixtapes', blank=True)
+    mixtapes        = models.ManyToManyField(Mixtape, related_name='songs', blank=True)
     favorited_by    = models.ManyToManyField(User, related_name='favorite_songs')
 
     def favorite_count(self):
         return self.favorited_by.count()
 
     def __repr__(self):
-        return f"<User username={self.spotify_title} pk={self.pk}>"
+        return f"<Song title={self.title} pk={self.pk}>"
 
     def __str__(self):
-        return self.spotify_title
+        return self.title
 
 # the following model can be added to create connections between users
 # class Connection(models.Model):

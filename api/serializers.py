@@ -14,7 +14,7 @@ class MixtapeListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model  = Mixtape
-        fields = ['id','title','created_at','total_songs']
+        fields = ['id','title','created_at','creator',]
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -26,11 +26,10 @@ class ProfileSerializer(serializers.ModelSerializer):
         
 
 class Userserializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(read_only=True, slug_field="username")
 
     class Meta:
         model  = User
-        fields = ('__all__')
+        fields = ['id','username',]
 
 
 class SongSerializer(serializers.ModelSerializer):
