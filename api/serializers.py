@@ -31,3 +31,11 @@ class Userserializer(serializers.ModelSerializer):
     class Meta:
         model  = User
         fields = ('__all__')
+
+
+class SongSerializer(serializers.ModelSerializer):
+    mixtape   = serializers.SlugRelatedField(read_only=True, slug_field='title')
+    
+    class Meta:
+        model = Song
+        fields = ('__all__')
