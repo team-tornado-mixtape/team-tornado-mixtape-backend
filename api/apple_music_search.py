@@ -1,7 +1,20 @@
 import datetime
 import jwt
 from urllib.parse import urlencode
+import environ
+import os
 
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+key_ID = env('apple_key_ID')
+team_ID = env('apple_team_ID')
+alg = "ES256"
 
 secret = """-----BEGIN PRIVATE KEY-----
 MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgzWJ1tPxyB39nEjUn
@@ -10,34 +23,26 @@ WCjymhCf2sfZF6IO3VJPNqpmRFOgCgYIKoZIzj0DAQehRANCAARE/4mbn57GPe8n
 692QycXe
 -----END PRIVATE KEY-----"""
 
-key_ID = "5BBHF2WLJF"
-team_ID = "C2NAAJY6Z3"
-alg = "ES256"
 
-time_now = datetime.datetime.now()
-time_expired = time_now + datetime.timedelta(hours=12)
+def apple_music_search(search, limit=10):
+    if __name__ != "__main__":
+        return
 
-headers = {
-    "alg": alg,
-    "kid": key_ID
-}
+    time_now = datetime.datetime.now()
+    time_expired = time_now + datetime.timedelta(hours=12)
 
-payload = {
-    "iss": team_ID,
-    "exp": int(time_expired.strftime("%s")),
-    "iat": int(time_now.strftime("%s"))
-}
+    headers = {
+        "alg": alg,
+        "kid": key_ID
+    }
 
-if __name__ == "__main__":
+    payload = {
+        "iss": team_ID,
+        "exp": int(time_expired.strftime("%s")),
+        "iat": int(time_now.strftime("%s"))
+    }
+
     token = jwt.encode(payload, secret, algorithm=alg, headers=headers)
-
-    print("----TOKEN----")
-    print(token)
-
-    search = input("search terms: ")
-    limit = input("limit: ")
-
-    endpoint = "https://api.music.apple.com/v1/catalog/US/search"
 
     data = urlencode({
         "types": "songs,artists",
@@ -46,4 +51,8 @@ if __name__ == "__main__":
         })
 
     print("----CURL----")
-    print(f"curl -v -H 'Authorization: Bearer %s' \"{endpoint}?{data}\" " % (token))
+    print(f"curl -v -H 'Authorization: Bearer %s' \"https://api.music.apple.com/v1/catalog/US/search?%s\" " % (token, data))
+
+
+search_results = apple_music_search("Enter Galactic")
+print(search_results)
