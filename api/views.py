@@ -56,6 +56,16 @@ class ProfileViewSet(ModelViewSet):
     serializer_class    = ProfileSerializer  
     permission_classes  = [IsUserOrReadOnly]
 
+    def get_queryset(self):
+        search_term = self.request.query_params.get("search")
+        if search_term is not None:
+            results = Profile.objects.filter(user__icontains=self.request.query_params.get("search"))
+        else:
+            results = Profile.objects.all()
+        return results
+
+
+
 
 class UserProfileView(RetrieveUpdateDestroyAPIView):
     queryset            = Profile.objects.all()
