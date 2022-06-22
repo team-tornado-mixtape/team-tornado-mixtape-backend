@@ -71,6 +71,7 @@ def SearchSpotifyAPI(search, limit=10):
         result["spotify_uri"] = req.json()['tracks']['items'][i]['uri']
         results.append(result)
 
+    # print(json.dumps(req.json(), sort_keys=4,indent=4)) 
     return results
 
 

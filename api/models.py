@@ -83,5 +83,3 @@ class Song(models.Model):
 #     created   = models.DateTimeField(auto_now_add=True, editable=False)
 #     creator   = models.ForeignKey(User, related_name="friendship_creator_set")
 #     following = models.ForeignKey(User, related_name="friend_set")
-
-

@@ -26,7 +26,7 @@ WCjymhCf2sfZF6IO3VJPNqpmRFOgCgYIKoZIzj0DAQehRANCAARE/4mbn57GPe8n
 -----END PRIVATE KEY-----"""
 
 
-def apple_music_search(search, limit=10):
+def SearchAppleMusicAPI(search, limit=10):
     if __name__ != "__main__":
         return
 
@@ -70,5 +70,5 @@ def apple_music_search(search, limit=10):
     return results
 
 
-apple_search_results = apple_music_search("Enter Galactic")
+apple_search_results = SearchAppleMusicAPI("Enter Galactic")
 print(apple_search_results)
