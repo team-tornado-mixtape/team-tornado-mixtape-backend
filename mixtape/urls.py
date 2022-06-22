@@ -12,6 +12,6 @@ urlpatterns = [
     path('api/auth/', include('djoser.urls.authtoken')),
 
     path('api/', include(router.urls)),
-    path('api/user/<int:creator_pk>/mixtapes', api_views.UserMixtapeListView.as_view(), name='user_mixtapes'),
-
+    path('api/mixtapes/<int:creator_pk>/mixtapes', api_views.UserMixtapeListView.as_view(), name='user_mixtapes'),
+    path('api/users/<int:user_pk>/profile', api_views.UserProfileView.as_view(),name="user_profile")
 ]

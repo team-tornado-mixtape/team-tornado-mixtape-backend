@@ -1,8 +1,8 @@
-from api.models import Mixtape
-from rest_framework.viewsets import ModelViewSet
-from api.serializers import MixtapeDetailSerializer,MixtapeListSerializer
+from api.models import Mixtape, User, Profile
+from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
+from api.serializers import MixtapeDetailSerializer,MixtapeListSerializer, ProfileSerializer, Userserializer
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
-from .custom_permissions import IsCreatorOrReadOnly
+from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
 from django.db.models import Count
 
 # Create your views here.
@@ -43,4 +43,27 @@ class UserMixtapeListView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsCreatorOrReadOnly]
 
     def get_queryset(self):
-        return Mixtape.objects.filter(responder_id=self.kwargs["creator_pk"])
+        return Mixtape.objects.filter(creator_id=self.kwargs["creator_pk"])
+
+
+class UserView(ReadOnlyModelViewSet):
+    queryset            = User.objects.all()
+    serializer_class    = Userserializer
+
+
+class ProfileView(ModelViewSet):
+    queryset            = Profile.objects.all()
+    serializer_class    = ProfileSerializer  
+    permission_classes  = [IsUserOrReadOnly]
+
+
+class UserProfileView(RetrieveUpdateDestroyAPIView):
+    queryset            = Profile.objects.all()
+    serializer_class    = ProfileSerializer
+    permission_classes  = [IsUserOrReadOnly]
+
+    def get_queryset(self):
+        return Profile.objects.filter(user_id=self.kwargs["user_pk"])
+
+
+
