@@ -26,7 +26,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         
 
 class Userserializer(serializers.ModelSerializer):
-    user = serializers.SlugField(read_only=True, slug_field="username")
+    user = serializers.SlugRelatedField(read_only=True, slug_field="username")
 
     class Meta:
         model  = User

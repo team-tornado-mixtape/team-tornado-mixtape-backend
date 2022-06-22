@@ -1,4 +1,4 @@
-from api.views import MixtapeViewSet,UserView
+from api.views import MixtapeViewSet,UserViewSet
 from rest_framework import routers
 from rest_framework_nested import routers
 from api import views as api_views
