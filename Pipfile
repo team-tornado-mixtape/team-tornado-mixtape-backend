@@ -15,10 +15,13 @@ djoser = "*"
 django-cors-headers = "*"
 django-on-heroku = "*"
 gunicorn = "*"
+requests = "*"
+pyjwt = {extras = ["crypto"], version = "*"}
 pillow = "*"
 drf-nested-routers = "*"
 
 [dev-packages]
+flake8 = "*"
 
 [requires]
 python_version = "3.10"
