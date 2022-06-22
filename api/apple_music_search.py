@@ -3,6 +3,8 @@ import jwt
 from urllib.parse import urlencode
 import environ
 import os
+import requests
+import json
 
 env = environ.Env(
     # set casting, default value
@@ -50,9 +52,11 @@ def apple_music_search(search, limit=10):
         "limit": f"{limit}"
         })
 
-    print("----CURL----")
-    print(f"curl -v -H 'Authorization: Bearer %s' \"https://api.music.apple.com/v1/catalog/US/search?%s\" " % (token, data))
+    url = f"https://api.music.apple.com/v1/catalog/US/search?{data}"
 
+    req = requests.get(url, headers={'Authorization': "Bearer " + token})
 
-search_results = apple_music_search("Enter Galactic")
+    return req.json()
+
+search_results = apple_music_search("Enter Galactic", limit=1)
 print(search_results)
