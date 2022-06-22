@@ -12,8 +12,8 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
 from django.db.models import Count
 from rest_framework.generics import ListAPIView
-from spotify_search import SearchSpotifyAPI
-from apple_music_search import SearchAppleMusicAPI
+from api.spotify_search import *
+from api.apple_music_search import *
 
 # Create your views here.
 
@@ -97,14 +97,14 @@ class SongViewSet(ModelViewSet):
 
 
 class SearchView(ListAPIView):
-    serializer_class = SearchSerializer
+    # serializer_class = SearchSerializer
 
     def get_queryset(self):
-        query_params = self.request.query_params
-        query_params.is_valid(raise_exception=True)
+        search_term = self.request.query_params.get('search')
 
-        apple_results = SearchAppleMusicAPI(query_params)
-        spotify_results = SearchSpotifyAPI(query_params)
+        spotify_results = SearchSpotifyAPI(search_term)
+        apple_results = SearchAppleMusicAPI(search_term)
+        breakpoint()
 
         results = []
         for i in range(len(spotify_results)):

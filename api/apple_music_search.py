@@ -18,14 +18,7 @@ key_ID = env('apple_key_ID')
 team_ID = env('apple_team_ID')
 alg = "ES256"
 
-secret = """
------BEGIN PRIVATE KEY-----
-MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgzWJ1tPxyB39nEjUn
-WCjymhCf2sfZF6IO3VJPNqpmRFOgCgYIKoZIzj0DAQehRANCAARE/4mbn57GPe8n
-/yd3zQ005COG7hj0A8L4f/4KoU4eDj1piuShHjdY3rle6TnAqw+srQBxjcCkvA2v
-692QycXe
------END PRIVATE KEY-----
-"""
+secret = env.str('apple_secret', multiline=True)
 
 
 def SearchAppleMusicAPI(search, limit=10):
@@ -72,5 +65,5 @@ def SearchAppleMusicAPI(search, limit=10):
     return results
 
 
-apple_search_results = SearchAppleMusicAPI("Enter Galactic")
-print(apple_search_results)
+# apple_search_results = SearchAppleMusicAPI("Brickhouse")
+# print(apple_search_results)
