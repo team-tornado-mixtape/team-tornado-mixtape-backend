@@ -56,18 +56,14 @@ class Mixtape(models.Model):
 
 
 class Song(models.Model):
-    created_at          = models.DateTimeField(auto_now_add=True)
-    spotify_title       = models.TextField()
-    spotify_artist      = models.TextField()
-    spotify_album       = models.TextField()
-    spotify_url         = models.TextField()
-    apple_music_title   = models.TextField()
-    apple_music_artist  = models.TextField()
-    apple_music_album   = models.TextField()
-    apple_music_url     = models.TextField()
-    spotify_preview_url = models.TextField()
-    mixtapes            = models.ManyToManyField(Mixtape, related_name='mixtapes', blank=True)
-    favorited_by        = models.ManyToManyField(User, related_name='favorite_songs')
+    created_at      = models.DateTimeField(auto_now_add=True)
+    title           = models.TextField(max_length=255,default='')
+    artist          = models.TextField(max_length=255,default='')
+    album           = models.TextField(max_length=255,default='')
+    spotify_id      = models.TextField(max_length=255,default='')
+    apple_id        = models.TextField(max_length=255,default='')
+    mixtapes        = models.ManyToManyField(Mixtape, related_name='mixtapes', blank=True)
+    favorited_by    = models.ManyToManyField(User, related_name='favorite_songs')
 
     def favorite_count(self):
         return self.favorited_by.count()
