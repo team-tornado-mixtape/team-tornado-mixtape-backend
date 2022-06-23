@@ -97,3 +97,14 @@ class CreateFollowerView(APIView):
         user.followers.add(profile)
         serializer = ProfileSerializer(ProfileSerializer, context={"request": request})
         return Response(serializer.data, status=201)
+
+
+class CreateFavoriteView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, **kwargs):
+        user     = self.request.user
+        mixtape = get_object_or_404(Mixtape, pk=self.kwargs["mixtape_pk"])
+        user.favorite_mixtapes.add(mixtape)
+        serializer = MixtapeListSerializer(MixtapeListSerializer, context={"request": request})
+        return Response(serializer.data, status=201)

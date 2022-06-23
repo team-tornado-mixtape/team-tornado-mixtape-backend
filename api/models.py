@@ -3,8 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
-    pass
-
+    
     def __repr__(self):
         return f"<User username={self.username} pk={self.pk}>"
 
@@ -61,10 +60,6 @@ class Song(models.Model):
     spotify_id      = models.TextField(max_length=255,default='')
     apple_id        = models.TextField(max_length=255,default='')
     mixtapes        = models.ManyToManyField(Mixtape, related_name='songs', blank=True)
-    favorited_by    = models.ManyToManyField(User, related_name='favorite_songs')
-
-    def favorite_count(self):
-        return self.favorited_by.count()
 
     def __repr__(self):
         return f"<Song title={self.title} pk={self.pk}>"

@@ -7,14 +7,14 @@ class MixtapeDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model  = Mixtape
-        fields = ('__all__')
+        fields = ['created_at','creator','title','songs','theme','is_public','description','modified_at','favorited_by']
 
 class MixtapeListSerializer(serializers.ModelSerializer):
     creator   = serializers.SlugRelatedField(read_only=True, slug_field="username")
 
     class Meta:
         model  = Mixtape
-        fields = ['id','title','created_at','creator',]
+        fields = ['id','title','created_at','creator','songs',]
 
 
 class ProfileSerializer(serializers.ModelSerializer):
