@@ -24,16 +24,19 @@ NOTE: API Root is /api/
 |POST|[/auth/token/logout/](#logout-user)|Logout user|
 |GET|[/mixtapes/](#list-of-all-MixTapes)|List all public MixTapes|
 |GET|[/users/<int:pk>/mixtapes](#list-of-MixTapes-per-user)|List all MixTapes of one user|
-|GET|[/mixtapes?search=<search_term>/](#search-MixTapes)|Search MixTape titles (limited to one search term)|
+|GET|[/mixtapes?search=<search_term>](#search-MixTapes)|Search MixTape titles (limited to one search term)|
 |POST|[/mixtapes/](#create-a-new-MixTape-for-this-user-logged-in-user)|Create a new MixTape|
 |GET|[/mixtapes/{id}/](#details-for-a-specific-MixTape)|Details for a specific MixTape|
 |PUT|[/mixtapes/{id}/](#update-an-existing-MixTape)|Update an existing question (Only the creator of the mixTape can do this)|
 |PATCH|[/questions/{id}/](#update-part-of-an-existing-question)|Update part of an existing MixTape|
 |POST|[/mixtapes/{id}/favorite/](#favorite-a-MixTape)|Favorite a MixTape|
 |DELETE|[/mixtapes/{id}/](#delete-MixTape)|Delete an existing MixTape (Only the creator of the MixTape may do this)|
-|GET|[/all_answers/](#list-all-answers)|List all answers (anonymous/guest)|
-|GET|[/answers/](#list-all-user-created-answers)|List all logged in user created answers|
-|GET|[/all_answers?search=<search_term>/](#search-answers)|Search answers (limited to one search term)|
+|GET|[/profiles](#list-all-profiles)|List all profiles|
+|GET|[/profiles?search=<search_term>](#search-profiles)|Search profiles (by username)|
+|GET|[/search?search=<search_term>](#seach-Spotify-and-Apple-Music-APIs)|Search for songs in Apple Music and Spotify API|
+
+
+
 |POST|[/questions/{id}/answers/](#create-a-new-answer)|Create a new answer|
 |GET|[/answers/{id}/](#details-for-a-specific-answer)|Details for a specific answer|
 |PUT|[/answers/{id}/](#update-an-existing-answer)|Update an existing answer|
@@ -459,9 +462,9 @@ If non-creator attempts to PUT:
 
 
 
-## Favorite a question
+## Favorite a MixTape
 
-Logged in user can favorite any question.
+Logged in user can favorite any MixTape.
 
 Requirement: user must be logged in.
 
@@ -470,7 +473,7 @@ Requirement: user must be logged in.
 Required in URL: MixTape's id.
 
 ```json
-PUT /all_questions/id/favorite/
+POST /mixtape/id/favorite/
 ```
 
 ### Response
@@ -478,10 +481,24 @@ PUT /all_questions/id/favorite/
 Return will be the question's id. 
 
 ```json
-200 OK
+201 Created
 
 {
-	"id": 5
+	"created_at": "2022-06-22T14:46:37.815208-04:00",
+	"creator": "User1",
+	"title": "Mixtape 2",
+	"songs": [
+		2,
+		3
+	],
+	"theme": 0,
+	"is_public": false,
+	"description": "Mixtape 2 description",
+	"modified_at": "2022-06-22T14:46:37.815274-04:00",
+	"favorited_by": [
+		3,
+		4
+	]
 }
 ```
 
@@ -558,15 +575,16 @@ GET /profiles/
 ```
 
 
+## Search Profiles
 
-## List all user created answers
-
-Returns list of all answers for a logged in user.
+Search through answers by user name
 
 ### Request
 
+Note: can only use 1 search parameter. It queries the username.
+
 ```json
-GET /answers/
+GET /profiles?search=kitten
 ```
 
 ### Response
@@ -574,90 +592,70 @@ GET /answers/
 ```json
 200 OK
 
-[
-	{
-		"pk": 1,
-		"author": "user1",
-		"description": "user1 question1 answer1",
-		"created_at": "2022-06-03T17:52:10.041543-04:00",
-		"question": "user1 question1"
-	},
-	{
-		"pk": 2,
-		"author": "user1",
-		"description": "user1 question1 answer2",
-		"created_at": "2022-06-03T17:52:15.895155-04:00",
-		"question": "user1 question1"
-	},
-]
+{
+		"id": 1,
+		"user": "kitten",
+		"created_at": "2022-06-22T16:35:54.792728-04:00",
+		"image": "http://127.0.0.1:8000/files/profilepics/unnamed.jpeg",
+		"followed_by": [
+			3
+		]
+	}
 ```
 
 
 
-## Search answers
+## Search Apple Music and Spotify API
 
-Search through answers.
+
 
 ### Request
 
-Note: can only use 1 search parameter. It queries the description field.
+
+
+Required in URL: song title
 
 ```json
-GET /all_answers?search=to
+GET /search?search=primadonna
+
 ```
 
 ### Response
 
 ```json
 200 OK
-
 [
 	{
-		"id": 14,
-		"created_at": "2022-06-09T13:54:18.760647-04:00",
-		"author": "Vader",
-		"description": "You do not need an answer to this question.."
+		"id": 9,
+		"created_at": "2022-06-23T18:13:28.868948-04:00",
+		"title": "Primadonna",
+		"artist": "LA Nightcore",
+		"album": "Primadonna - Single",
+		"spotify_id": "0nrkiWaB513DpnvJZ8he4v",
+		"apple_id": "1629176796",
+		"mixtapes": []
+	},
+	{
+		"id": 8,
+		"created_at": "2022-06-23T18:13:28.868266-04:00",
+		"title": "Primadonna",
+		"artist": "Marina and The Diamonds",
+		"album": "Electra Heart (Deluxe Version)",
+		"spotify_id": "4sOX1nhpKwFWPvoMMExi3q",
+		"apple_id": "534340044",
+		"mixtapes": []
 	},
 	{
 		"id": 7,
-		"created_at": "2022-06-07T10:24:08.771366-04:00",
-		"author": "user1",
-		"description": "user1 response (.2) to user2's question pk4"
+		"created_at": "2022-06-23T18:13:28.867619-04:00",
+		"title": "Primadonna",
+		"artist": "LA Nightcore",
+		"album": "Primadonna - Single",
+		"spotify_id": "0nrkiWaB513DpnvJZ8he4v",
+		"apple_id": "1629176796",
+		"mixtapes": []
 	}
 ]
-```
-
-
-
-## Create a new answer
-
-Requirement: user must be logged in.
-
-### Request
-
-Requirement: description
-
-Required in URL: question's id.
-
-```json
-POST /questions/id/answers/
-
-{
-	"description": "user1 response to user2's question pk4"
-}
-```
-
-### Response
-
-```json
-200 OK
-{
-	"pk": 7,
-	"author": "user1",
-	"description": "user1 response to user2's question pk4",
-	"created_at": "2022-06-07T10:24:08.771366-04:00",
-	"question": "user2 question2"
-}
 ```
 
 
