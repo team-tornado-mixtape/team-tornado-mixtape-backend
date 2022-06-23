@@ -13,13 +13,10 @@ class User(AbstractUser):
 
 
 class Profile(models.Model):
-    user        = models.OneToOneField(User, on_delete=models.CASCADE)
-    created_at  = models.DateTimeField(auto_now_add=True)
-    followers   = models.ManyToManyField(User, related_name='followers')
-    image       = models.ImageField(upload_to='files/profilepics')
-
-    def friend_count(self):
-        return self.friends.count()
+    user          = models.OneToOneField(User, on_delete=models.CASCADE)
+    created_at    = models.DateTimeField(auto_now_add=True)
+    followed_by   = models.ManyToManyField(User, related_name='followers')
+    image         = models.ImageField(upload_to='files/profilepics')
 
     def follower_count(self):
         return self.followers.count()
@@ -43,7 +40,7 @@ class Mixtape(models.Model):
     is_public    = models.BooleanField(default=False)
     description  = models.TextField()
     modified_at  = models.DateTimeField(auto_now=True)
-    theme        = models.IntegerField()
+    theme        = models.IntegerField(default='0')
     favorited_by = models.ManyToManyField(User, related_name='favorite_mixtapes', blank=True)
 
     def favorite_count(self):
