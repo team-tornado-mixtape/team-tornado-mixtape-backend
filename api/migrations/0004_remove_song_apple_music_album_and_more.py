@@ -6,69 +6,69 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0003_delete_friendrequest_and_more'),
+        ("api", "0003_delete_friendrequest_and_more"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='song',
-            name='apple_music_album',
+            model_name="song",
+            name="apple_music_album",
         ),
         migrations.RemoveField(
-            model_name='song',
-            name='apple_music_artist',
+            model_name="song",
+            name="apple_music_artist",
         ),
         migrations.RemoveField(
-            model_name='song',
-            name='apple_music_title',
+            model_name="song",
+            name="apple_music_title",
         ),
         migrations.RemoveField(
-            model_name='song',
-            name='apple_music_url',
+            model_name="song",
+            name="apple_music_url",
         ),
         migrations.RemoveField(
-            model_name='song',
-            name='spotify_album',
+            model_name="song",
+            name="spotify_album",
         ),
         migrations.RemoveField(
-            model_name='song',
-            name='spotify_artist',
+            model_name="song",
+            name="spotify_artist",
         ),
         migrations.RemoveField(
-            model_name='song',
-            name='spotify_preview_url',
+            model_name="song",
+            name="spotify_preview_url",
         ),
         migrations.RemoveField(
-            model_name='song',
-            name='spotify_title',
+            model_name="song",
+            name="spotify_title",
         ),
         migrations.RemoveField(
-            model_name='song',
-            name='spotify_url',
+            model_name="song",
+            name="spotify_url",
         ),
         migrations.AddField(
-            model_name='song',
-            name='album',
-            field=models.TextField(default='', max_length=255),
+            model_name="song",
+            name="album",
+            field=models.TextField(default="", max_length=255),
         ),
         migrations.AddField(
-            model_name='song',
-            name='apple_id',
-            field=models.TextField(default='', max_length=255),
+            model_name="song",
+            name="apple_id",
+            field=models.TextField(default="", max_length=255),
         ),
         migrations.AddField(
-            model_name='song',
-            name='artist',
-            field=models.TextField(default='', max_length=255),
+            model_name="song",
+            name="artist",
+            field=models.TextField(default="", max_length=255),
         ),
         migrations.AddField(
-            model_name='song',
-            name='spotify_id',
-            field=models.TextField(default='', max_length=255),
+            model_name="song",
+            name="spotify_id",
+            field=models.TextField(default="", max_length=255),
         ),
         migrations.AddField(
-            model_name='song',
-            name='title',
-            field=models.TextField(default='', max_length=255),
+            model_name="song",
+            name="title",
+            field=models.TextField(default="", max_length=255),
         ),
     ]

@@ -1,7 +1,8 @@
 from rest_framework import permissions
 
+
 class IsCreatorOrReadOnly(permissions.BasePermission):
-    message = 'Editing MixTapes is restricted to the creator only.'
+    message = "Editing MixTapes is restricted to the creator only."
 
     def has_permission(self, request, view):
         if request.user.is_authenticated:
@@ -16,10 +17,8 @@ class IsCreatorOrReadOnly(permissions.BasePermission):
         return False
 
 
-    
-
 class IsUserOrReadOnly(permissions.BasePermission):
-    message = 'Editing a profile is restricted to the user only.'
+    message = "Editing a profile is restricted to the user only."
 
     def has_permission(self, request, view):
         if request.user.is_authenticated:

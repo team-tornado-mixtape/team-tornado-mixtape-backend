@@ -6,41 +6,41 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0002_friendrequest_mixtape_song_profile'),
+        ("api", "0002_friendrequest_mixtape_song_profile"),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='FriendRequest',
+            name="FriendRequest",
         ),
         migrations.RemoveField(
-            model_name='profile',
-            name='apple_music_created_at',
+            model_name="profile",
+            name="apple_music_created_at",
         ),
         migrations.RemoveField(
-            model_name='profile',
-            name='apple_music_password',
+            model_name="profile",
+            name="apple_music_password",
         ),
         migrations.RemoveField(
-            model_name='profile',
-            name='apple_music_username',
+            model_name="profile",
+            name="apple_music_username",
         ),
         migrations.RemoveField(
-            model_name='profile',
-            name='spotify_created_at',
+            model_name="profile",
+            name="spotify_created_at",
         ),
         migrations.RemoveField(
-            model_name='profile',
-            name='spotify_password',
+            model_name="profile",
+            name="spotify_password",
         ),
         migrations.RemoveField(
-            model_name='profile',
-            name='spotify_username',
+            model_name="profile",
+            name="spotify_username",
         ),
         migrations.AddField(
-            model_name='profile',
-            name='image',
-            field=models.ImageField(default='', upload_to='files/profilepics'),
+            model_name="profile",
+            name="image",
+            field=models.ImageField(default="", upload_to="files/profilepics"),
             preserve_default=False,
         ),
     ]
