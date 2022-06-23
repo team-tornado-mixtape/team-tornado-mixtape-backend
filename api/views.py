@@ -80,7 +80,7 @@ class ProfileViewSet(ModelViewSet):
         search_term = self.request.query_params.get("search")
         if search_term is not None:
             results = Profile.objects.filter(
-                user__icontains=self.request.query_params.get("search")
+                user__username=self.request.query_params.get("search")
             )
         else:
             results = Profile.objects.all()
@@ -114,19 +114,20 @@ class CreateFollowerView(APIView):
         user = self.request.user
         profile = get_object_or_404(Profile, pk=self.kwargs["profile_pk"])
         user.followers.add(profile)
-        serializer = ProfileSerializer(ProfileSerializer, context={"request": request})
+        serializer = ProfileSerializer(profile, context={"request": request})
         return Response(serializer.data, status=201)
 
 
 class CreateFavoriteView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class   = MixtapeDetailSerializer
 
     def post(self, request, **kwargs):
         user = self.request.user
         mixtape = get_object_or_404(Mixtape, pk=self.kwargs["mixtape_pk"])
         user.favorite_mixtapes.add(mixtape)
-        serializer = MixtapeListSerializer(
-            MixtapeListSerializer, context={"request": request}
+        serializer = MixtapeDetailSerializer(
+            mixtape, context={"request": request}
         )
         return Response(serializer.data, status=201)
 
