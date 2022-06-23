@@ -126,6 +126,8 @@ class SearchView(ListAPIView):
     serializer_class = SongSerializer
 
     def get_queryset(self):
+        Song.objects.filter(mixtapes=None).delete()
+
         search_term = self.request.query_params.get('search')
         spotify_results = SearchSpotifyAPI(search_term)
         apple_results = SearchAppleMusicAPI(search_term)
@@ -145,7 +147,7 @@ class SearchView(ListAPIView):
 
                 songs.append(song)
 
-        for song in range(len(songs)):
+        for i in range(len(songs)):
             Song.objects.create(title=songs[i]['title'], artist=songs[i]['artist'], album=songs[i]['album'], spotify_id=songs[i]['spotify_id'], apple_id=songs[i]['apple_id'])
 
         return Song.objects.all().order_by('-id')[:len(songs)]
