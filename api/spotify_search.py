@@ -3,11 +3,15 @@ import requests
 import json
 from urllib.parse import urlencode
 import environ
+import os
 
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
-)
+    )
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 client_id = env('spotify_client_id')
 client_secret = env('spotify_client_secret')
@@ -71,5 +75,5 @@ def SearchSpotifyAPI(search, limit=10):
     return results
 
 
-# spotify_search_results = SearchSpotifyAPI('Enter Galactic')
+# spotify_search_results = SearchSpotifyAPI('Brickhouse')
 # print(spotify_search_results)

@@ -104,9 +104,9 @@ class SearchView(ListAPIView):
 
         spotify_results = SearchSpotifyAPI(search_term)
         apple_results = SearchAppleMusicAPI(search_term)
-        breakpoint()
 
         results = []
+
         for i in range(len(spotify_results)):
             for j in range(len(apple_results)):
                 if spotify_results[i]['spotify_title'] in apple_results[j]['apple_title'] and spotify_results[i]['spotify_artist'] in apple_results[j]['apple_artist']:
