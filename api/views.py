@@ -1,13 +1,24 @@
 from api.models import Mixtape, User, Profile, Song
-from api.serializers import MixtapeDetailSerializer,MixtapeListSerializer, ProfileSerializer, SongSerializer, Userserializer
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from api.serializers import (
+    MixtapeDetailSerializer,
+    MixtapeListSerializer,
+    ProfileSerializer,
+    SongSerializer,
+    Userserializer,
+    )
+from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
+from django.db.models import Count
 
-from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
-from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView,get_object_or_404
+from rest_framework.generics import ListCreateAPIView, ListAPIView, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
+from rest_framework.permissions import SAFE_METHODS, IsAuthenticated, IsAuthenticatedOrReadOnly
 
-from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
+from api.spotify_search import *
+from api.apple_music_search import *
+from api.similar import *
+
 
 # Create your views here.
 
@@ -108,3 +119,33 @@ class CreateFavoriteView(APIView):
         user.favorite_mixtapes.add(mixtape)
         serializer = MixtapeListSerializer(MixtapeListSerializer, context={"request": request})
         return Response(serializer.data, status=201)
+
+
+class SearchView(ListAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    serializer_class = SongSerializer
+
+    def get_queryset(self):
+        search_term = self.request.query_params.get('search')
+        spotify_results = SearchSpotifyAPI(search_term)
+        apple_results = SearchAppleMusicAPI(search_term)
+        songs = []
+
+        for i in range(len(spotify_results)):
+            similarities = []
+            for j in range(len(apple_results)):
+                similarity = similar(spotify_results[i]['spotify_title'], apple_results[j]['apple_title']) + similar(spotify_results[i]['spotify_artist'], apple_results[j]['apple_artist'])
+                similarities.append(similarity)
+
+            closest = max(similarities)
+
+            if closest > 0.8:
+                index = similarities.index(closest)
+                song = {'title': apple_results[index]['apple_title'], 'artist': apple_results[index]['apple_artist'], 'album': apple_results[index]['apple_album'], 'spotify_id': spotify_results[index]['spotify_id'], 'apple_id': apple_results[index]['apple_id']}
+
+                songs.append(song)
+
+        for song in range(len(songs)):
+            Song.objects.create(title=songs[i]['title'], artist=songs[i]['artist'], album=songs[i]['album'], spotify_id=songs[i]['spotify_id'], apple_id=songs[i]['apple_id'])
+
+        return Song.objects.all().order_by('-id')[:len(songs)]

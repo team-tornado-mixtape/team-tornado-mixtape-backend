@@ -2,14 +2,14 @@ import datetime
 import jwt
 from urllib.parse import urlencode
 import environ
-import os
 import requests
 import json
+import os
 
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
-)
+    )
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
@@ -18,12 +18,10 @@ key_ID = env('apple_key_ID')
 team_ID = env('apple_team_ID')
 alg = "ES256"
 
-secret = ""
+secret = env.str('apple_secret', multiline=True)
 
 
 def SearchAppleMusicAPI(search, limit=10):
-    if __name__ != "__main__":
-        return
 
     time_now = datetime.datetime.now()
     time_expired = time_now + datetime.timedelta(hours=12)
@@ -49,7 +47,7 @@ def SearchAppleMusicAPI(search, limit=10):
 
     url = f"https://api.music.apple.com/v1/catalog/US/search?{data}"
 
-    req = requests.get(url, headers={'Authorization': "Bearer " + token})
+    req = requests.get(url, headers={'Authorization': f"Bearer {token}"})
 
     results = []
 
@@ -65,5 +63,5 @@ def SearchAppleMusicAPI(search, limit=10):
     return results
 
 
-apple_search_results = SearchAppleMusicAPI("Enter Galactic")
-print(apple_search_results)
+# apple_search_results = SearchAppleMusicAPI("Brickhouse")
+# print(apple_search_results)
