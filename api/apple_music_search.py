@@ -64,5 +64,5 @@ def SearchAppleMusicAPI(search, limit=10):
     return results
 
 
-apple_search_results = SearchAppleMusicAPI("Brickhouse")
-print(apple_search_results)
+# apple_search_results = SearchAppleMusicAPI("Brickhouse")
+# print(apple_search_results)
