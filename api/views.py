@@ -1,7 +1,12 @@
 from api.models import Mixtape, User, Profile, Song
-from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
-from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
 from api.serializers import MixtapeDetailSerializer,MixtapeListSerializer, ProfileSerializer, SongSerializer, Userserializer
+
+from rest_framework.viewsets import ModelViewSet,ReadOnlyModelViewSet
+from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView,get_object_or_404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import SAFE_METHODS, IsAuthenticated
+
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
 
 # Create your views here.
@@ -81,3 +86,25 @@ class SongViewSet(ModelViewSet):
 
     def perform_destroy(self, instance):
         pass
+
+
+class CreateFollowerView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, **kwargs):
+        user     = self.request.user
+        profile = get_object_or_404(Profile, pk=self.kwargs["profile_pk"])
+        user.followers.add(profile)
+        serializer = ProfileSerializer(ProfileSerializer, context={"request": request})
+        return Response(serializer.data, status=201)
+
+
+class CreateFavoriteView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, **kwargs):
+        user     = self.request.user
+        mixtape = get_object_or_404(Mixtape, pk=self.kwargs["mixtape_pk"])
+        user.favorite_mixtapes.add(mixtape)
+        serializer = MixtapeListSerializer(MixtapeListSerializer, context={"request": request})
+        return Response(serializer.data, status=201)
