@@ -6,15 +6,19 @@ from api.serializers import (
     ProfileSerializer,
     SongSerializer,
     Userserializer,
-    SearchSerializer,
     )
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
 from django.db.models import Count
-from rest_framework.generics import ListAPIView
+
+from rest_framework.generics import ListCreateAPIView, ListAPIView, get_object_or_404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import SAFE_METHODS, IsAuthenticated, IsAuthenticatedOrReadOnly
+
 from api.spotify_search import *
 from api.apple_music_search import *
 from api.similar import *
+
 
 # Create your views here.
 
@@ -33,9 +37,7 @@ class MixtapeViewSet(ModelViewSet):
         if search_term is not None:
             results = Mixtape.objects.filter(title__icontains=self.request.query_params.get("search"))
         else:
-            results = Mixtape.objects.annotate(
-                total_songs=Count('songs')
-            )
+            results = Mixtape.objects.all()
         return results
 
     def perform_destroy(self, instance):
@@ -48,14 +50,14 @@ class MixtapeViewSet(ModelViewSet):
 
 
 
-class UserMixtapeListView(RetrieveUpdateDestroyAPIView):
+class UserMixtapeListView(ListCreateAPIView):
     queryset           = Mixtape.objects.all()
-    serializer_class   = MixtapeDetailSerializer
+    serializer_class   = MixtapeListSerializer
     permission_classes = [IsCreatorOrReadOnly]
-
+    
     def get_queryset(self):
-        return Mixtape.objects.filter(creator_id=self.kwargs["creator_pk"])
-
+        return Mixtape.objects.filter(creator=self.request.user)
+    
 
 class UserViewSet(ReadOnlyModelViewSet):
     queryset            = User.objects.all()
@@ -76,13 +78,13 @@ class ProfileViewSet(ModelViewSet):
         return results
 
 
-class UserProfileView(RetrieveUpdateDestroyAPIView):
+class UserProfileView(ListCreateAPIView):
     queryset            = Profile.objects.all()
     serializer_class    = ProfileSerializer
     permission_classes  = [IsUserOrReadOnly]
 
     def get_queryset(self):
-        return Profile.objects.filter(user_id=self.kwargs["user_pk"])
+        return Profile.objects.filter(user=self.request.user)
 
 
 
@@ -97,7 +99,30 @@ class SongViewSet(ModelViewSet):
         pass
 
 
+class CreateFollowerView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, **kwargs):
+        user     = self.request.user
+        profile = get_object_or_404(Profile, pk=self.kwargs["profile_pk"])
+        user.followers.add(profile)
+        serializer = ProfileSerializer(ProfileSerializer, context={"request": request})
+        return Response(serializer.data, status=201)
+
+
+class CreateFavoriteView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, **kwargs):
+        user     = self.request.user
+        mixtape = get_object_or_404(Mixtape, pk=self.kwargs["mixtape_pk"])
+        user.favorite_mixtapes.add(mixtape)
+        serializer = MixtapeListSerializer(MixtapeListSerializer, context={"request": request})
+        return Response(serializer.data, status=201)
+
+
 class SearchView(ListAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = SongSerializer
 
     def get_queryset(self):

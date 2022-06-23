@@ -3,8 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
-    pass
-
+    
     def __repr__(self):
         return f"<User username={self.username} pk={self.pk}>"
 
@@ -13,13 +12,10 @@ class User(AbstractUser):
 
 
 class Profile(models.Model):
-    user        = models.OneToOneField(User, on_delete=models.CASCADE)
-    created_at  = models.DateTimeField(auto_now_add=True)
-    followers   = models.ManyToManyField(User, related_name='followers')
-    image       = models.ImageField(upload_to='files/profilepics')
-
-    def friend_count(self):
-        return self.friends.count()
+    user          = models.OneToOneField(User, on_delete=models.CASCADE)
+    created_at    = models.DateTimeField(auto_now_add=True)
+    followed_by   = models.ManyToManyField(User, related_name='followers')
+    image         = models.ImageField(upload_to='files/profilepics')
 
     def follower_count(self):
         return self.followers.count()
@@ -43,6 +39,7 @@ class Mixtape(models.Model):
     is_public    = models.BooleanField(default=False)
     description  = models.TextField()
     modified_at  = models.DateTimeField(auto_now=True)
+    theme        = models.IntegerField(default='0')
     favorited_by = models.ManyToManyField(User, related_name='favorite_mixtapes', blank=True)
 
     def favorite_count(self):
@@ -62,14 +59,10 @@ class Song(models.Model):
     album           = models.TextField(max_length=255,default='')
     spotify_id      = models.TextField(max_length=255,default='')
     apple_id        = models.TextField(max_length=255,default='')
-    mixtapes        = models.ManyToManyField(Mixtape, related_name='mixtapes', blank=True)
-    favorited_by    = models.ManyToManyField(User, related_name='favorite_songs')
-
-    def favorite_count(self):
-        return self.favorited_by.count()
+    mixtapes        = models.ManyToManyField(Mixtape, related_name='songs', blank=True)
 
     def __repr__(self):
-        return f"<User username={self.title} pk={self.pk}>"
+        return f"<Song title={self.title} pk={self.pk}>"
 
     def __str__(self):
         return self.title
