@@ -2,7 +2,6 @@ import datetime
 import jwt
 from urllib.parse import urlencode
 import environ
-import os
 import requests
 import json
 
@@ -10,9 +9,6 @@ env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
 )
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 key_ID = env('apple_key_ID')
 team_ID = env('apple_team_ID')
