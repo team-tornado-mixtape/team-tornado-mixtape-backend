@@ -43,6 +43,7 @@ class Mixtape(models.Model):
     is_public    = models.BooleanField(default=False)
     description  = models.TextField()
     modified_at  = models.DateTimeField(auto_now=True)
+    theme        = models.IntegerField()
     favorited_by = models.ManyToManyField(User, related_name='favorite_mixtapes', blank=True)
 
     def favorite_count(self):
