@@ -6,23 +6,25 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0004_remove_song_apple_music_album_and_more'),
+        ("api", "0004_remove_song_apple_music_album_and_more"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='profile',
-            old_name='followers',
-            new_name='followed_by',
+            model_name="profile",
+            old_name="followers",
+            new_name="followed_by",
         ),
         migrations.AddField(
-            model_name='mixtape',
-            name='theme',
-            field=models.IntegerField(default='0'),
+            model_name="mixtape",
+            name="theme",
+            field=models.IntegerField(default="0"),
         ),
         migrations.AlterField(
-            model_name='song',
-            name='mixtapes',
-            field=models.ManyToManyField(blank=True, related_name='songs', to='api.mixtape'),
+            model_name="song",
+            name="mixtapes",
+            field=models.ManyToManyField(
+                blank=True, related_name="songs", to="api.mixtape"
+            ),
         ),
     ]

@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0005_rename_followers_profile_followed_by_mixtape_theme_and_more'),
+        ("api", "0005_rename_followers_profile_followed_by_mixtape_theme_and_more"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='song',
-            name='favorited_by',
+            model_name="song",
+            name="favorited_by",
         ),
     ]
