@@ -123,5 +123,4 @@ class SearchView(ListAPIView):
         for song in range(len(songs)):
             Song.objects.create(title=songs[i]['title'], artist=songs[i]['artist'], album=songs[i]['album'], spotify_id=songs[i]['spotify_id'], apple_id=songs[i]['apple_id'])
 
-        breakpoint()
-        return songs
+        return Song.objects.all().order_by('-id')[:len(songs)]
