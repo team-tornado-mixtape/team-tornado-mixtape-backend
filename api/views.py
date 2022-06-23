@@ -14,6 +14,7 @@ from django.db.models import Count
 from rest_framework.generics import ListAPIView
 from api.spotify_search import *
 from api.apple_music_search import *
+from api.similar import *
 
 # Create your views here.
 
@@ -97,17 +98,30 @@ class SongViewSet(ModelViewSet):
 
 
 class SearchView(ListAPIView):
-    # serializer_class = SearchSerializer
+    serializer_class = SongSerializer
 
     def get_queryset(self):
         search_term = self.request.query_params.get('search')
-
         spotify_results = SearchSpotifyAPI(search_term)
         apple_results = SearchAppleMusicAPI(search_term)
-
-        results = []
+        songs = []
 
         for i in range(len(spotify_results)):
+            similarities = []
             for j in range(len(apple_results)):
-                if spotify_results[i]['spotify_title'] in apple_results[j]['apple_title'] and spotify_results[i]['spotify_artist'] in apple_results[j]['apple_artist']:
-                    breakpoint()
+                similarity = similar(spotify_results[i]['spotify_title'], apple_results[j]['apple_title']) + similar(spotify_results[i]['spotify_artist'], apple_results[j]['apple_artist'])
+                similarities.append(similarity)
+
+            closest = max(similarities)
+
+            if closest > 0.8:
+                index = similarities.index(closest)
+                song = {'title': apple_results[index]['apple_title'], 'artist': apple_results[index]['apple_artist'], 'album': apple_results[index]['apple_album'], 'spotify_id': spotify_results[index]['spotify_id'], 'apple_id': apple_results[index]['apple_id']}
+
+                songs.append(song)
+
+        for song in range(len(songs)):
+            Song.objects.create(title=songs[i]['title'], artist=songs[i]['artist'], album=songs[i]['album'], spotify_id=songs[i]['spotify_id'], apple_id=songs[i]['apple_id'])
+
+        breakpoint()
+        return songs
