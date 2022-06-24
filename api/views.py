@@ -38,7 +38,6 @@ class MixtapeViewSet(ModelViewSet):
         return super().get_serializer_class()
 
     def get_queryset(self):
-        # sourcery skip: assign-if-exp, inline-immediately-returned-variable, lift-return-into-if
         search_term = self.request.query_params.get("search")
         if search_term is not None:
             results = Mixtape.objects.filter(
@@ -100,7 +99,11 @@ class SongViewSet(ModelViewSet):
     queryset = Song.objects.all()
     serializer_class = SongSerializer
 
-    def perform_update(self, serializer):
+    def perform_create(self,serializer):
+        pass
+
+    def update(self, serializer):
+    #only allowed to update which mixtape the song is in
         pass
 
     def perform_destroy(self, instance):
@@ -130,6 +133,23 @@ class CreateFavoriteView(APIView):
             mixtape, context={"request": request}
         )
         return Response(serializer.data, status=201)
+
+
+    
+class FavoriteMixtapeListView(ListAPIView):
+    queryset         = Mixtape.objects.all()
+    serializer_class = MixtapeListSerializer
+
+    def get_queryset(self):
+        return self.request.user.favorite_mixtapes.all()
+
+
+class MyFollowersView(ListAPIView):
+    queryset         = Profile.objects.all
+    serializer_class = ProfileSerializer
+
+    def get_queryset(self):
+        return self.request.user.followers.all()
 
 
 class SearchView(ListAPIView):

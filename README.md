@@ -21,29 +21,23 @@ NOTE: API Root is /api/
 |POST|[/auth/users/](#create-a-new-user)|Create a new user|
 |POST|[/auth/token/login/](#login-user)|Login user|
 |POST|[/auth/users/me/](#users-info)|User's info|
-|POST|[/auth/token/logout/](#logout-user)|Logout user|
+|POST|[/auth/token/logout/](#ogout-user)|Logout user|
 |GET|[/mixtapes/](#list-of-all-MixTapes)|List all public MixTapes|
-|GET|[/users/<int:pk>/mixtapes](#list-of-MixTapes-per-user)|List all MixTapes of one user|
+|GET|[/my/mixtapes](#list-of-MixTapes-per-user)|List all MixTapes of logged in user|
+|GET|[/my/profile](#show-Logged-In-User-Profile)|Show profile of logged in user|
+|GET|[/my/followers](#list-of-followers)|List all followers of logged in user|
 |GET|[/mixtapes?search=<search_term>](#search-MixTapes)|Search MixTape titles (limited to one search term)|
 |POST|[/mixtapes/](#create-a-new-MixTape-for-this-user-logged-in-user)|Create a new MixTape|
-|GET|[/mixtapes/{id}/](#details-for-a-specific-MixTape)|Details for a specific MixTape|
-|PUT|[/mixtapes/{id}/](#update-an-existing-MixTape)|Update an existing question (Only the creator of the mixTape can do this)|
-|PATCH|[/questions/{id}/](#update-part-of-an-existing-question)|Update part of an existing MixTape|
+|GET|[/mixtapes/{id}](#details-for-a-specific-MixTape)|Details for a specific MixTape|
+|PUT|[/mixtapes/{id}](#update-an-existing-MixTape)|Update an existing  (Only the creator of the MixTape can do this)|
+|PATCH|[/mixtapes/{id}](#update-part-of-an-existing-mixtape)|Update part of an existing MixTape|
 |POST|[/mixtapes/{id}/favorite/](#favorite-a-MixTape)|Favorite a MixTape|
+|POST|[/mixtapes/{id}/follow/](#follow-a-User)|Follow a user's profile|
 |DELETE|[/mixtapes/{id}/](#delete-MixTape)|Delete an existing MixTape (Only the creator of the MixTape may do this)|
-|GET|[/profiles](#list-all-profiles)|List all profiles|
-|GET|[/profiles?search=<search_term>](#search-profiles)|Search profiles (by username)|
-|GET|[/search?search=<search_term>](#seach-Spotify-and-Apple-Music-APIs)|Search for songs in Apple Music and Spotify API|
+|GET|[/profiles](#list-All-Profiles)|List all profiles|
+|GET|[/profiles?search=<search_term>](#search-Profiles)|Search profiles (by username)|
+|GET|[/search?search=<search_term>](#seach-spotify-and-apple-music-APIs)|Search for songs in Apple Music and Spotify API|
 
-
-
-|POST|[/questions/{id}/answers/](#create-a-new-answer)|Create a new answer|
-|GET|[/answers/{id}/](#details-for-a-specific-answer)|Details for a specific answer|
-|PUT|[/answers/{id}/](#update-an-existing-answer)|Update an existing answer|
-|PATCH|[/answers/{id}/](#update-an-existing-answer)|Update an existing answer|
-|PUT|[/all_answers/{id}/favorite/](#favorite-an-answer)|Favorite an answer|
-|DELETE|[/answers/{id}/](#delete-answer)|Delete answer|
-|PATCH|[/all_questions/{id}/all_answers/{id}/](#mark-answer-as-accepted)|Mark an answer as accepted|
 
 
 
@@ -147,7 +141,7 @@ POST /auth/token/logout/
 
 
 
-## List of all MixTapes
+## list of all MixTapes
 
 Returns list of all MixTapes.
 
@@ -201,14 +195,14 @@ GET /mixtapes/
 
 ## list of MixTapes per user
 
-Returns list of all questions for a logged in user.
+Returns list of all MixTapes for a logged in user.
 
 ### Request
 
 Requirement: user must be logged in.
 
 ```json
-GET /users/<int:pk>/mixtapes
+GET /my/mixtapes
 ```
 
 ### Response
@@ -238,7 +232,7 @@ GET /users/<int:pk>/mixtapes
 
 
 
-## Search questions
+## Search MixTapes
 
 Search through MixTapes.
 
@@ -478,7 +472,6 @@ POST /mixtape/id/favorite/
 
 ### Response
 
-Return will be the question's id. 
 
 ```json
 201 Created
@@ -522,14 +515,6 @@ A successful deletion returns:
 
 ```json
 204 No Content
-```
-
-If another logged in user attempts to delete a question that is not theirs:
-```json
-404 Not Found
-{
-	"detail": "Not found."
-}
 ```
 
 If non-creator tries to delete a mixtape:
@@ -577,7 +562,7 @@ GET /profiles/
 
 ## Search Profiles
 
-Search through answers by user name
+Search through profiles by user name
 
 ### Request
 
@@ -660,16 +645,16 @@ GET /search?search=primadonna
 
 
 
-## Details for a specific answer
+## Details for a profile
 
 Requirement: user must be logged in.
 
 ### Request
 
-Required in URL: answer's id.
+Required in URL: profile's id.
 
 ```json
-GET /answers/id/
+GET /profiles/1
 ```
 
 ### Response
@@ -678,31 +663,33 @@ GET /answers/id/
 200 OK
 
 {
-	"pk": 2,
-	"author": "Vader",
-	"description": "mebbe.. come to the moon by Alderaan!",
-	"created_at": "2022-06-05T17:08:08.343275-04:00",
-	"question": "Speeder"
+	"id": 1,
+	"user": "kitten",
+	"created_at": "2022-06-22T16:35:54.792728-04:00",
+	"image": "http://127.0.0.1:8000/files/profilepics/unnamed.jpeg",
+	"followed_by": [
+		3
+	]
 }
 
 ```
 
 
-## Update an existing answer
+## Update an existing profile
 
-Requirement: user must be logged in.
+Requirement: updater must be owner of the profile
 
 ### Request
 
 Required field for PUT or PATCH: description 
 
-Required in URL: answer's id.
+Required in URL: profile's id.
 
 ```json
-PUT /answer/id/ or PATCH /answer/id/ 
+PUT /profiles/id/ or PATCH /profiles/id/ 
 
 {
-    "description": "come to Alderaan..",
+    "image": "http://127.0.0.1:8000/files/profilepics/unnamed.jpeg",
 }
 ```
 
@@ -712,85 +699,142 @@ PUT /answer/id/ or PATCH /answer/id/
 200 OK
 
 {
-	"pk": 2,
-	"author": "Vader",
-	"description": "come to Alderaan..",
-	"created_at": "2022-06-05T17:08:08.343275-04:00",
-	"question": "Speeder"
+	"id": 1,
+	"user": "kitten",
+	"created_at": "2022-06-22T16:35:54.792728-04:00",
+	"image": "http://127.0.0.1:8000/files/profilepics/unnamed.jpeg",
+	"followed_by": [
+		3
+	]
 }
 ```
 
 
 
-## Favorite an answer
+## Follow a User
 
-Logged in user can favorite any answer.
+Logged in user can follow any user's profile
 
 Requirement: user must be logged in.
 
 ### Request
 
-Required in URL: answer's id.
+Required in URL: profile's id.
 
 ```json
-PUT /all_answers/pk/favorite/
+PUT /profiles/<int:profile_pk>/followers
+```
+
+### Response
+
+```json
+201 CREATED
+{
+	"id": 1,
+	"user": "kitten",
+	"created_at": "2022-06-22T16:35:54.792728-04:00",
+	"image": "http://127.0.0.1:8000/files/profilepics/unnamed.jpeg",
+	"followed_by": [
+		3
+	]
+}
+```
+
+
+## List favorite MixTapes
+
+Returns list of all the favorite MixTapes of logged in users.
+
+User can be anonymous / guest or logged in.
+
+### Request
+
+```json
+GET /my/favorites
 ```
 
 ### Response
 
 ```json
 200 OK
+
+[
+
+	{
+		"id": 1,
+		"user": "User2",
+		"created_at": "2022-06-22T16:35:54.792728-04:00",
+		"image": "http://127.0.0.1:8000/files/profilepics/unnamed.jpeg",
+		"followed_by": [
+			3
+		]
+	}
+]
+	
 ```
 
-
-
-## Delete Answer
-
-Requirement: user must be logged in. 
+## List Followers
 
 ### Request
 
-Required in URL: question id and answer id.
-
 ```json
-DELETE /question/id/answers/id
+GET /my/followers
 ```
 
 ### Response
 
-A successful deletion returns:
-
 ```json
-204 No Content
+200 OK
+
+[
+
+	{
+		"id": 1,
+		"user": "User2",
+		"created_at": "2022-06-22T16:35:54.792728-04:00",
+		"image": "http://127.0.0.1:8000/files/profilepics/unnamed.jpeg",
+		"followed_by": [
+			3
+		]
+	}
+]
+	
 ```
 
-
-
-## Mark answer as accepted
+## Show Logged In User Profile
 
 Requirement: user must be logged in.
 
 ### Request
 
-Required in URL: question id and answer id.
+Required in URL: profile's id.
 
 ```json
-PATCH /all_questions/id/all_answers/id/
-
-200 OK 
-{
-	"accepted": true
-}
-
+GET /profiles/1
 ```
 
 ### Response
 
-Required field: accepted
-
 ```json
-200 OK 
+200 OK
+
 {
-	"accepted": true
+	"id": 1,
+	"user": "kitten",
+	"created_at": "2022-06-22T16:35:54.792728-04:00",
+	"image": "http://127.0.0.1:8000/files/profilepics/unnamed.jpeg",
+	"followed_by": [
+		3
+	]
 }
+
 ```
+
+
+
+
+
+
+
+
+
