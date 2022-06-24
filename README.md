@@ -27,7 +27,7 @@ NOTE: API Root is /api/
 |GET|[/my/profile](#show-Logged-In-User-Profile)|Show profile of logged in user|
 |GET|[/my/followers](#list-of-followers)|List all followers of logged in user|
 |GET|[/mixtapes?search=<search_term>](#search-MixTapes)|Search MixTape titles (limited to one search term)|
-|POST|[/mixtapes/](#create-a-new-MixTape-for-this-user-logged-in-user)|Create a new MixTape|
+|POST|[/mixtapes/](#create-a-new-MixTape)|Create a new MixTape|
 |GET|[/mixtapes/{id}](#details-for-a-specific-MixTape)|Details for a specific MixTape|
 |PUT|[/mixtapes/{id}](#update-an-existing-MixTape)|Update an existing  (Only the creator of the MixTape can do this)|
 |PATCH|[/mixtapes/{id}](#update-part-of-an-existing-mixtape)|Update part of an existing MixTape|
@@ -36,7 +36,7 @@ NOTE: API Root is /api/
 |DELETE|[/mixtapes/{id}/](#delete-MixTape)|Delete an existing MixTape (Only the creator of the MixTape may do this)|
 |GET|[/profiles](#list-All-Profiles)|List all profiles|
 |GET|[/profiles?search=<search_term>](#search-Profiles)|Search profiles (by username)|
-|GET|[/search?search=<search_term>](#seach-spotify-and-apple-music-APIs)|Search for songs in Apple Music and Spotify API|
+|GET|[/search?track=&artist=&limit+](#seach-spotify-and-apple-music-APIs)|Search for songs in Apple Music and Spotify API|
 
 
 
@@ -588,63 +588,6 @@ GET /profiles?search=kitten
 	}
 ```
 
-
-
-## Search Apple Music and Spotify API
-
-
-
-### Request
-
-
-
-Required in URL: song title
-
-```json
-GET /search?search=primadonna
-
-```
-
-### Response
-
-```json
-200 OK
-[
-	{
-		"id": 9,
-		"created_at": "2022-06-23T18:13:28.868948-04:00",
-		"title": "Primadonna",
-		"artist": "LA Nightcore",
-		"album": "Primadonna - Single",
-		"spotify_id": "0nrkiWaB513DpnvJZ8he4v",
-		"apple_id": "1629176796",
-		"mixtapes": []
-	},
-	{
-		"id": 8,
-		"created_at": "2022-06-23T18:13:28.868266-04:00",
-		"title": "Primadonna",
-		"artist": "Marina and The Diamonds",
-		"album": "Electra Heart (Deluxe Version)",
-		"spotify_id": "4sOX1nhpKwFWPvoMMExi3q",
-		"apple_id": "534340044",
-		"mixtapes": []
-	},
-	{
-		"id": 7,
-		"created_at": "2022-06-23T18:13:28.867619-04:00",
-		"title": "Primadonna",
-		"artist": "LA Nightcore",
-		"album": "Primadonna - Single",
-		"spotify_id": "0nrkiWaB513DpnvJZ8he4v",
-		"apple_id": "1629176796",
-		"mixtapes": []
-	}
-]
-```
-
-
-
 ## Details for a profile
 
 Requirement: user must be logged in.
@@ -831,10 +774,110 @@ GET /profiles/1
 ```
 
 
+## List Followers
+
+### Request
+
+```json
+GET /my/followers
+```
+
+### Response
+
+```json
+200 OK
+
+[
+
+	{
+		"id": 1,
+		"user": "User2",
+		"created_at": "2022-06-22T16:35:54.792728-04:00",
+		"image": "http://127.0.0.1:8000/files/profilepics/unnamed.jpeg",
+		"followed_by": [
+			3
+		]
+	}
+]
+	
+```
+
+## Search Spotify and Apple Music APIs
 
 
+### Request
 
+```json
+GET /search?track=yellow
+```
 
+### Response
+
+```json
+200 OK
+
+{
+		"id": 103,
+		"created_at": "2022-06-24T15:25:30.005403-04:00",
+		"title": "Bodak Yellow",
+		"artist": "Cardi B",
+		"album": "Invasion of Privacy",
+		"spotify_id": "3HOXNIj8NjlgjQiBd3YVIi",
+		"spotify_uri": "spotify:track:3HOXNIj8NjlgjQiBd3YVIi",
+		"apple_id": "1368156577",
+		"mixtapes": []
+	},
+	{
+		"id": 102,
+		"created_at": "2022-06-24T15:25:30.004726-04:00",
+		"title": "Bodak Yellow",
+		"artist": "Cardi B",
+		"album": "Invasion of Privacy",
+		"spotify_id": "3HOXNIj8NjlgjQiBd3YVIi",
+		"spotify_uri": "spotify:track:3HOXNIj8NjlgjQiBd3YVIi",
+		"apple_id": "1368156577",
+		"mixtapes": []
+	},
+    ...
+
+```
+
+### Request
+
+```json
+GET /search?track=yellow&artist=coldplay
+```
+
+### Response
+
+```json
+200 OK
+
+{
+		"id": 123,
+		"created_at": "2022-06-24T15:27:24.405165-04:00",
+		"title": "Yellow",
+		"artist": "Coldplay",
+		"album": "Parachutes",
+		"spotify_id": "3AJwUDP919kvQ9QcozQPxg",
+		"spotify_uri": "spotify:track:3AJwUDP919kvQ9QcozQPxg",
+		"apple_id": "1122782283",
+		"mixtapes": []
+	},
+	{
+		"id": 122,
+		"created_at": "2022-06-24T15:27:24.404367-04:00",
+		"title": "Yellow",
+		"artist": "Coldplay",
+		"album": "Parachutes",
+		"spotify_id": "3AJwUDP919kvQ9QcozQPxg",
+		"spotify_uri": "spotify:track:3AJwUDP919kvQ9QcozQPxg",
+		"apple_id": "1122782283",
+		"mixtapes": []
+	},
+    ...
+
+```
 
 
 
