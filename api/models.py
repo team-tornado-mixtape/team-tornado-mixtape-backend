@@ -61,6 +61,7 @@ class Song(models.Model):
     spotify_id = models.TextField(max_length=255, default="")
     spotify_uri = models.TextField(max_length=255, default="")
     apple_id = models.TextField(max_length=255, default="")
+    preview_url = models.TextField(max_length=255, default="")
     mixtapes = models.ManyToManyField(Mixtape, related_name="songs", blank=True)
 
     def __repr__(self):
