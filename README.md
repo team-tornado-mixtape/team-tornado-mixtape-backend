@@ -21,10 +21,10 @@ NOTE: API Root is /api/
 |POST|[/auth/users/](#create-a-new-user)|Create a new user|
 |POST|[/auth/token/login/](#login-user)|Login user|
 |POST|[/auth/users/me/](#users-info)|User's info|
-|POST|[/auth/token/logout/](#logout-user)|Logout user|
+|POST|[/auth/token/logout/](#ogout-user)|Logout user|
 |GET|[/mixtapes/](#list-of-all-MixTapes)|List all public MixTapes|
 |GET|[/my/mixtapes](#list-of-MixTapes-per-user)|List all MixTapes of logged in user|
-|GET|[/my/profile](#Show-Logged-In-User-Profile)|Show profile of logged in user|
+|GET|[/my/profile](#show-Logged-In-User-Profile)|Show profile of logged in user|
 |GET|[/my/followers](#list-of-followers)|List all followers of logged in user|
 |GET|[/mixtapes?search=<search_term>](#search-MixTapes)|Search MixTape titles (limited to one search term)|
 |POST|[/mixtapes/](#create-a-new-MixTape-for-this-user-logged-in-user)|Create a new MixTape|
@@ -32,11 +32,11 @@ NOTE: API Root is /api/
 |PUT|[/mixtapes/{id}](#update-an-existing-MixTape)|Update an existing  (Only the creator of the MixTape can do this)|
 |PATCH|[/mixtapes/{id}](#update-part-of-an-existing-mixtape)|Update part of an existing MixTape|
 |POST|[/mixtapes/{id}/favorite/](#favorite-a-MixTape)|Favorite a MixTape|
-|POST|[/mixtapes/{id}/follow/](#favorite-a-MixTape)|Follow a user's profile|
+|POST|[/mixtapes/{id}/follow/](#follow-a-User)|Follow a user's profile|
 |DELETE|[/mixtapes/{id}/](#delete-MixTape)|Delete an existing MixTape (Only the creator of the MixTape may do this)|
-|GET|[/profiles](#list-all-profiles)|List all profiles|
-|GET|[/profiles?search=<search_term>](#search-profiles)|Search profiles (by username)|
-|GET|[/search?search=<search_term>](#seach-Spotify-and-Apple-Music-APIs)|Search for songs in Apple Music and Spotify API|
+|GET|[/profiles](#list-All-Profiles)|List all profiles|
+|GET|[/profiles?search=<search_term>](#search-Profiles)|Search profiles (by username)|
+|GET|[/search?search=<search_term>](#seach-spotify-and-apple-music-APIs)|Search for songs in Apple Music and Spotify API|
 
 
 
@@ -773,7 +773,7 @@ GET /my/favorites
 	
 ```
 
-## List followers
+## List Followers
 
 ### Request
 

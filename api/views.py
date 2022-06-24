@@ -38,7 +38,6 @@ class MixtapeViewSet(ModelViewSet):
         return super().get_serializer_class()
 
     def get_queryset(self):
-        # sourcery skip: assign-if-exp, inline-immediately-returned-variable, lift-return-into-if
         search_term = self.request.query_params.get("search")
         if search_term is not None:
             results = Mixtape.objects.filter(
