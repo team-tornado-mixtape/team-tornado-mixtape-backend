@@ -68,6 +68,8 @@ class UserMixtapeListView(ListCreateAPIView):
 class UserViewSet(ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = Userserializer
+    permission_classes = [IsAuthenticated]
+
 
 
 class ProfileViewSet(ModelViewSet):
@@ -79,7 +81,7 @@ class ProfileViewSet(ModelViewSet):
         search_term = self.request.query_params.get("search")
         if search_term is not None:
             results = Profile.objects.filter(
-                user__username=self.request.query_params.get("search")
+                user__username__icontains=self.request.query_params.get("search")
             )
         else:
             results = Profile.objects.all()
@@ -98,6 +100,17 @@ class UserProfileView(ListCreateAPIView):
 class SongViewSet(ModelViewSet):
     queryset = Song.objects.all()
     serializer_class = SongSerializer
+
+
+    def get_queryset(self):
+        search_term = self.request.query_params.get("search")
+        if search_term is not None:
+            results = Song.objects.filter(
+                title__icontains=self.request.query_params.get("search")
+            )
+        else:
+            results = Song.objects.all()
+        return results
 
     def perform_create(self,serializer):
         pass
