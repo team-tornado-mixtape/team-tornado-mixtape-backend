@@ -738,7 +738,65 @@ PUT /profiles/<int:profile_pk>/followers
 ```
 
 
+## List favorite MixTapes
 
+Returns list of all the favorite MixTapes of logged in users.
+
+User can be anonymous / guest or logged in.
+
+### Request
+
+```json
+GET /my/favorites
+```
+
+### Response
+
+```json
+200 OK
+
+[
+
+	{
+		"id": 1,
+		"user": "User2",
+		"created_at": "2022-06-22T16:35:54.792728-04:00",
+		"image": "http://127.0.0.1:8000/files/profilepics/unnamed.jpeg",
+		"followed_by": [
+			3
+		]
+	}
+]
+	
+```
+
+## List followers
+
+### Request
+
+```json
+GET /my/followers
+```
+
+### Response
+
+```json
+200 OK
+
+[
+
+	{
+		"id": 1,
+		"user": "User2",
+		"created_at": "2022-06-22T16:35:54.792728-04:00",
+		"image": "http://127.0.0.1:8000/files/profilepics/unnamed.jpeg",
+		"followed_by": [
+			3
+		]
+	}
+]
+	
+```
 
 
 

@@ -103,7 +103,8 @@ class SongViewSet(ModelViewSet):
     def perform_create(self,serializer):
         pass
 
-    def perform_update(self, serializer):
+    def update(self, serializer):
+    #only allowed to update which mixtape the song is in
         pass
 
     def perform_destroy(self, instance):
@@ -142,6 +143,14 @@ class FavoriteMixtapeListView(ListAPIView):
 
     def get_queryset(self):
         return self.request.user.favorite_mixtapes.all()
+
+
+class MyFollowersView(ListAPIView):
+    queryset         = Profile.objects.all
+    serializer_class = ProfileSerializer
+
+    def get_queryset(self):
+        return self.request.user.followers.all()
 
 
 class SearchView(ListAPIView):
