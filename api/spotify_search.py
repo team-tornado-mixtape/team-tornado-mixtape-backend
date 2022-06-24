@@ -48,14 +48,19 @@ class SpotifyAPI:
         return token_response_data
 
 
-def SearchSpotifyAPI(search, limit=10):
+def SearchSpotifyAPI(search_track=None, search_artist=None, limit=20):
     spotify_client = SpotifyAPI()
     access_token = spotify_client.access_token
 
     headers = {"Authorization": f"Bearer {access_token}"}
     endpoint = "https://api.spotify.com/v1/search"
 
-    data = urlencode({"q": f"{search}", "type": "track", "limit": f"{limit}"})
+    if search_track is not None and search_artist is None:
+        data = urlencode({"q": f"track:{search_track}", "type": "track", "limit": f"{limit}"})
+    elif search_track is None and search_artist is not None:
+        data = urlencode({"q": f"artist:{search_artist}", "type": "track", "limit": f"{limit}"})
+    elif search_track is not None and search_artist is not None:
+        data = urlencode({"q": f"track:{search_track} artist:{search_artist}", "type": "track", "limit": f"{limit}"})
 
     lookup_url = f"{endpoint}?{data}"
     req = requests.get(lookup_url, headers=headers)
@@ -70,11 +75,12 @@ def SearchSpotifyAPI(search, limit=10):
             "name"
         ]
         result["spotify_uri"] = req.json()["tracks"]["items"][i]["uri"]
+        # result["spotify_preview_url"] = req.json()["tracks"]["items"][i]["preview_url"]
         results.append(result)
 
-    # print(json.dumps(req.json(), sort_keys=4,indent=4))
+    # print(json.dumps(req.json()["tracks"], sort_keys=4,indent=4))
     return results
 
 
-# spotify_search_results = SearchSpotifyAPI('Brickhouse')
+# spotify_search_results = SearchSpotifyAPI(search_track='Enter Galactic', search_artist='Kid Cudi')
 # print(spotify_search_results)
