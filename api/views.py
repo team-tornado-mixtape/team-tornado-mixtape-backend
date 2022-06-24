@@ -100,6 +100,9 @@ class SongViewSet(ModelViewSet):
     queryset = Song.objects.all()
     serializer_class = SongSerializer
 
+    def perform_create(self,serializer):
+        pass
+
     def perform_update(self, serializer):
         pass
 
@@ -130,6 +133,15 @@ class CreateFavoriteView(APIView):
             mixtape, context={"request": request}
         )
         return Response(serializer.data, status=201)
+
+
+    
+class FavoriteMixtapeListView(ListAPIView):
+    queryset         = Mixtape.objects.all()
+    serializer_class = MixtapeListSerializer
+
+    def get_queryset(self):
+        return self.request.user.favorite_mixtapes.all()
 
 
 class SearchView(ListAPIView):

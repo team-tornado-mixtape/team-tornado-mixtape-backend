@@ -23,11 +23,11 @@ NOTE: API Root is /api/
 |POST|[/auth/users/me/](#users-info)|User's info|
 |POST|[/auth/token/logout/](#logout-user)|Logout user|
 |GET|[/mixtapes/](#list-of-all-MixTapes)|List all public MixTapes|
-|GET|[/users/<int:pk>/mixtapes](#list-of-MixTapes-per-user)|List all MixTapes of one user|
+|GET|[/my/mixtapes](#list-of-MixTapes-per-user)|List all MixTapes of one user|
 |GET|[/mixtapes?search=<search_term>](#search-MixTapes)|Search MixTape titles (limited to one search term)|
 |POST|[/mixtapes/](#create-a-new-MixTape-for-this-user-logged-in-user)|Create a new MixTape|
 |GET|[/mixtapes/{id}/](#details-for-a-specific-MixTape)|Details for a specific MixTape|
-|PUT|[/mixtapes/{id}/](#update-an-existing-MixTape)|Update an existing  (Only the creator of the mixTape can do this)|
+|PUT|[/mixtapes/{id}/](#update-an-existing-MixTape)|Update an existing  (Only the creator of the MixTape can do this)|
 |PATCH|[/mixtapes/{id}/](#update-part-of-an-existing-mixtape)|Update part of an existing MixTape|
 |POST|[/mixtapes/{id}/favorite/](#favorite-a-MixTape)|Favorite a MixTape|
 |DELETE|[/mixtapes/{id}/](#delete-MixTape)|Delete an existing MixTape (Only the creator of the MixTape may do this)|
@@ -199,7 +199,7 @@ Returns list of all MixTapes for a logged in user.
 Requirement: user must be logged in.
 
 ```json
-GET /users/<int:pk>/mixtapes
+GET /my/mixtapes
 ```
 
 ### Response
