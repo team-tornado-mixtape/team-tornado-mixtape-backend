@@ -18,6 +18,7 @@ urlpatterns = [
     path('api/profiles/<int:profile_pk>/followers', api_views.CreateFollowerView.as_view(),name ='create_followers'),
     path('api/mixtapes/<int:mixtape_pk>/favorites', api_views.CreateFavoriteView.as_view(),name ='create_favorites'),
     path('api/my/favorites',api_views.FavoriteMixtapeListView.as_view(),name='list_favorites'),
-    path('api/my/followers',api_views.MyFollowersView.as_view(),name='list_followers'),
+    path('api/following',api_views.UserFollowingView.as_view(),name='user_following'),
+    path('api/followers',api_views.UserFollowersView.as_view(),name='user_followers'),
     path('api/search', api_views.SearchView.as_view(), name='search'),
 ]

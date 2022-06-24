@@ -25,7 +25,8 @@ NOTE: API Root is /api/
 |GET|[/mixtapes/](#list-of-all-MixTapes)|List all public MixTapes|
 |GET|[/my/mixtapes](#list-of-MixTapes-per-user)|List all MixTapes of logged in user|
 |GET|[/my/profile](#show-Logged-In-User-Profile)|Show profile of logged in user|
-|GET|[/my/followers](#list-of-followers)|List all followers of logged in user|
+|GET|[/followers](#list-of-followers)|List all followers of logged in user|
+|GET|[/following](#list-of-following)|List all users that current user is following|
 |GET|[/mixtapes?search=<search_term>](#search-MixTapes)|Search MixTape titles (limited to one search term)|
 |POST|[/mixtapes/](#create-a-new-MixTape)|Create a new MixTape|
 |GET|[/mixtapes/{id}](#details-for-a-specific-MixTape)|Details for a specific MixTape|
@@ -722,7 +723,7 @@ GET /my/favorites
 ### Request
 
 ```json
-GET /my/followers
+GET /followers
 ```
 
 ### Response
@@ -732,15 +733,13 @@ GET /my/followers
 
 [
 
+[
 	{
-		"id": 1,
-		"user": "User2",
-		"created_at": "2022-06-22T16:35:54.792728-04:00",
-		"image": "http://127.0.0.1:8000/files/profilepics/unnamed.jpeg",
 		"followed_by": [
-			3
+			"Lammalammadingdong"
 		]
 	}
+]
 ]
 	
 ```
@@ -775,12 +774,13 @@ GET /profiles/1
 ```
 
 
-## List Followers
+## List of following
+Shows a list of all the users the current user is following
 
 ### Request
 
 ```json
-GET /my/followers
+GET /following
 ```
 
 ### Response
@@ -791,14 +791,17 @@ GET /my/followers
 [
 
 	{
-		"id": 1,
-		"user": "User2",
-		"created_at": "2022-06-22T16:35:54.792728-04:00",
-		"image": "http://127.0.0.1:8000/files/profilepics/unnamed.jpeg",
+		"id": 2,
+		"user": "Lammalammadingdong",
 		"followed_by": [
-			3
-		]
+			"kitten",
+			"hueylooway",
+			"chunkamonka"
+		],
+		"created_at": "2022-06-24T18:52:00.988019-04:00",
+		"image": "http://127.0.0.1:8000/files/profilepics/bluegrass_betty.jpeg"
 	}
+
 ]
 	
 ```
