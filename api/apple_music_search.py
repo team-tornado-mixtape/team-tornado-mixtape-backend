@@ -28,7 +28,7 @@ secret = f"""
 """
 
 
-def SearchAppleMusicAPI(search, limit=10):
+def SearchAppleMusicAPI(search_track=None, search_artist=None, limit=20):
 
     time_now = datetime.datetime.now()
     time_expired = time_now + datetime.timedelta(hours=12)
@@ -43,7 +43,12 @@ def SearchAppleMusicAPI(search, limit=10):
 
     token = jwt.encode(payload, secret, algorithm=alg, headers=headers)
 
-    data = urlencode({"types": "songs", "term": f"{search}", "limit": f"{limit}"})
+    if search_track is not None and search_artist is None:
+        data = urlencode({"types": "songs", "term": f"{search_track}", "limit": f"{limit}"})
+    elif search_track is None and search_artist is not None:
+        data = urlencode({"types": "songs", "term": f"{search_artist}", "limit": f"{limit}"})
+    elif search_track is not None and search_artist is not None:
+        data = urlencode({"types": "songs", "term": f"{search_track} {search_artist}", "limit": f"{limit}"})
 
     url = f"https://api.music.apple.com/v1/catalog/US/search?{data}"
 
@@ -71,5 +76,5 @@ def SearchAppleMusicAPI(search, limit=10):
     return results
 
 
-# apple_search_results = SearchAppleMusicAPI("Brickhouse")
-# print(apple_search_results)
+apple_search_results = SearchAppleMusicAPI(search_track="Enter Galactic", search_artist='Kid Cudi')
+print(apple_search_results)
