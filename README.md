@@ -36,7 +36,8 @@ NOTE: API Root is /api/
 |DELETE|[/mixtapes/{id}/](#delete-MixTape)|Delete an existing MixTape (Only the creator of the MixTape may do this)|
 |GET|[/profiles](#list-All-Profiles)|List all profiles|
 |GET|[/profiles?search=<search_term>](#search-Profiles)|Search profiles (by username)|
-|GET|[/search?track=&artist=&limit+](#seach-spotify-and-apple-music-APIs)|Search for songs in Apple Music and Spotify API|
+|GET|[/search?track=&artist=&limit=](#search-spotify-and-apple-music-APIs)|Search for songs in Apple Music and Spotify API|
+|GET|[/api/songs?search=<search_term>](#search-local-database)|Search local database for song titles|
 
 
 
@@ -881,3 +882,40 @@ GET /search?track=yellow&artist=coldplay
 
 
 
+## Search Local Database
+
+
+### Request
+
+```json
+GET /api/songs?search=black
+```
+
+### Response
+
+```json
+200 OK
+
+{
+		"id": 13,
+		"created_at": "2022-06-24T15:03:55.069226-04:00",
+		"title": "Black and Yellow",
+		"artist": "Wiz Khalifa",
+		"album": "Rolling Papers (Deluxe Version)",
+		"spotify_id": "6OL3ylnbe2DWDWpiYnUwba",
+		"spotify_uri": "spotify:track:6OL3ylnbe2DWDWpiYnUwba",
+		"apple_id": "426663069",
+		"mixtapes": []
+	},
+	{
+		"id": 16,
+		"created_at": "2022-06-24T15:03:55.070543-04:00",
+		"title": "Black and Yellow",
+		"artist": "Wiz Khalifa",
+		"album": "Rolling Papers (Deluxe Version)",
+		"spotify_id": "6OL3ylnbe2DWDWpiYnUwba",
+		"spotify_uri": "spotify:track:6OL3ylnbe2DWDWpiYnUwba",
+		"apple_id": "426663069",
+		"mixtapes": []
+	},
+```
