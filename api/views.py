@@ -136,11 +136,25 @@ class SearchView(ListAPIView):
     serializer_class = SongSerializer
 
     def get_queryset(self):
-        Song.objects.filter(mixtapes=None).delete()
+        # Song.objects.filter(mixtapes=None).delete()
 
-        search_term = self.request.query_params.get("search")
-        spotify_results = SearchSpotifyAPI(search_term)
-        apple_results = SearchAppleMusicAPI(search_term)
+        if  self.request.query_params.get("track") is not None:
+            search_track = self.request.query_params.get("track")
+        else:
+            search_track = None
+
+        if  self.request.query_params.get("artist") is not None:
+            search_artist = self.request.query_params.get("artist")
+        else:
+            search_artist = None
+
+        if  self.request.query_params.get("limit") is not None:
+            limit = self.request.query_params.get("limit")
+        else:
+            limit = 20
+
+        spotify_results = SearchSpotifyAPI(search_track=search_track, search_artist=search_artist, limit=limit)
+        apple_results = SearchAppleMusicAPI(search_track=search_track, search_artist=search_artist, limit=limit)
         songs = []
 
         for i in range(len(spotify_results)):
