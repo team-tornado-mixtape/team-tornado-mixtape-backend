@@ -213,6 +213,7 @@ class SearchView(ListAPIView):
                     "spotify_id": spotify_results[index]["spotify_id"],
                     "apple_id": apple_results[index]["apple_id"],
                     "spotify_uri": spotify_results[index]["spotify_uri"],
+                    "preview_url": apple_results[index]["apple_preview_url"],
                 }
 
                 songs.append(song)
@@ -224,7 +225,8 @@ class SearchView(ListAPIView):
                 album=song["album"],
                 spotify_id=song["spotify_id"],
                 apple_id=song["apple_id"],
-                spotify_uri=song["spotify_uri"]
+                spotify_uri=song["spotify_uri"],
+                preview_url=song["preview_url"],
                 )
 
         return Song.objects.all().order_by("-id")[: len(songs)]
