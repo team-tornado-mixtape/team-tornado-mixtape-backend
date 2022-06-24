@@ -54,6 +54,7 @@ class Mixtape(models.Model):
 
 
 class Song(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     title = models.TextField(max_length=255, default="")
     artist = models.TextField(max_length=255, default="")
