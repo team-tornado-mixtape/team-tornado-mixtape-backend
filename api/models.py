@@ -59,6 +59,7 @@ class Song(models.Model):
     artist = models.TextField(max_length=255, default="")
     album = models.TextField(max_length=255, default="")
     spotify_id = models.TextField(max_length=255, default="")
+    spotify_uri = models.TextField(max_length=255, default="")
     apple_id = models.TextField(max_length=255, default="")
     mixtapes = models.ManyToManyField(Mixtape, related_name="songs", blank=True)
 
