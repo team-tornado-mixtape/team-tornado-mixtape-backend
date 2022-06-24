@@ -23,13 +23,16 @@ NOTE: API Root is /api/
 |POST|[/auth/users/me/](#users-info)|User's info|
 |POST|[/auth/token/logout/](#logout-user)|Logout user|
 |GET|[/mixtapes/](#list-of-all-MixTapes)|List all public MixTapes|
-|GET|[/my/mixtapes](#list-of-MixTapes-per-user)|List all MixTapes of one user|
+|GET|[/my/mixtapes](#list-of-MixTapes-per-user)|List all MixTapes of logged in user|
+|GET|[/my/profile](#Show-Logged-In-User-Profile)|Show profile of logged in user|
+|GET|[/my/followers](#list-of-followers)|List all followers of logged in user|
 |GET|[/mixtapes?search=<search_term>](#search-MixTapes)|Search MixTape titles (limited to one search term)|
 |POST|[/mixtapes/](#create-a-new-MixTape-for-this-user-logged-in-user)|Create a new MixTape|
-|GET|[/mixtapes/{id}/](#details-for-a-specific-MixTape)|Details for a specific MixTape|
-|PUT|[/mixtapes/{id}/](#update-an-existing-MixTape)|Update an existing  (Only the creator of the MixTape can do this)|
-|PATCH|[/mixtapes/{id}/](#update-part-of-an-existing-mixtape)|Update part of an existing MixTape|
+|GET|[/mixtapes/{id}](#details-for-a-specific-MixTape)|Details for a specific MixTape|
+|PUT|[/mixtapes/{id}](#update-an-existing-MixTape)|Update an existing  (Only the creator of the MixTape can do this)|
+|PATCH|[/mixtapes/{id}](#update-part-of-an-existing-mixtape)|Update part of an existing MixTape|
 |POST|[/mixtapes/{id}/favorite/](#favorite-a-MixTape)|Favorite a MixTape|
+|POST|[/mixtapes/{id}/follow/](#favorite-a-MixTape)|Follow a user's profile|
 |DELETE|[/mixtapes/{id}/](#delete-MixTape)|Delete an existing MixTape (Only the creator of the MixTape may do this)|
 |GET|[/profiles](#list-all-profiles)|List all profiles|
 |GET|[/profiles?search=<search_term>](#search-profiles)|Search profiles (by username)|
@@ -138,7 +141,7 @@ POST /auth/token/logout/
 
 
 
-## List of all MixTapes
+## list of all MixTapes
 
 Returns list of all MixTapes.
 
@@ -797,6 +800,38 @@ GET /my/followers
 ]
 	
 ```
+
+## Show Logged In User Profile
+
+Requirement: user must be logged in.
+
+### Request
+
+Required in URL: profile's id.
+
+```json
+GET /profiles/1
+```
+
+### Response
+
+```json
+200 OK
+
+{
+	"id": 1,
+	"user": "kitten",
+	"created_at": "2022-06-22T16:35:54.792728-04:00",
+	"image": "http://127.0.0.1:8000/files/profilepics/unnamed.jpeg",
+	"followed_by": [
+		3
+	]
+}
+
+```
+
+
+
 
 
 
