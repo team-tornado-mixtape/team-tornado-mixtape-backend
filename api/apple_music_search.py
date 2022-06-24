@@ -67,9 +67,8 @@ def SearchAppleMusicAPI(search_track=None, search_artist=None, limit=20):
         result["apple_artist"] = req.json()["results"]["songs"]["data"][i][
             "attributes"
         ]["artistName"]
-        result["apple_url"] = req.json()["results"]["songs"]["data"][i]["attributes"][
-            "url"
-        ]
+        result["apple_url"] = req.json()["results"]["songs"]["data"][i]["attributes"]["url"]
+        result["apple_preview_url"] = req.json()["results"]["songs"]["data"][i]["attributes"]['previews'][0]["url"]
         results.append(result)
 
     # print(json.dumps(req.json(), sort_keys=4,indent=4))
