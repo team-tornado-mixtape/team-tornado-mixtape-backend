@@ -6,6 +6,7 @@ from api.serializers import (
     ProfileSerializer,
     SongSerializer,
     Userserializer,
+    UserFollowersSerializer,
 )
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
 from django.db.models import Count
@@ -157,12 +158,21 @@ class FavoriteMixtapeListView(ListAPIView):
         return self.request.user.favorite_mixtapes.all()
 
 
-class MyFollowersView(ListAPIView):
+class UserFollowingView(ListAPIView):
     queryset         = Profile.objects.all
     serializer_class = ProfileSerializer
 
     def get_queryset(self):
         return self.request.user.followers.all()
+
+
+class UserFollowersView(ListAPIView):
+    queryset         = Profile.objects.all
+    serializer_class = UserFollowersSerializer
+
+    def get_queryset(self):
+        return Profile.objects.filter(user=self.request.user)    
+
 
 
 class SearchView(ListAPIView):
@@ -230,3 +240,4 @@ class SearchView(ListAPIView):
                 )
 
         return Song.objects.all().order_by("-id")[: len(songs)]
+

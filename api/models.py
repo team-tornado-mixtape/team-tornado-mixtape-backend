@@ -19,6 +19,9 @@ class Profile(models.Model):
     def follower_count(self):
         return self.followers.count()
 
+    def __str__(self):
+        return self.user.username
+
 
 # The following lines of code can be added to add functionality to the connection model.
 # def get_connections(self):

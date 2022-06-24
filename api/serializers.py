@@ -4,7 +4,7 @@ from .models import Mixtape, Profile, Song, User
 
 class MixtapeDetailSerializer(serializers.ModelSerializer):
     creator = serializers.SlugRelatedField(read_only=True, slug_field="username")
-
+    
     class Meta:
         model = Mixtape
         fields = [
@@ -36,10 +36,18 @@ class MixtapeListSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(read_only=True, slug_field="username")
-
+    followed_by = serializers.SlugRelatedField(read_only=True, slug_field="username",many=True)
     class Meta:
         model = Profile
         fields = "__all__"
+
+
+class UserFollowersSerializer(serializers.ModelSerializer):
+    followed_by = serializers.SlugRelatedField(read_only=True, slug_field="username",many=True)
+    class Meta:
+        model  = Profile
+        fields = ["followed_by"]
+
 
 
 class Userserializer(serializers.ModelSerializer):
