@@ -11,7 +11,7 @@ class User(AbstractUser):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profiles')
     created_at = models.DateTimeField(auto_now_add=True)
     followed_by = models.ManyToManyField(User, related_name="followers")
     image = models.ImageField(upload_to="files/profilepics")
