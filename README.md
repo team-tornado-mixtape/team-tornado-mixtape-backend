@@ -27,7 +27,7 @@ NOTE: API Root is /api/
 |GET|[/my/profile](#show-Logged-In-User-Profile)|Show profile of logged in user|
 |GET|[/followers](#list-of-followers)|List all followers of logged in user|
 |GET|[/following](#list-of-following)|List all users that current user is following|
-|GET|[/mixtapes?search=<search_term>](#search-MixTapes)|Search MixTape titles (limited to one search term)|
+|GET|[/mixtapes?search=<search_term>](#search-MixTapes)|Search MixTapes by title or creator|
 |POST|[/mixtapes/](#create-a-new-MixTape)|Create a new MixTape|
 |GET|[/mixtapes/{id}](#details-for-a-specific-MixTape)|Details for a specific MixTape|
 |PUT|[/mixtapes/{id}](#update-an-existing-MixTape)|Update an existing  (Only the creator of the MixTape can do this)|
@@ -36,9 +36,9 @@ NOTE: API Root is /api/
 |POST|[/mixtapes/{id}/follow/](#follow-a-User)|Follow a user's profile|
 |DELETE|[/mixtapes/{id}/](#delete-MixTape)|Delete an existing MixTape (Only the creator of the MixTape may do this)|
 |GET|[/profiles](#list-All-Profiles)|List all profiles|
-|GET|[/profiles?search=<search_term>](#search-Profiles)|Search profiles (by username)|
+|GET|[/profiles?search=<search_term>](#search-Profiles)|Search profiles (by username, first name or last name)|
 |GET|[/search?track=&artist=&limit=](#search-spotify-and-apple-music-APIs)|Search for songs in Apple Music and Spotify API|
-|GET|[/api/songs?search=<search_term>](#search-local-database)|Search local database for song titles|
+|GET|[/api/songs?search=<search_term>](#search-local-database)|Search local database for song by artist or title|
 
 
 
