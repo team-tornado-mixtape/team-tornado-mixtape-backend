@@ -1,6 +1,6 @@
 # MixTape
 
-Let's get ready to jam!  Mixtape allows users to create authorization and upon signing in, the ability to create Mixtapes.  When a user searches for songs by song title, relevant information is pulled from the Spotify and Apple Music APIs and added to a list of songs which a user can compile as a Mixtape. 
+Let's get ready to jam!  Mixtape allows users to create authorization and upon signing in, the ability to create Mixtapes.  When a user searches for songs by song title or artist, relevant information is pulled from the Spotify and Apple Music APIs and added to a list of songs which a user can compile into a Mixtape. Songs are kept in the database and made available to other users for faster search capabilities.
 
 
 *Mixtape is an Application Programming Interface (API) built using Django Rest Framework (DRF)
@@ -21,7 +21,7 @@ NOTE: API Root is /api/
 |POST|[/auth/users/](#create-a-new-user)|Create a new user|
 |POST|[/auth/token/login/](#login-user)|Login user|
 |POST|[/auth/users/me/](#users-info)|User's info|
-|POST|[/auth/token/logout/](#ogout-user)|Logout user|
+|POST|[/auth/token/logout/](#logout-user)|Logout user|
 |GET|[/mixtapes/](#list-of-all-MixTapes)|List all public MixTapes|
 |GET|[/my/mixtapes](#list-of-MixTapes-per-user)|List all MixTapes of logged in user|
 |GET|[/my/profile](#show-Logged-In-User-Profile)|Show profile of logged in user|
