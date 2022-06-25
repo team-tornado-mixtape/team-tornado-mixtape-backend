@@ -210,9 +210,11 @@ class SearchView(ListAPIView):
                 similarities.append(similarity)
 
             closest = max(similarities)
+            index = similarities.index(closest)
+            spotify_ids = {}
+            apple_ids = {}
 
-            if closest > 1.1:
-                index = similarities.index(closest)
+            if closest > 1.1 and spotify_results[index]["spotify_id"] not in spotify_ids and apple_results[index]["apple_id"] not in apple_ids:
                 song = {
                     "title": apple_results[index]["apple_title"],
                     "artist": apple_results[index]["apple_artist"],
@@ -223,6 +225,8 @@ class SearchView(ListAPIView):
                     "preview_url": apple_results[index]["apple_preview_url"],
                 }
 
+                spotify_ids[song['spotify_id']] = 1
+                spotify_ids[song['apple_id']] = 1
                 songs.append(song)
 
         for song in songs:
