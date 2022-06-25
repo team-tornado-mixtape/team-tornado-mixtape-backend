@@ -26,4 +26,6 @@ urlpatterns = [
     path('api/followers',api_views.UserFollowersView.as_view(),name='user_followers'),
     path('api/followers/',api_views.UserFollowersView.as_view(),name='user_followers'),
     path('api/search', api_views.SearchView.as_view(), name='search'),
+    
+
 ]

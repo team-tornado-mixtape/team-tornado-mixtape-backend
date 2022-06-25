@@ -27,7 +27,8 @@ NOTE: API Root is /api/
 |POST|[/auth/users/](#create-a-new-user)|Create a new user|
 |POST|[/auth/token/login/](#login-user)|Login user|
 |POST|[/auth/users/me/](#users-info)|User's info|
-|POST|[/auth/token/logout/](#ogout-user)|Logout user|
+|GET|[/users](#all_users)|List of all users|
+|POST|[/auth/token/logout/](#logout-user)|Logout user|
 |GET|[/mixtapes/](#list-of-all-MixTapes)|List all public MixTapes|
 |GET|[/my/mixtapes](#list-of-MixTapes-per-user)|List all MixTapes of logged in user|
 |GET|[/my/profile](#show-Logged-In-User-Profile)|Show profile of logged in user|
@@ -927,3 +928,37 @@ GET /api/songs?search=black
 		"mixtapes": []
 	},
 ```
+## List All Users
+
+Returns list of all users
+
+### Request
+
+```json
+GET /api/users
+```
+
+### Response
+
+```json
+200 OK
+[
+
+	{
+		"id": 2,
+		"username": "cat",
+		"first_name": "taker",
+		"last_name": "blobs"
+	},
+	{
+		"id": 3,
+		"username": "Derbles",
+		"first_name": "tim",
+		"last_name": "Cooper"
+	},
+
+]
+
+
+
+
