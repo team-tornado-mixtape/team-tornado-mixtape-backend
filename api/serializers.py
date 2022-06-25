@@ -76,6 +76,5 @@ class FavoriteMixtapeUpdateSerializer(serializers.ModelSerializer):
             model = Mixtape
             fields= [
                 "title",
-                "creator",
             ]
 

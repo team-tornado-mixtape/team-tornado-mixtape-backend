@@ -476,30 +476,22 @@ Required in URL: MixTape's id.
 
 ```json
 PUT /mixtape/id/favorite/
+
+{
+	"title":"blah"
+}
+
+
 ```
 
 ### Response
 
 
 ```json
-201 Created
+200 OK
 
 {
-	"created_at": "2022-06-22T14:46:37.815208-04:00",
-	"creator": "User1",
-	"title": "Mixtape 2",
-	"songs": [
-		2,
-		3
-	],
-	"theme": 0,
-	"is_public": false,
-	"description": "Mixtape 2 description",
-	"modified_at": "2022-06-22T14:46:37.815274-04:00",
-	"favorited_by": [
-		3,
-		4
-	]
+	"title": "blah"
 }
 ```
 
