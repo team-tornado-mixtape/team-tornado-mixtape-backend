@@ -32,7 +32,7 @@ NOTE: API Root is /api/
 |GET|[/mixtapes/{id}](#details-for-a-specific-MixTape)|Details for a specific MixTape|
 |PUT|[/mixtapes/{id}](#update-an-existing-MixTape)|Update an existing  (Only the creator of the MixTape can do this)|
 |PATCH|[/mixtapes/{id}](#update-part-of-an-existing-mixtape)|Update part of an existing MixTape|
-|POST|[/mixtapes/{id}/favorite/](#favorite-a-MixTape)|Favorite a MixTape|
+|PUT|[/mixtapes/{id}/favorite/](#favorite-a-MixTape)|Favorite/Unfavorite a MixTape|
 |POST|[/mixtapes/{id}/follow/](#follow-a-User)|Follow a user's profile|
 |DELETE|[/mixtapes/{id}/](#delete-MixTape)|Delete an existing MixTape (Only the creator of the MixTape may do this)|
 |GET|[/profiles](#list-All-Profiles)|List all profiles|
@@ -460,7 +460,7 @@ If non-creator attempts to PUT:
 
 ## Favorite a MixTape
 
-Logged in user can favorite any MixTape.
+Logged in user can favorite or unfavorite any MixTape.
 
 Requirement: user must be logged in.
 
@@ -469,7 +469,7 @@ Requirement: user must be logged in.
 Required in URL: MixTape's id.
 
 ```json
-POST /mixtape/id/favorite/
+PUT /mixtape/id/favorite/
 ```
 
 ### Response

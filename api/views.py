@@ -7,11 +7,13 @@ from api.serializers import (
     SongSerializer,
     Userserializer,
     UserFollowersSerializer,
+    FavoriteMixtapeUpdateSerializer
+
 )
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
 from django.db.models import Q
 
-from rest_framework.generics import ListCreateAPIView, ListAPIView, get_object_or_404
+from rest_framework.generics import ListCreateAPIView, ListAPIView, UpdateAPIView, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import (
@@ -138,18 +140,29 @@ class CreateFollowerView(APIView):
         return Response(serializer.data, status=201)
 
 
-class CreateFavoriteView(APIView):
-    permission_classes = [IsAuthenticated]
-    serializer_class   = MixtapeDetailSerializer
 
-    def post(self, request, **kwargs):
-        user = self.request.user
-        mixtape = get_object_or_404(Mixtape, pk=self.kwargs["mixtape_pk"])
-        user.favorite_mixtapes.add(mixtape)
-        serializer = MixtapeDetailSerializer(
-            mixtape, context={"request": request}
-        )
-        return Response(serializer.data, status=201)
+
+
+
+class CreateUpdateFavoriteView(UpdateAPIView):
+    queryset = Mixtape.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class   = FavoriteMixtapeUpdateSerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+        return queryset.filter(pk=self.kwargs['mixtape_pk'])[0]
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_queryset()
+        if self.request.user not in instance.favorited_by.all():
+            self.request.user.favorite_mixtapes.add(instance)
+        else:
+            self.request.user.favorite_mixtapes.remove(instance)
+
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data)
 
 
 class FavoriteMixtapeListView(ListAPIView):
