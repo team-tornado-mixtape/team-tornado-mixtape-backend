@@ -1,6 +1,6 @@
 # MixTape
 
-Let's get ready to jam!  Mixtape allows users to create authorization and upon signing in, the ability to create Mixtapes.  When a user searches for songs by song title and/or artist, relevant information is pulled from the Spotify and Apple igMusic APIs. To promote a smooth user experience, each search is sure to have unique data with little to no repeats. Once absong is searchrd, it is added to a database of songs made availabe for authenticated users to add to thier MixTapes.  This restful API includes code that only shows a user song they have not yet searched when navigating our database.  
+Let's get ready to jam!  Mixtape allows users to create authorization and upon signing in, the ability to create Mixtapes.  When a user searches for songs by song title and/or artist, relevant information is pulled from the Spotify and Apple Music APIs. To promote a smooth user experience, each search is sure to have unique data with little to no repeats. Once a song is searched, it is added to a database of songs made availabe for authenticated users to add to thier MixTapes.  This restful API includes code that only shows a user song they have not yet searched when navigating our database.  
 
 Our API also incudes a followed_by attribute on the Profile model. With simple and dry code this attribute allows users to follow each other, and includes a set of endpoints with views for viewing a list of followers, viewing a list of users the current user is following, and adding/removing followers.
 
