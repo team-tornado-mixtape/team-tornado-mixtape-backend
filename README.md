@@ -39,7 +39,7 @@ NOTE: API Root is /api/
 |PUT|[/mixtapes/{id}](#update-an-existing-MixTape)|Update an existing  (Only the creator of the MixTape can do this)|
 |PATCH|[/mixtapes/{id}](#update-part-of-an-existing-mixtape)|Update part of an existing MixTape|
 |PUT|[/mixtapes/{id}/favorite/](#favorite-a-MixTape)|Favorite/Unfavorite a MixTape|
-|POST|[/mixtapes/{id}/follow/](#follow-a-User)|Follow a user's profile|
+|PUT|[/mixtapes/{id}/follow/](#follow-a-User)|Follow/unfollow a user's profile|
 |DELETE|[/mixtapes/{id}/](#delete-MixTape)|Delete an existing MixTape (Only the creator of the MixTape may do this)|
 |GET|[/profiles](#list-All-Profiles)|List all profiles|
 |GET|[/profiles?search=<search_term>](#search-Profiles)|Search profiles (by username, first name or last name)|
@@ -656,7 +656,7 @@ PUT /profiles/id/ or PATCH /profiles/id/
 
 ## Follow a User
 
-Logged in user can follow any user's profile
+Logged in user can follow/unfollow any user's profile
 
 Requirement: user must be logged in.
 
@@ -665,7 +665,13 @@ Requirement: user must be logged in.
 Required in URL: profile's id.
 
 ```json
-PUT /profiles/<int:profile_pk>/followers
+PUT /profiles/<int:profile_pk>/following
+
+{
+	"get_username":"Derbles"
+}
+
+
 ```
 
 ### Response
@@ -673,13 +679,14 @@ PUT /profiles/<int:profile_pk>/followers
 ```json
 201 CREATED
 {
-	"id": 1,
-	"user": "kitten",
-	"created_at": "2022-06-22T16:35:54.792728-04:00",
-	"image": "http://127.0.0.1:8000/files/profilepics/unnamed.jpeg",
+	"id": 3,
+	"get_username": "Derbles",
 	"followed_by": [
-		3
-	]
+		"user1",
+		"Derbles"
+	],
+	"image": "http://127.0.0.1:8000/files/profilepics/IMG_0521.jpg",
+	"follower_count": 2
 }
 ```
 
