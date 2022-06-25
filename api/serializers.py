@@ -5,6 +5,8 @@ from .models import Mixtape, Profile, Song, User
 class MixtapeDetailSerializer(serializers.ModelSerializer):
     creator = serializers.SlugRelatedField(read_only=True, slug_field="username")
     songs   = serializers.SlugRelatedField(read_only=True, slug_field="title", many=True)
+    favorited_by = serializers.SlugRelatedField(read_only=True, slug_field="username",many=True)
+
 
     class Meta:
         model = Mixtape
@@ -24,7 +26,7 @@ class MixtapeDetailSerializer(serializers.ModelSerializer):
 class MixtapeListSerializer(serializers.ModelSerializer):
     creator = serializers.SlugRelatedField(read_only=True, slug_field="username")
     songs   = serializers.SlugRelatedField(read_only=True, slug_field="title", many=True)
-
+    
     class Meta:
         model = Mixtape
         fields = [
