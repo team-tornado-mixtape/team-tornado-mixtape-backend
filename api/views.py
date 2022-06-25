@@ -102,7 +102,6 @@ class SongViewSet(ModelViewSet):
     queryset = Song.objects.all()
     serializer_class = SongSerializer
 
-
     def get_queryset(self):
         search_term = self.request.query_params.get("search")
         if search_term is not None:
@@ -149,7 +148,6 @@ class CreateFavoriteView(APIView):
         return Response(serializer.data, status=201)
 
 
-    
 class FavoriteMixtapeListView(ListAPIView):
     queryset         = Mixtape.objects.all()
     serializer_class = MixtapeListSerializer
@@ -174,13 +172,12 @@ class UserFollowersView(ListAPIView):
         return Profile.objects.filter(user=self.request.user)    
 
 
-
 class SearchView(ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = SongSerializer
 
     def get_queryset(self):
-        # Song.objects.filter(mixtapes=None).delete()
+        Song.objects.filter(mixtapes=None, user=self.request.user).delete()
 
         if  self.request.query_params.get("track") is not None:
             search_track = self.request.query_params.get("track")
@@ -230,6 +227,7 @@ class SearchView(ListAPIView):
 
         for song in songs:
             Song.objects.create(
+                user=self.request.user,
                 title=song["title"],
                 artist=song["artist"],
                 album=song["album"],
@@ -239,5 +237,4 @@ class SearchView(ListAPIView):
                 preview_url=song["preview_url"],
                 )
 
-        return Song.objects.all().order_by("-id")[: len(songs)]
-
+        return Song.objects.filter(user=self.request.user).order_by('-id')[:len(songs)]
