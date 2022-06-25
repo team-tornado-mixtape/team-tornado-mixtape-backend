@@ -5,11 +5,10 @@ from api.helpers import *
 
 
 class SearchTestCase(TestCase):
-    def __init__(self):
+    def setUp(self):
         self.search_track = "Yellow"
         self.search_artist = "Coldplay"
 
-    def setup(self):
         self.apple_songs_track = SearchAppleMusicAPI(search_track=self.search_track)
         self.apple_songs_artist = SearchAppleMusicAPI(search_artist=self.search_artist)
         self.apple_songs = SearchAppleMusicAPI(search_track=self.search_track, search_artist=self.search_artist)
@@ -22,5 +21,7 @@ class SearchTestCase(TestCase):
         self.my_songs_track = my_search(search_artist=self.search_artist)
         self.my_songs = my_search(search_track=self.search_track, search_artist=self.search_artist)
 
-    def compare_results(self):
-        pass
+    def test_results(self):
+        for id in [self.spotify_songs[i]['spotify_id'] for i in range(len(self.spotify_songs))]:
+            if id not in [self.my_songs[i]['spotify_id'] for i in range(len(self.my_songs))]:
+                print(id)

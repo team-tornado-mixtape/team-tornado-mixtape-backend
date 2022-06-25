@@ -24,7 +24,7 @@ def my_search(search_track=None, search_artist=None, limit=20):
         closest = max(similarities)
         index = similarities.index(closest)
 
-        if closest > 1.1 and spotify_results[index]["spotify_id"] not in spotify_ids and apple_results[index]["apple_id"] not in apple_ids:
+        if closest > 1.6 and spotify_results[index]["spotify_id"] not in spotify_ids and apple_results[index]["apple_id"] not in apple_ids:
             song = {
                 "title": apple_results[index]["apple_title"],
                 "artist": apple_results[index]["apple_artist"],
