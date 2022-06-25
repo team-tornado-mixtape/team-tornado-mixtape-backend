@@ -22,6 +22,7 @@ class MixtapeDetailSerializer(serializers.ModelSerializer):
 
 class MixtapeListSerializer(serializers.ModelSerializer):
     creator = serializers.SlugRelatedField(read_only=True, slug_field="username")
+    songs   = serializers.SlugRelatedField(read_only=True, slug_field="title", many=True)
 
     class Meta:
         model = Mixtape
