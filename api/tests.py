@@ -10,13 +10,17 @@ class SearchTestCase(TestCase):
         self.search_artist = "Coldplay"
 
     def setup(self):
-        apple_songs_track = SearchAppleMusicAPI(search_track=self.search_track)
-        apple_songs_artist = SearchAppleMusicAPI(search_artist=self.search_artist)
-        apple_songs = SearchAppleMusicAPI(search_track=self.search_track, search_artist=self.search_artist)
+        self.apple_songs_track = SearchAppleMusicAPI(search_track=self.search_track)
+        self.apple_songs_artist = SearchAppleMusicAPI(search_artist=self.search_artist)
+        self.apple_songs = SearchAppleMusicAPI(search_track=self.search_track, search_artist=self.search_artist)
 
-        spotify_songs_track = SearchSpotifyAPI(search_track=self.search_track)
-        spotify_songs_artist = SearchSpotifyAPI(search_artist=self.search_artist)
-        spotify_songs = SearchSpotifyAPI(search_track=self.search_track, search_artist=self.search_artist)
+        self.spotify_songs_track = SearchSpotifyAPI(search_track=self.search_track)
+        self.spotify_songs_artist = SearchSpotifyAPI(search_artist=self.search_artist)
+        self.spotify_songs = SearchSpotifyAPI(search_track=self.search_track, search_artist=self.search_artist)
 
-    def test_searches(self):
-        my_search()
+        self.my_songs_track = my_search(search_track=self.search_track)
+        self.my_songs_track = my_search(search_artist=self.search_artist)
+        self.my_songs = my_search(search_track=self.search_track, search_artist=self.search_artist)
+
+    def compare_results(self):
+        pass
