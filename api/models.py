@@ -17,10 +17,15 @@ class Profile(models.Model):
     image = models.ImageField(upload_to="files/profilepics")
 
     def follower_count(self):
-        return self.followers.count()
+        return self.followed_by.count()
+    
+    def get_username(self):
+        return self.user.username
 
     def __str__(self):
         return self.user.username
+
+    
 
 
 # The following lines of code can be added to add functionality to the connection model.

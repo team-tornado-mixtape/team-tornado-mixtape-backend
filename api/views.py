@@ -1,6 +1,7 @@
 from api.models import Mixtape, User, Profile, Song
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from api.serializers import (
+    FollowingUpdateSerializer,
     MixtapeDetailSerializer,
     MixtapeListSerializer,
     ProfileSerializer,
@@ -126,15 +127,25 @@ class SongViewSet(ModelViewSet):
         pass
 
 
-class CreateFollowerView(APIView):
+class CreateUpdateFollowingView(UpdateAPIView):
+    queryset = Profile.objects.all()
     permission_classes = [IsAuthenticated]
+    serializer_class   = FollowingUpdateSerializer
 
-    def post(self, request, **kwargs):
-        user = self.request.user
-        profile = get_object_or_404(Profile, pk=self.kwargs["profile_pk"])
-        user.followers.add(profile)
-        serializer = ProfileSerializer(profile, context={"request": request})
-        return Response(serializer.data, status=201)
+    def get_queryset(self):
+        queryset = self.queryset
+        return queryset.filter(pk=self.kwargs['profile_pk'])[0]
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_queryset()
+        if self.request.user not in instance.followed_by.all():
+            self.request.user.followers.add(instance)
+        else:
+            self.request.user.followers.remove(instance)
+
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data)
 
 
 
