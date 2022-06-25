@@ -197,6 +197,8 @@ class SearchView(ListAPIView):
         spotify_results = SearchSpotifyAPI(search_track=search_track, search_artist=search_artist, limit=limit)
         apple_results = SearchAppleMusicAPI(search_track=search_track, search_artist=search_artist, limit=limit)
         songs = []
+        spotify_ids = {}
+        apple_ids = {}
 
         for i in range(len(spotify_results)):
             similarities = []
@@ -211,8 +213,6 @@ class SearchView(ListAPIView):
 
             closest = max(similarities)
             index = similarities.index(closest)
-            spotify_ids = {}
-            apple_ids = {}
 
             if closest > 1.1 and spotify_results[index]["spotify_id"] not in spotify_ids and apple_results[index]["apple_id"] not in apple_ids:
                 song = {
