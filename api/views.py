@@ -1,17 +1,20 @@
 from api.models import Mixtape, User, Profile, Song
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from api.serializers import (
+    FollowingUpdateSerializer,
     MixtapeDetailSerializer,
     MixtapeListSerializer,
     ProfileSerializer,
     SongSerializer,
     Userserializer,
     UserFollowersSerializer,
+    FavoriteMixtapeUpdateSerializer
+
 )
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
-from django.db.models import Count
+from django.db.models import Q
 
-from rest_framework.generics import ListCreateAPIView, ListAPIView, get_object_or_404
+from rest_framework.generics import ListCreateAPIView, ListAPIView, UpdateAPIView, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import (
@@ -38,8 +41,9 @@ class MixtapeViewSet(ModelViewSet):
     def get_queryset(self):
         search_term = self.request.query_params.get("search")
         if search_term is not None:
-            results = Mixtape.objects.filter(
-                title__icontains=self.request.query_params.get("search")
+            results= Mixtape.objects.filter(
+                Q(title__icontains=search_term)|
+                Q(creator__username__icontains=search_term)
             )
         else:
             results = Mixtape.objects.all()
@@ -78,8 +82,10 @@ class ProfileViewSet(ModelViewSet):
     def get_queryset(self):
         search_term = self.request.query_params.get("search")
         if search_term is not None:
-            results = Profile.objects.filter(
-                user__username__icontains=self.request.query_params.get("search")
+            results= Profile.objects.filter(
+                Q(user__username__icontains=search_term) |
+                Q(user__first_name__icontains=search_term)|
+                Q(user__last_name__icontains=search_term)
             )
         else:
             results = Profile.objects.all()
@@ -102,8 +108,9 @@ class SongViewSet(ModelViewSet):
     def get_queryset(self):
         search_term = self.request.query_params.get("search")
         if search_term is not None:
-            results = Song.objects.filter(
-                title__icontains=self.request.query_params.get("search")
+            results= Song.objects.filter(
+                Q(title__icontains=search_term) |
+                Q(artist__icontains=search_term)
             )
         else:
             results = Song.objects.all()
@@ -120,29 +127,50 @@ class SongViewSet(ModelViewSet):
         pass
 
 
-class CreateFollowerView(APIView):
+class CreateUpdateFollowingView(UpdateAPIView):
+    queryset = Profile.objects.all()
     permission_classes = [IsAuthenticated]
+    serializer_class   = FollowingUpdateSerializer
 
-    def post(self, request, **kwargs):
-        user = self.request.user
-        profile = get_object_or_404(Profile, pk=self.kwargs["profile_pk"])
-        user.followers.add(profile)
-        serializer = ProfileSerializer(profile, context={"request": request})
-        return Response(serializer.data, status=201)
+    def get_queryset(self):
+        queryset = self.queryset
+        return queryset.filter(pk=self.kwargs['profile_pk'])[0]
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_queryset()
+        if self.request.user not in instance.followed_by.all():
+            self.request.user.followers.add(instance)
+        else:
+            self.request.user.followers.remove(instance)
+
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data)
 
 
-class CreateFavoriteView(APIView):
+
+
+
+
+class CreateUpdateFavoriteView(UpdateAPIView):
+    queryset = Mixtape.objects.all()
     permission_classes = [IsAuthenticated]
-    serializer_class   = MixtapeDetailSerializer
+    serializer_class   = FavoriteMixtapeUpdateSerializer
 
-    def post(self, request, **kwargs):
-        user = self.request.user
-        mixtape = get_object_or_404(Mixtape, pk=self.kwargs["mixtape_pk"])
-        user.favorite_mixtapes.add(mixtape)
-        serializer = MixtapeDetailSerializer(
-            mixtape, context={"request": request}
-        )
-        return Response(serializer.data, status=201)
+    def get_queryset(self):
+        queryset = self.queryset
+        return queryset.filter(pk=self.kwargs['mixtape_pk'])[0]
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_queryset()
+        if self.request.user not in instance.favorited_by.all():
+            self.request.user.favorite_mixtapes.add(instance)
+        else:
+            self.request.user.favorite_mixtapes.remove(instance)
+
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data)
 
 
 class FavoriteMixtapeListView(ListAPIView):

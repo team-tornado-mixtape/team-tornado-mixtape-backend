@@ -33,18 +33,18 @@ NOTE: API Root is /api/
 |GET|[/my/profile](#show-Logged-In-User-Profile)|Show profile of logged in user|
 |GET|[/followers](#list-of-followers)|List all followers of logged in user|
 |GET|[/following](#list-of-following)|List all users that current user is following|
-|GET|[/mixtapes?search=<search_term>](#search-MixTapes)|Search MixTape titles (limited to one search term)|
+|GET|[/mixtapes?search=<search_term>](#search-MixTapes)|Search MixTapes by title or creator|
 |POST|[/mixtapes/](#create-a-new-MixTape)|Create a new MixTape|
 |GET|[/mixtapes/{id}](#details-for-a-specific-MixTape)|Details for a specific MixTape|
 |PUT|[/mixtapes/{id}](#update-an-existing-MixTape)|Update an existing  (Only the creator of the MixTape can do this)|
 |PATCH|[/mixtapes/{id}](#update-part-of-an-existing-mixtape)|Update part of an existing MixTape|
-|POST|[/mixtapes/{id}/favorite/](#favorite-a-MixTape)|Favorite a MixTape|
-|POST|[/mixtapes/{id}/follow/](#follow-a-User)|Follow a user's profile|
+|PUT|[/mixtapes/{id}/favorite/](#favorite-a-MixTape)|Favorite/Unfavorite a MixTape|
+|PUT|[/mixtapes/{id}/follow/](#follow-a-User)|Follow/unfollow a user's profile|
 |DELETE|[/mixtapes/{id}/](#delete-MixTape)|Delete an existing MixTape (Only the creator of the MixTape may do this)|
 |GET|[/profiles](#list-All-Profiles)|List all profiles|
-|GET|[/profiles?search=<search_term>](#search-Profiles)|Search profiles (by username)|
+|GET|[/profiles?search=<search_term>](#search-Profiles)|Search profiles (by username, first name or last name)|
 |GET|[/search?track=&artist=&limit=](#search-spotify-and-apple-music-APIs)|Search for songs in Apple Music and Spotify API|
-|GET|[/api/songs?search=<search_term>](#search-local-database)|Search local database for song titles|
+|GET|[/api/songs?search=<search_term>](#search-local-database)|Search local database for song by artist or title|
 
 
 
@@ -466,7 +466,7 @@ If non-creator attempts to PUT:
 
 ## Favorite a MixTape
 
-Logged in user can favorite any MixTape.
+Logged in user can favorite or unfavorite any MixTape.
 
 Requirement: user must be logged in.
 
@@ -475,31 +475,23 @@ Requirement: user must be logged in.
 Required in URL: MixTape's id.
 
 ```json
-POST /mixtape/id/favorite/
+PUT /mixtape/id/favorite/
+
+{
+	"title":"blah"
+}
+
+
 ```
 
 ### Response
 
 
 ```json
-201 Created
+200 OK
 
 {
-	"created_at": "2022-06-22T14:46:37.815208-04:00",
-	"creator": "User1",
-	"title": "Mixtape 2",
-	"songs": [
-		2,
-		3
-	],
-	"theme": 0,
-	"is_public": false,
-	"description": "Mixtape 2 description",
-	"modified_at": "2022-06-22T14:46:37.815274-04:00",
-	"favorited_by": [
-		3,
-		4
-	]
+	"title": "blah"
 }
 ```
 
@@ -664,7 +656,7 @@ PUT /profiles/id/ or PATCH /profiles/id/
 
 ## Follow a User
 
-Logged in user can follow any user's profile
+Logged in user can follow/unfollow any user's profile
 
 Requirement: user must be logged in.
 
@@ -673,7 +665,13 @@ Requirement: user must be logged in.
 Required in URL: profile's id.
 
 ```json
-PUT /profiles/<int:profile_pk>/followers
+PUT /profiles/<int:profile_pk>/following
+
+{
+	"get_username":"Derbles"
+}
+
+
 ```
 
 ### Response
@@ -681,13 +679,14 @@ PUT /profiles/<int:profile_pk>/followers
 ```json
 201 CREATED
 {
-	"id": 1,
-	"user": "kitten",
-	"created_at": "2022-06-22T16:35:54.792728-04:00",
-	"image": "http://127.0.0.1:8000/files/profilepics/unnamed.jpeg",
+	"id": 3,
+	"get_username": "Derbles",
 	"followed_by": [
-		3
-	]
+		"user1",
+		"Derbles"
+	],
+	"image": "http://127.0.0.1:8000/files/profilepics/IMG_0521.jpg",
+	"follower_count": 2
 }
 ```
 
