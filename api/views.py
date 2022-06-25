@@ -172,7 +172,6 @@ class UserFollowersView(ListAPIView):
         return Profile.objects.filter(user=self.request.user)    
 
 
-
 class SearchView(ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = SongSerializer
