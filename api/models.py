@@ -22,6 +22,16 @@ class Profile(models.Model):
     def get_username(self):
         return self.user.username
 
+    def get_first_name(self):
+        return self.user.first_name
+    
+    def get_last_name(self):
+        return self.user.last_name
+
+    def mixtape_count(self):
+        mixtapes = Mixtape.objects.filter(creator=self.user)
+        return mixtapes.count()
+
     def __str__(self):
         return self.user.username
 
