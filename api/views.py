@@ -9,8 +9,6 @@ from api.serializers import (
     Userserializer,
     UserFollowersSerializer,
     FavoriteMixtapeUpdateSerializer,
-    SongUpdateSerializer,
-
 )
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
 from django.db.models import Q
