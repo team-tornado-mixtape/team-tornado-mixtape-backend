@@ -8,8 +8,7 @@ from api.serializers import (
     SongSerializer,
     Userserializer,
     UserFollowersSerializer,
-    FavoriteMixtapeUpdateSerializer
-
+    FavoriteMixtapeUpdateSerializer,
 )
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
 from django.db.models import Q, Count
@@ -148,10 +147,6 @@ class CreateUpdateFollowingView(UpdateAPIView):
         return Response(serializer.data)
 
 
-
-
-
-
 class CreateUpdateFavoriteView(UpdateAPIView):
     queryset = Mixtape.objects.all()
     permission_classes = [IsAuthenticated]
@@ -221,16 +216,24 @@ class SearchView(ListAPIView):
 
         songs = my_search(search_track=search_track, search_artist=search_artist, limit=limit)
 
-        for song in songs:
-            Song.objects.create(
-                user=self.request.user,
-                title=song["title"],
-                artist=song["artist"],
-                album=song["album"],
-                spotify_id=song["spotify_id"],
-                apple_id=song["apple_id"],
-                spotify_uri=song["spotify_uri"],
-                preview_url=song["preview_url"],
-                )
+        count = 0
+        database_songs = Song.objects.all()
+        queryset = Song.objects.none()
 
-        return Song.objects.filter(user=self.request.user).order_by('-id')[:len(songs)]
+        for song in songs:
+            if Song.objects.filter(spotify_uri=song['spotify_uri']).exists():
+                queryset = queryset | Song.objects.filter(spotify_uri=song['spotify_uri'])
+            else:
+                count += 1
+                Song.objects.create(
+                    user=self.request.user,
+                    title=song["title"],
+                    artist=song["artist"],
+                    album=song["album"],
+                    spotify_id=song["spotify_id"],
+                    apple_id=song["apple_id"],
+                    spotify_uri=song["spotify_uri"],
+                    preview_url=song["preview_url"],
+                    )
+
+        return queryset | Song.objects.filter(user=self.request.user).order_by('-id')[:count]
