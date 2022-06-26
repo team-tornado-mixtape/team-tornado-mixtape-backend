@@ -51,6 +51,9 @@ class ProfileSerializer(serializers.ModelSerializer):
                 "followed_by",
                 "image",
                 "follower_count",
+                "get_first_name",
+                "get_last_name",
+                "mixtape_count"
                 ]
 
 
