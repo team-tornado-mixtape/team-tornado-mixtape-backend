@@ -9,6 +9,7 @@ from api.serializers import (
     Userserializer,
     UserFollowersSerializer,
     FavoriteMixtapeUpdateSerializer,
+    SongUpdateSerializer,
 )
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
 from django.db.models import Q, Count
@@ -72,7 +73,6 @@ class UserViewSet(ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
 
 
-
 class ProfileViewSet(ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
@@ -124,6 +124,25 @@ class SongViewSet(ModelViewSet):
 
     def perform_destroy(self, instance):
         pass
+
+
+class SongUpdateView(UpdateAPIView):
+    queryset = Mixtape.objects.all()
+    permission_classes = [IsCreatorOrReadOnly]
+    serializer_class   = SongUpdateSerializer
+
+    def update(self, request, *args, **kwargs):
+        mixtape_instance = Mixtape.objects.filter(pk=self.kwargs['mixtape_pk'])[0]
+        song_instance = Song.object.filter(pk=self.kwargs['song_pk'])[0]
+
+        if song_instance not in mixtape_instance.songs.all():
+            mixtape_instance.add(song_instance)
+        else:
+            mixtape_instance.remove(song_instance)
+
+        serializer = self.get_serializer(song_instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data)
 
 
 class CreateUpdateFollowingView(UpdateAPIView):
@@ -193,7 +212,7 @@ class UserFollowersView(ListAPIView):
 
 
 class SearchView(ListAPIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
     serializer_class = SongSerializer
 
     def get_queryset(self):
