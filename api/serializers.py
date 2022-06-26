@@ -104,3 +104,11 @@ class FollowingUpdateSerializer(serializers.ModelSerializer):
             fields= [
                 "get_username",
             ]
+
+
+class SongUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Song
+        fields = (
+            'mixtapes',
+        )

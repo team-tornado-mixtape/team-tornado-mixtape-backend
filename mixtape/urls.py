@@ -26,6 +26,7 @@ urlpatterns = [
     path('api/followers',api_views.UserFollowersView.as_view(),name='user_followers'),
     path('api/followers/',api_views.UserFollowersView.as_view(),name='user_followers'),
     path('api/search', api_views.SearchView.as_view(), name='search'),
-    
 
+    path('api/mixtapes/<int:mixtape_pk>/songs/<int:song_pk>', api_views.SongUpdateView.as_view(), name ='update_mixtape_songs'),
+    path('api/mixtapes/<int:mixtape_pk>/songs/<int:song_pk>', api_views.SongUpdateView.as_view(), name ='update_mixtape_songs'),
 ]
