@@ -28,9 +28,6 @@ class Profile(models.Model):
     def get_last_name(self):
         return self.user.last_name
 
-    def mixtape_count(self):
-        mixtapes = Mixtape.objects.filter(creator=self.user)
-        return mixtapes.count()
 
     def __str__(self):
         return self.user.username
@@ -51,7 +48,7 @@ class Profile(models.Model):
 class Mixtape(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
-    creator = models.ForeignKey(User, related_name="creator", on_delete=models.CASCADE)
+    creator = models.ForeignKey(User, related_name="mixtapes", on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     is_public = models.BooleanField(default=False)
     description = models.TextField()
