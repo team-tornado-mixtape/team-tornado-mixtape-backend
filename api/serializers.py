@@ -43,6 +43,7 @@ class MixtapeListSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     # user = serializers.SlugRelatedField(read_only=True, slug_field="username")
     followed_by = serializers.SlugRelatedField(read_only=True, slug_field="username",many=True)
+    total_mixtapes  = serializers.IntegerField(read_only=True)
     class Meta:
         model = Profile
         fields = [
@@ -53,7 +54,7 @@ class ProfileSerializer(serializers.ModelSerializer):
                 "follower_count",
                 "get_first_name",
                 "get_last_name",
-                "mixtape_count"
+                "total_mixtapes",
                 ]
 
 

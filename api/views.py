@@ -12,7 +12,7 @@ from api.serializers import (
 
 )
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
-from django.db.models import Q
+from django.db.models import Q, Count
 
 from rest_framework.generics import ListCreateAPIView, ListAPIView, UpdateAPIView, get_object_or_404
 from rest_framework.views import APIView
@@ -88,7 +88,7 @@ class ProfileViewSet(ModelViewSet):
                 Q(user__last_name__icontains=search_term)
             )
         else:
-            results = Profile.objects.all()
+            results = Profile.objects.annotate(total_mixtapes=Count('user__mixtapes'))
         return results
 
 
