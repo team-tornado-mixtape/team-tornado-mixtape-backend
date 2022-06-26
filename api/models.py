@@ -51,10 +51,10 @@ class Profile(models.Model):
 class Mixtape(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
-    creator = models.ForeignKey(User, related_name="mixtapes", on_delete=models.CASCADE,null=True)
+    creator = models.ForeignKey(User, related_name="mixtapes", on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     is_public = models.BooleanField(default=False)
-    description = models.TextField()
+    description = models.TextField(default="")
     modified_at = models.DateTimeField(auto_now=True)
     theme = models.IntegerField(default="0")
     favorited_by = models.ManyToManyField(
