@@ -11,49 +11,55 @@ class MixtapeDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mixtape
         fields = [
+            "title",
             "created_at",
             "creator",
-            "title",
+            "description",
             "songs",
             "theme",
             "is_public",
-            "description",
             "modified_at",
             "favorited_by",
-            "favorite_count"
+            "favorite_count",
         ]
 
 
 class MixtapeListSerializer(serializers.ModelSerializer):
-    creator = serializers.SlugRelatedField(read_only=True, slug_field="username")
-    songs   = serializers.SlugRelatedField(read_only=True, slug_field="title", many=True)
+    creator         = serializers.SlugRelatedField(read_only=True, slug_field="username")
+    songs           = serializers.SlugRelatedField(read_only=True, slug_field="title", many=True)
+    favorited_by    = serializers.SlugRelatedField(read_only=True,slug_field="username",many=True)
 
     class Meta:
         model = Mixtape
         fields = [
-            "id",
             "title",
             "created_at",
             "creator",
+            "description",
             "songs",
+            "theme",
+            "is_public",
+            "modified_at",
+            "favorited_by",
+            "favorite_count",
 
         ]
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    # user = serializers.SlugRelatedField(read_only=True, slug_field="username")
     followed_by = serializers.SlugRelatedField(read_only=True, slug_field="username",many=True)
     total_mixtapes  = serializers.IntegerField(read_only=True)
     class Meta:
         model = Profile
         fields = [
                 "id",
+                "get_user_id",
                 "get_username",
-                "followed_by",
-                "image",
-                "follower_count",
                 "get_first_name",
                 "get_last_name",
+                "image",
+                "followed_by",
+                "follower_count",
                 "total_mixtapes",
                 ]
 

@@ -19,6 +19,9 @@ class Profile(models.Model):
     def follower_count(self):
         return self.followed_by.count()
     
+    def get_user_id(self):
+        return self.user.pk
+    
     def get_username(self):
         return self.user.username
 
