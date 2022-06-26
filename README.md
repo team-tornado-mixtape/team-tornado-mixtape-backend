@@ -947,14 +947,10 @@ GET /api/users
 	{
 		"id": 2,
 		"username": "cat",
-		"first_name": "taker",
-		"last_name": "blobs"
 	},
 	{
 		"id": 3,
 		"username": "Derbles",
-		"first_name": "tim",
-		"last_name": "Cooper"
 	},
 
 ]
