@@ -39,6 +39,7 @@ NOTE: API Root is /api/
 |GET|[/mixtapes/{id}](#details-for-a-specific-MixTape)|Details for a specific MixTape|
 |PUT|[/mixtapes/{id}](#update-an-existing-MixTape)|Update an existing  (Only the creator of the MixTape can do this)|
 |PATCH|[/mixtapes/{id}](#update-part-of-an-existing-mixtape)|Update part of an existing MixTape|
+|PUT|[/api/mixtapes/<int:mixtape_pk>/songs/<int:song_pk>](#update-mixtape-songs)|add or remove songs from a mixtape (creator only)|
 |PUT|[/mixtapes/{id}/favorite/](#favorite-a-MixTape)|Favorite/Unfavorite a MixTape|
 |PUT|[/mixtapes/{id}/follow/](#follow-a-User)|Follow/unfollow a user's profile|
 |DELETE|[/mixtapes/{id}/](#delete-MixTape)|Delete an existing MixTape (Only the creator of the MixTape may do this)|
@@ -46,6 +47,8 @@ NOTE: API Root is /api/
 |GET|[/profiles?search=<search_term>](#search-Profiles)|Search profiles (by username, first name or last name)|
 |GET|[/search?track=&artist=&limit=](#search-spotify-and-apple-music-APIs)|Search for songs in Apple Music and Spotify API|
 |GET|[/api/songs?search=<search_term>](#search-local-database)|Search local database for song by artist or title|
+|PUT|[/api/mixtapes/<int:mixtape_pk>/songs/<int:song_pk>](#update-mixtape-songs)|add or remove songs from a mixtape (creator only)|
+
 
 
 
@@ -954,6 +957,47 @@ GET /api/users
 	},
 
 ]
+
+
+## Update Mixtape Songs
+
+Returns list of all MixTapes for a logged in user.
+
+### Request
+
+Requirement: user must be creator of mixtape
+
+```json
+PUT /mixtapes/6/songs/131
+
+{
+	"songs":
+	[131]
+		
+}
+
+```
+
+### Response
+
+```json
+200 OK
+
+[
+{
+	"songs": [
+		104,
+		103,
+		101,
+		64,
+		73,
+		131
+	]
+}
+]
+```
+
+
 
 
 

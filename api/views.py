@@ -9,7 +9,7 @@ from api.serializers import (
     Userserializer,
     UserFollowersSerializer,
     FavoriteMixtapeUpdateSerializer,
-    SongUpdateSerializer,
+    MixtapeUpdateSerializer,
 )
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
 from django.db.models import Q, Count
@@ -126,21 +126,21 @@ class SongViewSet(ModelViewSet):
         pass
 
 
-class SongUpdateView(UpdateAPIView):
+class MixtapeUpdateView(UpdateAPIView):
     queryset = Mixtape.objects.all()
     permission_classes = [IsCreatorOrReadOnly]
-    serializer_class   = SongUpdateSerializer
+    serializer_class   = MixtapeUpdateSerializer
 
     def update(self, request, *args, **kwargs):
         mixtape_instance = Mixtape.objects.filter(pk=self.kwargs['mixtape_pk'])[0]
-        song_instance = Song.object.filter(pk=self.kwargs['song_pk'])[0]
+        song_instance = Song.objects.filter(pk=self.kwargs['song_pk'])[0]
 
         if song_instance not in mixtape_instance.songs.all():
-            mixtape_instance.add(song_instance)
+            mixtape_instance.songs.add(song_instance)
         else:
-            mixtape_instance.remove(song_instance)
+            mixtape_instance.songs.remove(song_instance)
 
-        serializer = self.get_serializer(song_instance, data=request.data)
+        serializer = self.get_serializer(mixtape_instance, data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data)
 

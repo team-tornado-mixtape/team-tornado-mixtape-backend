@@ -11,6 +11,7 @@ class MixtapeDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mixtape
         fields = [
+            "id",
             "title",
             "created_at",
             "creator",
@@ -32,6 +33,7 @@ class MixtapeListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mixtape
         fields = [
+            "id",
             "title",
             "created_at",
             "creator",
@@ -106,9 +108,9 @@ class FollowingUpdateSerializer(serializers.ModelSerializer):
             ]
 
 
-class SongUpdateSerializer(serializers.ModelSerializer):
+class MixtapeUpdateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Song
-        fields = (
-            'mixtapes',
-        )
+        model = Mixtape
+        fields = [
+            'songs',
+        ]
