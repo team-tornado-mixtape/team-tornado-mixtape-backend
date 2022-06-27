@@ -237,6 +237,7 @@ class SearchView(ListAPIView):
     serializer_class = SongSerializer
 
     def get_queryset(self):
+        # breakpoint()
         Song.objects.filter(mixtapes=None, user=self.request.user).delete()
 
         if  self.request.query_params.get("track") is not None:
