@@ -1,4 +1,9 @@
 from django.test import TestCase
+from django.urls import reverse
+from rest_framework import status
+from rest_framework.test import APITestCase
+from api.models import *
+
 from api.apple_music_search import *
 from api.spotify_search import *
 from api.helpers import *
@@ -25,3 +30,31 @@ class SearchTestCase(TestCase):
         for id in [self.spotify_songs[i]['spotify_id'] for i in range(len(self.spotify_songs))]:
             if id not in [self.my_songs[i]['spotify_id'] for i in range(len(self.my_songs))]:
                 print(id)
+
+
+# class AccountTests(APITestCase):
+#     def test_create_account(self):
+#         """
+#         Ensure we can create a new account object.
+#         """
+#         url = reverse('account-list')
+#         data = {'name': 'DabApps'}
+#         response = self.client.post(url, data, format='json')
+#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+#         self.assertEqual(Account.objects.count(), 1)
+#         self.assertEqual(Account.objects.get().name, 'DabApps')
+
+
+class SearchTests(APITestCase):
+    def setUp(self):
+        self.user1 = User.objects.create(username="testuser1", password="user1password")
+        self.user1.login(username="testuser1", password="user1password")
+
+    def test_create_account(self):
+        """
+        Ensure we can create a new account object.
+        """
+        url = reverse('account-list')
+        data = {'name': 'DabApps'}
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)

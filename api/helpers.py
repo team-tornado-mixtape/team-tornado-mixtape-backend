@@ -17,8 +17,7 @@ def my_search(search_track=None, search_artist=None, limit=20):
     for i in range(len(spotify_results)):
         similarities = []
         for j in range(len(apple_results)):
-            similarity = similar(
-                spotify_results[i]["spotify_title"], apple_results[j]["apple_title"]) + similar(spotify_results[i]["spotify_artist"], apple_results[j]["apple_artist"])
+            similarity = similar(spotify_results[i]["spotify_title"], apple_results[j]["apple_title"]) + similar(spotify_results[i]["spotify_artist"], apple_results[j]["apple_artist"])
             similarities.append(similarity)
 
         closest = max(similarities)
