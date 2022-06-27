@@ -286,11 +286,8 @@ Required fields: title,description, songs
 POST /mixtapes/
 
 {
-		"title": "Mixtape 5",
-		"creator": "3",
-		"description": "lotsa songs",
-		"songs": [ 2
-]
+		"title": "Mixtape 5"
+
 }
 ```
 
@@ -300,17 +297,7 @@ POST /mixtapes/
 201 Created
 
 {
-	"created_at": "2022-06-23T15:25:24.109951-04:00",
-	"creator": null,
-	"title": "Mixtape 5",
-	"songs": [
-		2
-	],
-	"theme": 0,
-	"is_public": false,
-	"description": "lotsa songs",
-	"modified_at": "2022-06-23T15:25:24.109991-04:00",
-	"favorited_by": []
+"title": "Mixtape 5"
 }
 ```
 
