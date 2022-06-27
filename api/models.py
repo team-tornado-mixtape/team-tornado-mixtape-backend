@@ -52,7 +52,7 @@ class Mixtape(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     creator = models.ForeignKey(User, related_name="mixtapes", on_delete=models.CASCADE,null=True)
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, default="")
     is_public = models.BooleanField(default=False)
     description = models.TextField(default="")
     modified_at = models.DateTimeField(auto_now=True)
