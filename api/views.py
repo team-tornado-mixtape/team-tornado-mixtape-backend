@@ -10,6 +10,7 @@ from api.serializers import (
     UserFollowersSerializer,
     FavoriteMixtapeUpdateSerializer,
     MixtapeUpdateSerializer,
+    MixtapeCreateSerializer,
 )
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
 from django.db.models import Q, Count
@@ -36,6 +37,8 @@ class MixtapeViewSet(ModelViewSet):
     def get_serializer_class(self):
         if self.action in ["list"]:
             return MixtapeListSerializer
+        elif self.action in ["create"]:
+            return MixtapeCreateSerializer
         return super().get_serializer_class()
 
     def get_queryset(self):
@@ -48,6 +51,9 @@ class MixtapeViewSet(ModelViewSet):
         else:
             results = Mixtape.objects.all()
         return results
+    
+    def perform_create(self, serializer):
+            serializer.save(creator=self.request.user)
 
     def perform_destroy(self, instance):
         if self.request.user == instance.creator:
@@ -90,6 +96,17 @@ class ProfileViewSet(ModelViewSet):
             results = Profile.objects.annotate(total_mixtapes=Count('user__mixtapes'))
         return results
 
+    def perform_create(self, serializer):
+            serializer.save(user=self.request.user)
+
+    def perform_destroy(self, instance):
+        if self.request.user == instance.user:
+            instance.delete()
+
+    def perform_update(self, serializer):
+        if self.request.user == serializer.instance.user:
+            serializer.save()
+
 
 class UserProfileView(ListCreateAPIView):
     queryset = Profile.objects.all()
@@ -98,6 +115,10 @@ class UserProfileView(ListCreateAPIView):
 
     def get_queryset(self):
         return Profile.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+            serializer.save(user=self.request.user)
+
 
 
 class SongViewSet(ModelViewSet):

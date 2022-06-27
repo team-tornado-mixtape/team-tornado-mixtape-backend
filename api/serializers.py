@@ -114,3 +114,10 @@ class MixtapeUpdateSerializer(serializers.ModelSerializer):
         fields = [
             'songs',
         ]
+
+class MixtapeCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Mixtape
+        fields = [
+            'title'
+        ]
