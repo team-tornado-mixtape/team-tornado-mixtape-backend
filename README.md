@@ -37,17 +37,16 @@ NOTE: API Root is /api/
 |GET|[/mixtapes?search=<search_term>](#search-MixTapes)|Search MixTapes by title or creator|
 |POST|[/mixtapes/](#create-a-new-MixTape)|Create a new MixTape|
 |GET|[/mixtapes/{id}](#details-for-a-specific-MixTape)|Details for a specific MixTape|
-|PUT|[/mixtapes/{id}](#update-an-existing-MixTape)|Update an existing  (Only the creator of the MixTape can do this)|
 |PATCH|[/mixtapes/{id}](#update-part-of-an-existing-mixtape)|Update part of an existing MixTape|
-|PUT|[/api/mixtapes/<int:mixtape_pk>/songs/<int:song_pk>](#update-mixtape-songs)|add or remove songs from a mixtape (creator only)|
-|PUT|[/mixtapes/{id}/favorite/](#favorite-a-MixTape)|Favorite/Unfavorite a MixTape|
-|PUT|[/mixtapes/{id}/follow/](#follow-a-User)|Follow/unfollow a user's profile|
+|PATCH|[/api/mixtapes/<int:mixtape_pk>/songs/<int:song_pk>](#update-mixtape-songs)|add or remove songs from a mixtape (creator only)|
+|PATCH|[/mixtapes/{id}/favorite/](#favorite-a-MixTape)|Favorite/Unfavorite a MixTape|
+|PATCH|[/mixtapes/{id}/follow/](#follow-a-User)|Follow/unfollow a user's profile|
 |DELETE|[/mixtapes/{id}/](#delete-MixTape)|Delete an existing MixTape (Only the creator of the MixTape may do this)|
 |GET|[/profiles](#list-All-Profiles)|List all profiles|
 |GET|[/profiles?search=<search_term>](#search-Profiles)|Search profiles (by username, first name or last name)|
 |GET|[/search?track=&artist=&limit=](#search-spotify-and-apple-music-APIs)|Search for songs in Apple Music and Spotify API|
 |GET|[/api/songs?search=<search_term>](#search-local-database)|Search local database for song by artist or title|
-|PUT|[/api/mixtapes/<int:mixtape_pk>/songs/<int:song_pk>](#update-mixtape-songs)|add or remove songs from a mixtape (creator only)|
+|PATCH|[/api/mixtapes/<int:mixtape_pk>/songs/<int:song_pk>](#update-mixtape-songs)|add or remove songs from a mixtape (creator only)|
 
 
 
@@ -607,43 +606,6 @@ GET /profiles/1
 }
 
 ```
-
-
-## Update an existing profile
-
-Requirement: updater must be owner of the profile
-
-### Request
-
-Required field for PUT or PATCH: description 
-
-Required in URL: profile's id.
-
-```json
-PUT /profiles/id/ or PATCH /profiles/id/ 
-
-{
-    "image": "http://127.0.0.1:8000/files/profilepics/unnamed.jpeg",
-}
-```
-
-### Response
-
-```json
-200 OK
-
-{
-	"id": 1,
-	"user": "kitten",
-	"created_at": "2022-06-22T16:35:54.792728-04:00",
-	"image": "http://127.0.0.1:8000/files/profilepics/unnamed.jpeg",
-	"followed_by": [
-		3
-	]
-}
-```
-
-
 
 ## Follow a User
 
