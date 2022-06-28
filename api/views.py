@@ -23,9 +23,6 @@ from rest_framework.permissions import (
     IsAuthenticated,
     IsAuthenticatedOrReadOnly,
 )
-
-from api.spotify_search import *
-from api.apple_music_search import *
 from api.helpers import *
 
 
@@ -259,6 +256,9 @@ class SearchView(ListAPIView):
         count = 0
         database_songs = Song.objects.all()
         queryset = Song.objects.none()
+
+        if len(songs) == 0:
+            return queryset
 
         for song in songs:
             if Song.objects.filter(spotify_uri=song['spotify_uri']).exists():
