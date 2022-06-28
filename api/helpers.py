@@ -12,32 +12,23 @@ def my_search(search_track=None, search_artist=None, limit=20):
     apple_results = SearchAppleMusicAPI(search_track=search_track, search_artist=search_artist, limit=limit)
 
     songs = []
-    spotify_ids = {}
     apple_ids = {}
 
     for i in range(len(spotify_results)):
-        similarities = []
+
         for j in range(len(apple_results)):
-            similarity = similar(
-                spotify_results[i]["spotify_title"], apple_results[j]["apple_title"]) + similar(spotify_results[i]["spotify_artist"], apple_results[j]["apple_artist"])
-            similarities.append(similarity)
+            if spotify_results[i]["spotify_title"] == apple_results[j]["apple_title"] and spotify_results[i]["spotify_artist"] == apple_results[j]["apple_artist"] and apple_results[j]["apple_id"] not in apple_ids:
+                song = {
+                    "title": apple_results[j]["apple_title"],
+                    "artist": apple_results[j]["apple_artist"],
+                    "album": apple_results[j]["apple_album"],
+                    "spotify_id": spotify_results[i]["spotify_id"],
+                    "apple_id": apple_results[j]["apple_id"],
+                    "spotify_uri": spotify_results[i]["spotify_uri"],
+                    "preview_url": apple_results[j]["apple_preview_url"],
+                    }
 
-        closest = max(similarities)
-        index = similarities.index(closest)
-
-        if closest == 2 and spotify_results[index]["spotify_id"] not in spotify_ids and apple_results[index]["apple_id"] not in apple_ids:
-            song = {
-                "title": apple_results[index]["apple_title"],
-                "artist": apple_results[index]["apple_artist"],
-                "album": apple_results[index]["apple_album"],
-                "spotify_id": spotify_results[index]["spotify_id"],
-                "apple_id": apple_results[index]["apple_id"],
-                "spotify_uri": spotify_results[index]["spotify_uri"],
-                "preview_url": apple_results[index]["apple_preview_url"],
-                }
-
-            spotify_ids[song['spotify_id']] = 1
-            apple_ids[song['apple_id']] = 1
-            songs.append(song)
+                apple_ids[apple_results[j]["apple_id"]] = 1
+                songs.append(song)
 
     return songs
