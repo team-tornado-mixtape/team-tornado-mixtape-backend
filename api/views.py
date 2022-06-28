@@ -2,6 +2,7 @@ from api.models import Mixtape, User, Profile, Song, Image
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from api.serializers import (
     FollowingUpdateSerializer,
+    ImagePostPutSerializer,
     MixtapeDetailSerializer,
     MixtapeListSerializer,
     ProfileSerializer,
@@ -12,6 +13,7 @@ from api.serializers import (
     MixtapeUpdateSerializer,
     MixtapeCreateSerializer,
     ImageSerializer,
+    ImagePostPutSerializer,
 )
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
 from django.views.generic.edit import CreateView
@@ -236,20 +238,27 @@ class UserFollowersView(ListAPIView):
 
 
 class ImageUploadView(ModelViewSet):
-    queryset = Image.objects.all()
+    queryset = Image.objects.all()  
     permission_classes = [IsUserOrReadOnly]
-    serializer_class = ImageSerializer
+    serializer_class = ImagePostPutSerializer
     
     def get_queryset(self):
-        breakpoint()
         return Image.objects.filter(user=self.request.user)
+
+    def get_serializer_class(self):
+        if self.request.method == "POST" or self.request.method == "PUT":
+            serializer_class = ImagePostPutSerializer
+        else:
+            serializer_class = ImageSerializer
+        return serializer_class
 
     def perform_create(self, serializer):
         if 'file' in self.request.data:
             profile = get_object_or_404(Profile, pk=self.kwargs['profile_pk'])
+        serializer.save(picture=self.request.data['file'], user=self.request.user, profile=profile)
 
     def perform_update(self, serializer):
-        if self.request.user == serializer.instance.user:
+        if self.request.user == serializer.instance.user and 'file' in self.request.data:
             serializer.save()
 
 class SearchView(ListAPIView):

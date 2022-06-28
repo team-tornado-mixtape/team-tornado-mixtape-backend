@@ -30,6 +30,7 @@ class Profile(models.Model):
     def get_last_name(self):
         return self.user.last_name
 
+
     def __str__(self):
         return self.user.username
 
@@ -43,6 +44,7 @@ class Image(models.Model):
     
     def __img__(self):
         return self.picture
+    
 
     
 
