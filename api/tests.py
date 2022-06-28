@@ -2,12 +2,10 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
+
 from api.models import User, Song
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
-
-from api.apple_music_search import *
-from api.spotify_search import *
 from api.helpers import *
 
 
@@ -57,8 +55,8 @@ class SearchTests(APITestCase):
         response = self.client.get(url, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[0]['title'], 'Yellow Submarine In Pepperland')
-        self.assertEqual(Song.objects.count(), 3)
+        self.assertEqual(response.data[0]['title'], 'Yellow Submarine')
+        self.assertEqual(Song.objects.count(), 2)
 
     def test_search_artist(self):
         url = '/api/search?artist=Beatles'
@@ -66,4 +64,4 @@ class SearchTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # self.assertEqual(response.data[0]['title'], 'Yellow Submarine In Pepperland')
-        self.assertEqual(Song.objects.count(), 7)
+        self.assertEqual(Song.objects.count(), 1)
