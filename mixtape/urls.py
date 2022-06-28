@@ -26,7 +26,7 @@ urlpatterns = [
     path('api/followers',api_views.UserFollowersView.as_view(),name='user_followers'),
     path('api/followers/',api_views.UserFollowersView.as_view(),name='user_followers'),
     path('api/search', api_views.SearchView.as_view(), name='search'),
-    path('api/my/profile/<int:profile_pk>/image',api_views.ImageUploadView.as_view(
+    path('api/my/profile/<int:profile_pk>/image/',api_views.ImageUploadView.as_view(
           {'get': 'retrieve',
         'post': 'create',
         'put': 'update',
