@@ -1,4 +1,4 @@
-from api.models import Mixtape, User, Profile, Song
+from api.models import Mixtape, User, Profile, Song, Image
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from api.serializers import (
     FollowingUpdateSerializer,
@@ -11,6 +11,7 @@ from api.serializers import (
     FavoriteMixtapeUpdateSerializer,
     MixtapeUpdateSerializer,
     MixtapeCreateSerializer,
+    ImageSerializer,
 )
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
 from django.views.generic.edit import CreateView
@@ -234,16 +235,22 @@ class UserFollowersView(ListAPIView):
 
 
 
-class DocumentCreateView(CreateView):
-    model = Profile
-    fields = ['image', ]
+class ImageUploadView(ModelViewSet):
+    queryset = Image.objects.all()
+    permission_classes = [IsUserOrReadOnly]
+    serializer_class = ImageSerializer
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        profiles = Profile.objects.all()
-        context['profiles'] = profiles
-        return context 
+    def get_queryset(self):
+        breakpoint()
+        return Image.objects.filter(user=self.request.user)
 
+    def perform_create(self, serializer):
+        if 'file' in self.request.data:
+            profile = get_object_or_404(Profile, pk=self.kwargs['profile_pk'])
+
+    def perform_update(self, serializer):
+        if self.request.user == serializer.instance.user:
+            serializer.save()
 
 class SearchView(ListAPIView):
     permission_classes = [IsAuthenticated]

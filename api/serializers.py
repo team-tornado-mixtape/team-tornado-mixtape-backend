@@ -59,7 +59,6 @@ class ProfileSerializer(serializers.ModelSerializer):
                 "get_username",
                 "get_first_name",
                 "get_last_name",
-                "image",
                 "followed_by",
                 "follower_count",
                 "total_mixtapes",
@@ -122,3 +121,8 @@ class MixtapeCreateSerializer(serializers.ModelSerializer):
             'id',
             'title',
         ]
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Mixtape
+        fields =('__all__')

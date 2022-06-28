@@ -14,7 +14,6 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profiles')
     created_at = models.DateTimeField(auto_now_add=True)
     followed_by = models.ManyToManyField(User, related_name="followers")
-    image = models.ImageField()
 
     def follower_count(self):
         return self.followed_by.count()
@@ -31,9 +30,19 @@ class Profile(models.Model):
     def get_last_name(self):
         return self.user.last_name
 
-
     def __str__(self):
         return self.user.username
+
+
+
+class Image(models.Model):
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    picture = models.ImageField(blank=True, null=True)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='images')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='images')
+    
+    def __img__(self):
+        return self.picture
 
     
 
