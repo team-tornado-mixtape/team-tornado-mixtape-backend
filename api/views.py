@@ -13,6 +13,7 @@ from api.serializers import (
     MixtapeCreateSerializer,
 )
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
+from django.views.generic.edit import CreateView
 from django.db.models import Q, Count
 
 from rest_framework.generics import ListCreateAPIView, ListAPIView, UpdateAPIView, get_object_or_404
@@ -229,7 +230,20 @@ class UserFollowersView(ListAPIView):
     serializer_class = UserFollowersSerializer
 
     def get_queryset(self):
-        return Profile.objects.filter(user=self.request.user)    
+        return Profile.objects.filter(user=self.request.user)
+
+
+
+class DocumentCreateView(CreateView):
+    model = Profile
+    fields = ['image', ]
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        prorfiles = Profile.objects.all()
+        context['profiles'] = profiles
+        return context 
 
 
 class SearchView(ListAPIView):
