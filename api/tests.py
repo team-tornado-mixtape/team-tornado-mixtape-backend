@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from api.models import *
+from api.models import User, Song
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
 
@@ -63,7 +63,7 @@ class SearchTests(APITestCase):
     def test_search_artist(self):
         url = '/api/search?artist=Beatles'
         response = self.client.get(url, format='json')
-        breakpoint()
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # self.assertEqual(response.data[0]['title'], 'Yellow Submarine In Pepperland')
-        self.assertEqual(Song.objects.count(), 6)
+        self.assertEqual(Song.objects.count(), 7)

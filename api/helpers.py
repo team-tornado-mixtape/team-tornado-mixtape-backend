@@ -1,6 +1,8 @@
 from difflib import SequenceMatcher
 from api.spotify_search import *
 from api.apple_music_search import *
+import time
+import threading
 
 
 def similar(a, b):
@@ -8,12 +10,24 @@ def similar(a, b):
 
 
 def my_search(search_track=None, search_artist=None, limit=20):
-    spotify_results = SearchSpotifyAPI(search_track=search_track, search_artist=search_artist, limit=limit)
-    apple_results = SearchAppleMusicAPI(search_track=search_track, search_artist=search_artist, limit=limit)
+    start = time.perf_counter()
+
+    spotify_results = threading.Thread(target=SearchSpotifyAPI, kwargs={'search_track':search_track, 'search_artist':search_artist, 'limit':limit})
+    apple_results = threading.Thread(target=SearchAppleMusicAPI, kwargs={'search_track':search_track, 'search_artist':search_artist, 'limit':limit})
+
+    spotify_results.start()
+    apple_results.start()
+    spotify_results.join()
+    apple_results.join() 
+
+    stop = time.perf_counter()
+    print(f"finished external api calls in: {round(stop-start, 2)} second(s)")
+
     songs = []
     spotify_ids = {}
     apple_ids = {}
 
+    breakpoint()
     for i in range(len(spotify_results)):
         similarities = []
         for j in range(len(apple_results)):
