@@ -26,7 +26,7 @@ def similar(a, b):
 
 
 def my_search(search_track=None, search_artist=None, limit=20):
-    start = time.perf_counter()
+    # start = time.perf_counter()
 
     spotify_thread = threading.Thread(target=SearchSpotifyAPI, args=[q], kwargs={'search_track':search_track, 'search_artist':search_artist, 'limit':limit})
     apple_thread = threading.Thread(target=SearchAppleMusicAPI, args=[q], kwargs={'search_track':search_track, 'search_artist':search_artist, 'limit':limit})
@@ -34,12 +34,18 @@ def my_search(search_track=None, search_artist=None, limit=20):
     spotify_thread.start()
     apple_thread.start()
     q.join()
+    q1 = q.get()
+    q2 = q.get()
 
-    apple_results = q.get()
-    spotify_results = q.get()
+    if 'apple_title' in q1[0]:
+        apple_results = q1
+        spotify_results = q2
+    else:
+        apple_results = q2
+        spotify_results = q1
 
-    stop = time.perf_counter()
-    print(f"finished external api calls in: {round(stop-start, 2)} second(s)")
+    # stop = time.perf_counter()
+    # print(f"finished external api calls in: {round(stop-start, 2)} second(s)")
 
     songs = []
     apple_ids = {}
