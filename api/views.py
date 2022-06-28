@@ -238,7 +238,6 @@ class DocumentCreateView(CreateView):
     model = Profile
     fields = ['image', ]
     
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         profiles = Profile.objects.all()
