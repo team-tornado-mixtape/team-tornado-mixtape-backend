@@ -153,8 +153,6 @@ django_on_heroku.settings(locals())
 del DATABASES['default']['OPTIONS']['sslmode']
 
 
-CORS_ALLOW_ALL_ORIGINS = True
-
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = 'mixtape-assets1'
@@ -169,3 +167,11 @@ STATICFILES_DIRS = [
 ]
 
 DEFAULT_FILE_STORAGE = 'mixtape.storage_backends.MediaStorage'  
+
+from corsheaders.defaults import default_headers
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'content-disposition',
+]

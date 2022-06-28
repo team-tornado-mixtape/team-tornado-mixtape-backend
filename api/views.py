@@ -241,7 +241,7 @@ class DocumentCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        prorfiles = Profile.objects.all()
+        profiles = Profile.objects.all()
         context['profiles'] = profiles
         return context 
 
