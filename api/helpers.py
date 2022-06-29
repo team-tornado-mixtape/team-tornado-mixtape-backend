@@ -28,8 +28,8 @@ def similar(a, b):
 def my_search(search_track=None, search_artist=None, limit=20):
     # start = time.perf_counter()
 
-    spotify_thread = threading.Thread(target=SearchSpotifyAPI, args=[q], kwargs={'search_track':search_track, 'search_artist':search_artist, 'limit':limit})
-    apple_thread = threading.Thread(target=SearchAppleMusicAPI, args=[q], kwargs={'search_track':search_track, 'search_artist':search_artist, 'limit':limit})
+    spotify_thread = threading.Thread(target=SearchSpotifyAPI, args=[q], kwargs={"search_track":search_track, "search_artist":search_artist, "limit":limit})
+    apple_thread = threading.Thread(target=SearchAppleMusicAPI, args=[q], kwargs={"search_track":search_track, "search_artist":search_artist, "limit":limit})
 
     spotify_thread.start()
     apple_thread.start()
@@ -37,7 +37,7 @@ def my_search(search_track=None, search_artist=None, limit=20):
     spotify_results = q.get()
     apple_results = q.get()
 
-    if 'apple_title' in spotify_results[0]:
+    if "apple_title" in spotify_results[0]:
         spotify_results, apple_results = apple_results, spotify_results
 
     # stop = time.perf_counter()
@@ -120,7 +120,7 @@ def SearchAppleMusicAPI(q, search_track=None, search_artist=None, limit=20):
             "attributes"
         ]["artistName"]
         result["apple_url"] = req.json()["results"]["songs"]["data"][i]["attributes"]["url"]
-        result["apple_preview_url"] = req.json()["results"]["songs"]["data"][i]["attributes"]['previews'][0]["url"]
+        result["apple_preview_url"] = req.json()["results"]["songs"]["data"][i]["attributes"]["previews"][0]["url"]
         results.append(result)
 
     # print(json.dumps(req.json(), sort_keys=4,indent=4))
