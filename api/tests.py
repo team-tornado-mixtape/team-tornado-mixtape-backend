@@ -26,7 +26,7 @@ class SearchTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]["title"], "Yellow")
         self.assertEqual(response.data[1]["title"], "Bodak Yellow")
-        self.assertEqual(Song.objects.count(), 3)
+        self.assertEqual(Song.objects.count(), 4)
 
     # def test_search_track3(self):
     #     url = "/api/search?track=You're+So+Vain"
