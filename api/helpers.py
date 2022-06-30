@@ -1,4 +1,3 @@
-from difflib import SequenceMatcher
 import time
 import threading
 import datetime
@@ -20,9 +19,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 q = queue.Queue()
-
-def similar(a, b):
-    return SequenceMatcher(None, a, b).ratio()
 
 
 def my_search(search_track=None, search_artist=None, limit=25):
@@ -78,7 +74,6 @@ secret = f"""
 """
 
 def SearchAppleMusicAPI(q, search_track=None, search_artist=None, limit=25):
-
     time_now = datetime.datetime.now()
     time_expired = time_now + datetime.timedelta(hours=12)
 
