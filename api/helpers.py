@@ -63,6 +63,7 @@ def my_search(search_track=None, search_artist=None, limit=20):
 
                 apple_ids[apple_results[j]["apple_id"]] = 1
                 songs.append(song)
+                del apple_results[j]
                 break
 
     return songs
