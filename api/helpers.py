@@ -26,7 +26,6 @@ def similar(a, b):
 
 
 def my_search(search_track=None, search_artist=None, limit=20):
-    # start = time.perf_counter()
 
     spotify_thread = threading.Thread(target=SearchSpotifyAPI, args=[q], kwargs={"search_track":search_track, "search_artist":search_artist, "limit":limit})
     apple_thread = threading.Thread(target=SearchAppleMusicAPI, args=[q], kwargs={"search_track":search_track, "search_artist":search_artist, "limit":limit})
@@ -40,16 +39,14 @@ def my_search(search_track=None, search_artist=None, limit=20):
     if "apple_title" in spotify_results[0]:
         spotify_results, apple_results = apple_results, spotify_results
 
-    # stop = time.perf_counter()
-    # print(f"finished external api calls in: {round(stop-start, 2)} second(s)")
-
     songs = []
-    apple_ids = {}
+    # apple_ids = {}
 
     for i in range(len(spotify_results)):
-
         for j in range(len(apple_results)):
-            if spotify_results[i]["spotify_title"] == apple_results[j]["apple_title"] and spotify_results[i]["spotify_artist"] == apple_results[j]["apple_artist"] and apple_results[j]["apple_id"] not in apple_ids:
+
+            if spotify_results[i]["spotify_title"] == apple_results[j]["apple_title"] and spotify_results[i]["spotify_artist"] == apple_results[j]["apple_artist"]:
+
                 song = {
                     "title": apple_results[j]["apple_title"],
                     "artist": apple_results[j]["apple_artist"],
@@ -60,8 +57,10 @@ def my_search(search_track=None, search_artist=None, limit=20):
                     "preview_url": apple_results[j]["apple_preview_url"],
                     }
 
-                apple_ids[apple_results[j]["apple_id"]] = 1
+                # apple_ids[apple_results[j]["apple_id"]] = 1
                 songs.append(song)
+                del apple_results[j]
+                break
 
     return songs
 
