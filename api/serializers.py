@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Mixtape, Profile, Song, User
+from .models import Mixtape, Profile, Song, User, Image
 
 
 class MixtapeDetailSerializer(serializers.ModelSerializer):
@@ -47,10 +47,26 @@ class MixtapeListSerializer(serializers.ModelSerializer):
 
         ]
 
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields =('__all__')
+        lookup_field = 'pk'
+
+class ImagePostPutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Image
+        fields =[
+            'picture',
+        ]
+        lookup_field = 'pk'
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     followed_by = serializers.SlugRelatedField(read_only=True, slug_field="username",many=True)
     total_mixtapes  = serializers.IntegerField(read_only=True)
+    images = ImagePostPutSerializer(many=True)
+    
     class Meta:
         model = Profile
         fields = [
@@ -59,10 +75,10 @@ class ProfileSerializer(serializers.ModelSerializer):
                 "get_username",
                 "get_first_name",
                 "get_last_name",
-                "image",
                 "followed_by",
                 "follower_count",
                 "total_mixtapes",
+                "images",
                 ]
 
 
@@ -122,3 +138,4 @@ class MixtapeCreateSerializer(serializers.ModelSerializer):
             'id',
             'title',
         ]
+

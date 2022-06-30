@@ -47,7 +47,7 @@ NOTE: API Root is /api/
 |GET|[/search?track=&artist=&limit=](#search-spotify-and-apple-music-APIs)|Search for songs in Apple Music and Spotify API|
 |GET|[/api/songs?search=<search_term>](#search-local-database)|Search local database for song by artist or title|
 |PATCH|[/api/mixtapes/<int:mixtape_pk>/songs/<int:song_pk>](#update-mixtape-songs)|add or remove songs from a mixtape (creator only)|
-
+|POST|[/my/profile/<int:profile_pk>/image](#add-a-profile-pic)|Add new profile Piture|
 
 
 
@@ -944,6 +944,32 @@ PUT /mixtapes/6/songs/131
 	]
 }
 ]
+```
+
+## Add a Profile Pic
+
+### Request
+
+Required fields: Headers & Binary file info
+
+
+
+```json
+/api/my/profile/1/image
+
+```
+
+### Response
+
+Response: If you receive the same info you provided, picture was uploaded!
+
+```json
+201 Created
+
+{
+	"picture": "https://mixtape-assets1.s3.amazonaws.com/media/desi_amMSpye.jpeg"
+}
+
 ```
 
 
