@@ -1,4 +1,3 @@
-from difflib import SequenceMatcher
 import time
 import threading
 import datetime
@@ -21,14 +20,11 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 q = queue.Queue()
 
-def similar(a, b):
-    return SequenceMatcher(None, a, b).ratio()
 
+def my_search(search_track=None, search_artist=None, limit=25):
 
-def my_search(search_track=None, search_artist=None, limit=20):
-
-    spotify_thread = threading.Thread(target=SearchSpotifyAPI, args=[q], kwargs={'search_track':search_track, 'search_artist':search_artist, 'limit':limit})
-    apple_thread = threading.Thread(target=SearchAppleMusicAPI, args=[q], kwargs={'search_track':search_track, 'search_artist':search_artist, 'limit':limit})
+    spotify_thread = threading.Thread(target=SearchSpotifyAPI, args=[q], kwargs={"search_track":search_track, "search_artist":search_artist, "limit":limit})
+    apple_thread = threading.Thread(target=SearchAppleMusicAPI, args=[q], kwargs={"search_track":search_track, "search_artist":search_artist, "limit":limit})
 
     spotify_thread.start()
     apple_thread.start()
@@ -36,11 +32,12 @@ def my_search(search_track=None, search_artist=None, limit=20):
     spotify_results = q.get()
     apple_results = q.get()
 
-    if 'apple_title' in spotify_results[0]:
-        spotify_results, apple_results = apple_results, spotify_results
-
     songs = []
-    # apple_ids = {}
+    if len(apple_results) == 0 or len(spotify_results) == 0:
+        return songs
+
+    if "apple_title" in spotify_results[0]:
+        spotify_results, apple_results = apple_results, spotify_results
 
     for i in range(len(spotify_results)):
         for j in range(len(apple_results)):
@@ -57,7 +54,6 @@ def my_search(search_track=None, search_artist=None, limit=20):
                     "preview_url": apple_results[j]["apple_preview_url"],
                     }
 
-                # apple_ids[apple_results[j]["apple_id"]] = 1
                 songs.append(song)
                 del apple_results[j]
                 break
@@ -79,8 +75,7 @@ secret = f"""
 -----END PRIVATE KEY-----
 """
 
-def SearchAppleMusicAPI(q, search_track=None, search_artist=None, limit=20):
-
+def SearchAppleMusicAPI(q, search_track=None, search_artist=None, limit=25):
     time_now = datetime.datetime.now()
     time_expired = time_now + datetime.timedelta(hours=12)
 
@@ -119,7 +114,7 @@ def SearchAppleMusicAPI(q, search_track=None, search_artist=None, limit=20):
             "attributes"
         ]["artistName"]
         result["apple_url"] = req.json()["results"]["songs"]["data"][i]["attributes"]["url"]
-        result["apple_preview_url"] = req.json()["results"]["songs"]["data"][i]["attributes"]['previews'][0]["url"]
+        result["apple_preview_url"] = req.json()["results"]["songs"]["data"][i]["attributes"]["previews"][0]["url"]
         results.append(result)
 
     # print(json.dumps(req.json(), sort_keys=4,indent=4))
@@ -166,7 +161,7 @@ class SpotifyAPI:
         return token_response_data
 
 
-def SearchSpotifyAPI(q, search_track=None, search_artist=None, limit=20):
+def SearchSpotifyAPI(q, search_track=None, search_artist=None, limit=25):
     spotify_client = SpotifyAPI()
     access_token = spotify_client.access_token
 

@@ -278,16 +278,15 @@ class SearchView(ListAPIView):
         if  self.request.query_params.get("limit") is not None:
             limit = self.request.query_params.get("limit")
         else:
-            limit = 20
+            limit = 25
 
         songs = my_search(search_track=search_track, search_artist=search_artist, limit=limit)
 
-        count = 0
-        database_songs = Song.objects.all()
         queryset = Song.objects.none()
-
         if len(songs) == 0:
             return queryset
+
+        count = 0
 
         for song in songs:
             if Song.objects.filter(spotify_uri=song['spotify_uri']).exists():
