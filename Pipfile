@@ -20,6 +20,8 @@ pyjwt = {extras = ["crypto"], version = "*"}
 pillow = "*"
 drf-nested-routers = "*"
 black = "*"
+boto3 = "*"
+django-storages = "*"
 
 [dev-packages]
 
