@@ -32,10 +32,12 @@ def my_search(search_track=None, search_artist=None, limit=25):
     spotify_results = q.get()
     apple_results = q.get()
 
+    songs = []
+    if len(apple_results) == 0 or len(spotify_results) == 0:
+        return songs
+
     if "apple_title" in spotify_results[0]:
         spotify_results, apple_results = apple_results, spotify_results
-
-    songs = []
 
     for i in range(len(spotify_results)):
         for j in range(len(apple_results)):
