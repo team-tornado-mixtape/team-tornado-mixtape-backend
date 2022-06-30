@@ -45,7 +45,7 @@ def my_search(search_track=None, search_artist=None, limit=20):
     for i in range(len(spotify_results)):
         for j in range(len(apple_results)):
 
-            if (spotify_results[i]["spotify_title"] in apple_results[j]["apple_title"] or apple_results[j]["apple_title"] in spotify_results[i]["spotify_title"]) and spotify_results[i]["spotify_artist"] == apple_results[j]["apple_artist"]:
+            if spotify_results[i]["spotify_title"] == apple_results[j]["apple_title"] and spotify_results[i]["spotify_artist"] == apple_results[j]["apple_artist"]:
 
                 song = {
                     "title": apple_results[j]["apple_title"],
