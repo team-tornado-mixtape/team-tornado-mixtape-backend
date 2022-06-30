@@ -32,8 +32,9 @@ NOTE: API Root is /api/
 |GET|[/mixtapes/](#list-of-all-MixTapes)|List all public MixTapes|
 |GET|[/my/mixtapes](#list-of-MixTapes-per-user)|List all MixTapes of logged in user|
 |GET|[/my/profile](#show-Logged-In-User-Profile)|Show profile of logged in user|
-|GET|[/followers](#list-of-followers)|List all followers of logged in user|
+|GET|[/followers](#list-followers)|List all followers of logged in user|
 |GET|[/following](#list-of-following)|List all users that current user is following|
+|GET|[/my/favorites](#list-favorite-mixtapes)|List all mixtapes favorited by the logged in user|
 |GET|[/mixtapes?search=<search_term>](#search-MixTapes)|Search MixTapes by title or creator|
 |POST|[/mixtapes/](#create-a-new-MixTape)|Create a new MixTape|
 |GET|[/mixtapes/{id}](#details-for-a-specific-MixTape)|Details for a specific MixTape|
