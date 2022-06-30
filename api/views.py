@@ -287,7 +287,6 @@ class SearchView(ListAPIView):
             return queryset
 
         count = 0
-        database_songs = Song.objects.all()
 
         for song in songs:
             if Song.objects.filter(spotify_uri=song['spotify_uri']).exists():
