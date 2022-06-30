@@ -2,9 +2,18 @@ from rest_framework import serializers
 from .models import Mixtape, Profile, Song, User, Image
 
 
+class SongSerializer(serializers.ModelSerializer):
+    # mixtape = serializers.SlugRelatedField(read_only=True, slug_field="title")
+
+    class Meta:
+        model = Song
+        fields = ["id","title",]
+
+
+
 class MixtapeDetailSerializer(serializers.ModelSerializer):
     creator = serializers.SlugRelatedField(read_only=True, slug_field="username")
-    songs   = serializers.SlugRelatedField(read_only=True, slug_field="title", many=True)
+    songs   = SongSerializer(many=True)
     favorited_by = serializers.SlugRelatedField(read_only=True, slug_field="username",many=True)
 
 
@@ -16,18 +25,18 @@ class MixtapeDetailSerializer(serializers.ModelSerializer):
             "created_at",
             "creator",
             "description",
-            "songs",
             "theme",
             "is_public",
             "modified_at",
             "favorited_by",
             "favorite_count",
+            "songs",
         ]
 
 
 class MixtapeListSerializer(serializers.ModelSerializer):
     creator         = serializers.SlugRelatedField(read_only=True, slug_field="username")
-    songs           = serializers.SlugRelatedField(read_only=True, slug_field="title", many=True)
+    songs           = SongSerializer(many=True)    
     favorited_by    = serializers.SlugRelatedField(read_only=True,slug_field="username",many=True)
 
     class Meta:
@@ -38,12 +47,12 @@ class MixtapeListSerializer(serializers.ModelSerializer):
             "created_at",
             "creator",
             "description",
-            "songs",
             "theme",
             "is_public",
             "modified_at",
             "favorited_by",
             "favorite_count",
+            "songs",
 
         ]
 
@@ -81,8 +90,6 @@ class ProfileSerializer(serializers.ModelSerializer):
                 "images",
                 ]
 
-
-
 class UserFollowersSerializer(serializers.ModelSerializer):
     followed_by = serializers.SlugRelatedField(read_only=True, slug_field="username",many=True)
     class Meta:
@@ -98,15 +105,7 @@ class Userserializer(serializers.ModelSerializer):
             "id",
             "username",
         ]
-
-
-class SongSerializer(serializers.ModelSerializer):
-    mixtape = serializers.SlugRelatedField(read_only=True, slug_field="title")
-
-    class Meta:
-        model = Song
-        fields = "__all__"
-
+     
 
 class FavoriteMixtapeUpdateSerializer(serializers.ModelSerializer):
         class Meta:
