@@ -25,7 +25,7 @@ def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
 
-def my_search(search_track=None, search_artist=None, limit=20):
+def my_search(search_track=None, search_artist=None, limit=25):
 
     spotify_thread = threading.Thread(target=SearchSpotifyAPI, args=[q], kwargs={"search_track":search_track, "search_artist":search_artist, "limit":limit})
     apple_thread = threading.Thread(target=SearchAppleMusicAPI, args=[q], kwargs={"search_track":search_track, "search_artist":search_artist, "limit":limit})
@@ -40,7 +40,6 @@ def my_search(search_track=None, search_artist=None, limit=20):
         spotify_results, apple_results = apple_results, spotify_results
 
     songs = []
-    # apple_ids = {}
 
     for i in range(len(spotify_results)):
         for j in range(len(apple_results)):
@@ -57,7 +56,6 @@ def my_search(search_track=None, search_artist=None, limit=20):
                     "preview_url": apple_results[j]["apple_preview_url"],
                     }
 
-                # apple_ids[apple_results[j]["apple_id"]] = 1
                 songs.append(song)
                 del apple_results[j]
                 break
@@ -79,7 +77,7 @@ secret = f"""
 -----END PRIVATE KEY-----
 """
 
-def SearchAppleMusicAPI(q, search_track=None, search_artist=None, limit=20):
+def SearchAppleMusicAPI(q, search_track=None, search_artist=None, limit=25):
 
     time_now = datetime.datetime.now()
     time_expired = time_now + datetime.timedelta(hours=12)
@@ -166,7 +164,7 @@ class SpotifyAPI:
         return token_response_data
 
 
-def SearchSpotifyAPI(q, search_track=None, search_artist=None, limit=20):
+def SearchSpotifyAPI(q, search_track=None, search_artist=None, limit=25):
     spotify_client = SpotifyAPI()
     access_token = spotify_client.access_token
 
