@@ -47,6 +47,7 @@ NOTE: API Root is /api/
 |GET|[/profiles?search=<search_term>](#search-Profiles)|Search profiles (by username, first name or last name)|
 |GET|[/search?track=&artist=&limit=](#search-spotify-and-apple-music-APIs)|Search for songs in Apple Music and Spotify API|
 |GET|[/api/songs?search=<search_term>](#search-local-database)|Search local database for song by artist or title|
+|GET|[/api/mixtapes/{id}/spotify](#Send-Mixtape-To-Spotify)|Create spotify playlist from mixtape|
 |PATCH|[/api/mixtapes/<int:mixtape_pk>/songs/<int:song_pk>](#update-mixtape-songs)|add or remove songs from a mixtape (creator only)|
 |POST|[/my/profile/<int:profile_pk>/image](#add-a-profile-pic)|Add new profile Piture|
 
@@ -466,7 +467,7 @@ Requirement: user must be logged in.
 Required in URL: MixTape's id.
 
 ```json
-PUT /mixtape/id/favorite/
+PATCH /mixtape/id/favorite/
 
 {
 	"title":"blah"
@@ -973,6 +974,22 @@ Response: If you receive the same info you provided, picture was uploaded!
 
 ```
 
+## Send MixTape to Spotify
+
+This endpoint will allow users to send the specified mixtape (the Id of the mixtape will be in the url) to thier personal spotify account. 
+
+### Request
+
+```json
+GET /api/mixtapes/1/spotify
+```
+
+### Response
+
+```json
+200 OK
+[]
+```
 
 
 
