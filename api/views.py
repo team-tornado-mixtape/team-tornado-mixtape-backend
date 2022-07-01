@@ -28,6 +28,8 @@ from rest_framework.permissions import (
     IsAuthenticatedOrReadOnly,
 )
 from api.helpers import *
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
 
 
 class MixtapeViewSet(ModelViewSet):
@@ -119,7 +121,6 @@ class UserProfileView(ListCreateAPIView):
 
     def perform_create(self, serializer):
             serializer.save(user=self.request.user)
-
 
 
 class SongViewSet(ModelViewSet):
@@ -311,3 +312,31 @@ class SearchView(ListAPIView):
 # line 312 adds the created songs to the queryset to return all search results
         return queryset | Song.objects.filter(user=self.request.user).order_by('-id')[:count]
 
+
+class TransferSpotifyMixtape(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = MixtapeDetailSerializer
+
+    def get_queryset(self):
+        mixtape = get_object_or_404(Mixtape, pk=self.kwargs["mixtape_pk"])
+        # username = "22yw7ak2iuqbzhlkprlbcbnka"
+        username = "316zaohb3e7isgnbvnlpa7kd3ozi"
+
+        spotify_client = SpotifyAPI()
+        access_token = spotify_client.access_token
+        scope = "playlist-modify-public"
+
+        token = SpotifyOAuth(scope=scope, username=username)
+        spotifyObject = spotipy.Spotify(auth_manager=token)
+
+        playlist_name = mixtape.title
+        playlist_description = mixtape.description
+
+        spotifyObject.user_playlist_create(user=username, name=playlist_name, public=True, description=playlist_description)
+
+        list_of_songs = [mixtape.songs.all()[i].spotify_uri for i in range(len(mixtape.songs.all()))]
+
+        prePlaylist = spotifyObject.user_playlists(user=username)
+        playlist = prePlaylist['items'][0]['id']
+
+        spotifyObject.user_playlist_add_tracks(user=username, playlist_id=playlist, tracks=list_of_songs)
