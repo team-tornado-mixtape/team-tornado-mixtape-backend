@@ -466,7 +466,7 @@ Requirement: user must be logged in.
 Required in URL: MixTape's id.
 
 ```json
-PUT /mixtape/id/favorite/
+PATCH /mixtape/id/favorite/
 
 {
 	"title":"blah"
