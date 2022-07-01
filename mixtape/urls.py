@@ -36,4 +36,6 @@ urlpatterns = [
     ), name = 'update_profile_pic'),
     path('api/mixtapes/<int:mixtape_pk>/songs/<int:song_pk>', api_views.MixtapeUpdateView.as_view(), name ='update_mixtape_songs'),
     path('api/mixtapes/<int:mixtape_pk>/songs/<int:song_pk>', api_views.MixtapeUpdateView.as_view(), name ='update_mixtape_songs'),
+    path('api/mixtapes/<int:mixtape_pk>/spotify', api_views.TransferSpotifyMixtape.as_view(),name='to_spotify'),
+    path('api/mixtapes/<int:mixtape_pk>/spotify/', api_views.TransferSpotifyMixtape.as_view(),name='to_spotify'),
 ]

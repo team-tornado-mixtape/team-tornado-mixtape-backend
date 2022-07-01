@@ -136,14 +136,14 @@ def SearchAppleMusicAPI(q=None, search_track=None, search_artist=None, limit=25)
 
 
 
-CLIENT_ID = env("SPOTIFY_CLIENT_ID")
-CLIENT_SECRET = env("SPOTIFY_CLIENT_SECRET")
+SPOTIFY_CLIENT_ID = env("SPOTIFY_CLIENT_ID")
+SPOTIFY_CLIENT_SECRET = env("SPOTIFY_CLIENT_SECRET")
 
 # lines 139-205 function in a similar way as lines 82-131 but for Spotify search
 class SpotifyAPI:
     def __init__(self):
-        self.client_id = CLIENT_ID
-        self.client_secret = CLIENT_SECRET
+        self.client_id = SPOTIFY_CLIENT_ID
+        self.client_secret = SPOTIFY_CLIENT_SECRET
         self.token_url = "https://accounts.spotify.com/api/token"
         self.authenticate()
 
