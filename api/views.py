@@ -233,7 +233,6 @@ class UserFollowersView(ListAPIView):
         return Profile.objects.filter(user=self.request.user)
 
 
-
 class ImageUploadView(ModelViewSet):
     queryset = Image.objects.all()  
     permission_classes = [IsUserOrReadOnly]
@@ -258,39 +257,45 @@ class ImageUploadView(ModelViewSet):
         if self.request.user == serializer.instance.user and 'file' in self.request.data:
             serializer.save()
 
+# SearchView searches Spotify and Apple Music APIs and compares results
+# Requests are done asynchronously for optimization purposes
 class SearchView(ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = SongSerializer
-
+# line 268 deletes results from user's previous search results that were not
+# added to a mixtape in order to avoid filling database with unnecessary data
     def get_queryset(self):
         Song.objects.filter(mixtapes=None, user=self.request.user).delete()
-
+# lines 270-273 check for track parameter from front end's request
         if  self.request.query_params.get("track") is not None:
             search_track = self.request.query_params.get("track")
         else:
             search_track = None
-
+# lines 275-278 check for artist parameter from front end's request
         if  self.request.query_params.get("artist") is not None:
             search_artist = self.request.query_params.get("artist")
         else:
             search_artist = None
-
+# lines 280-283 check for limit parameter from front end's request
         if  self.request.query_params.get("limit") is not None:
             limit = self.request.query_params.get("limit")
         else:
             limit = 25
-
+# line 285 calls my_search function from api.helpers
         songs = my_search(search_track=search_track, search_artist=search_artist, limit=limit)
-
+# lines 288-289 check if songs from my_search returned any matches, returns empty queryset if no matches
         queryset = Song.objects.none()
         if len(songs) == 0:
             return queryset
-
+# count from line 291 will keep track of how many songs to splice in line 309
         count = 0
 
         for song in songs:
+# line 296 checks if the instance of the song is already in the database
+# line 297 adds the existing song in our database to the queryset to avoid data duplication
             if Song.objects.filter(spotify_uri=song['spotify_uri']).exists():
                 queryset = queryset | Song.objects.filter(spotify_uri=song['spotify_uri'])
+# lines 299-310 create a new instance of the song if not already in database
             else:
                 count += 1
                 Song.objects.create(
@@ -303,5 +308,6 @@ class SearchView(ListAPIView):
                     spotify_uri=song["spotify_uri"],
                     preview_url=song["preview_url"],
                     )
-
+# line 312 adds the created songs to the queryset to return all search results
         return queryset | Song.objects.filter(user=self.request.user).order_by('-id')[:count]
+
