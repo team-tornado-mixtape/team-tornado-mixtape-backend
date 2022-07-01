@@ -319,8 +319,7 @@ class TransferSpotifyMixtape(ListAPIView):
 
     def get_queryset(self):
         mixtape = get_object_or_404(Mixtape, pk=self.kwargs["mixtape_pk"])
-        # username = "22yw7ak2iuqbzhlkprlbcbnka"
-        username = "316zaohb3e7isgnbvnlpa7kd3ozi"
+        username = self.request.user.spotify_username
 
         spotify_client = SpotifyAPI()
         access_token = spotify_client.access_token

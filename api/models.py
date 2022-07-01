@@ -14,6 +14,8 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profiles')
     created_at = models.DateTimeField(auto_now_add=True)
     followed_by = models.ManyToManyField(User, related_name="followers")
+    spotify_username = models.CharField(max_length=255, default="")
+    apple_username = models.CharField(max_length=255, default="")
 
     def follower_count(self):
         return self.followed_by.count()
