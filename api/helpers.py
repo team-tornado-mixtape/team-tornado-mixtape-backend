@@ -9,12 +9,16 @@ import json
 import os
 import base64
 import queue
+from difflib import SequenceMatcher
 
 env = environ.Env(DEBUG=(bool, False))
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 q = queue.Queue() # defining q here is important
+
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
 
 # my_search function runs searches through Spotify and Apple Music and compares results
 def my_search(search_track=None, search_artist=None, limit=25):
@@ -35,7 +39,7 @@ def my_search(search_track=None, search_artist=None, limit=25):
     songs = []
     if len(apple_results) == 0 or len(spotify_results) == 0:
         return songs
-# I do not know ahead of time which search will be faster (Spotify or Apple Music) 
+# I do not know ahead of time which search will be faster (Spotify or Apple Music)
 # and thus need to check in line 40 and switch only if necessary
     if "apple_title" in spotify_results[0]:
         spotify_results, apple_results = apple_results, spotify_results
@@ -44,8 +48,8 @@ def my_search(search_track=None, search_artist=None, limit=25):
     for i in range(len(spotify_results)):
         for j in range(len(apple_results)):
 # checking for an exact match of titles and artists in line 47
-            if spotify_results[i]["spotify_title"] == apple_results[j]["apple_title"] and spotify_results[i]["spotify_artist"] == apple_results[j]["apple_artist"]:
-# if exact matches, create dict of song info as per Song model in api.models in lines 49-57
+            if similar(spotify_results[i]["spotify_title"], apple_results[j]["apple_title"]) >= 0.92 and spotify_results[i]["spotify_artist"] == apple_results[j]["apple_artist"] and similar(spotify_results[i]["spotify_album"], apple_results[j]["apple_album"]) >= 0.92:
+# if match, create dict of song info as per Song model in api.models in lines 49-57
                 song = {
                     "title": apple_results[j]["apple_title"],
                     "artist": apple_results[j]["apple_artist"],
