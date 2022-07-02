@@ -40,8 +40,8 @@ NOTE: API Root is /api/
 |GET|[/mixtapes/{id}](#details-for-a-specific-MixTape)|Details for a specific MixTape|
 |PATCH|[/mixtapes/{id}](#update-part-of-an-existing-mixtape)|Update part of an existing MixTape|
 |PATCH|[/api/mixtapes/<int:mixtape_pk>/songs/<int:song_pk>](#update-mixtape-songs)|add or remove songs from a mixtape (creator only)|
-|PATCH|[/mixtapes/{id}/favorite/](#favorite-a-MixTape)|Favorite/Unfavorite a MixTape|
-|PATCH|[/mixtapes/{id}/follow/](#follow-a-User)|Follow/unfollow a user's profile|
+|PATCH|[/mixtapes/{id}/favorite](#favorite-a-MixTape)|Favorite/Unfavorite a MixTape|
+|PATCH|[/profiles/{id}/following](#follow-a-User)|Follow/unfollow a user's profile|
 |DELETE|[/mixtapes/{id}/](#delete-MixTape)|Delete an existing MixTape (Only the creator of the MixTape may do this)|
 |GET|[/profiles](#list-All-Profiles)|List all profiles|
 |GET|[/profiles?search=<search_term>](#search-Profiles)|Search profiles (by username, first name or last name)|
@@ -467,7 +467,7 @@ Requirement: user must be logged in.
 Required in URL: MixTape's id.
 
 ```json
-PATCH /mixtape/id/favorite/
+PATCH /mixtapes/id/favorite
 
 {
 	"title":"blah"
@@ -620,7 +620,7 @@ Requirement: user must be logged in.
 Required in URL: profile's id.
 
 ```json
-PUT /profiles/<int:profile_pk>/following
+PATCH /profiles/<int:profile_pk>/following
 
 {
 	"get_username":"Derbles"
