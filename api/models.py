@@ -9,6 +9,13 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+class Image(models.Model):
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    picture = models.ImageField(blank=True, null=True)
+    
+    def __img__(self):
+        return self.picture
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profiles')
@@ -16,6 +23,7 @@ class Profile(models.Model):
     followed_by = models.ManyToManyField(User, related_name="followers", blank=True)
     spotify_username = models.CharField(max_length=255, default="", blank=True)
     apple_username = models.CharField(max_length=255, default="",blank=True)
+    image = models.ManyToManyField(Image, related_name="profiles", blank=True)
 
     def follower_count(self):
         return self.followed_by.count()
@@ -38,14 +46,7 @@ class Profile(models.Model):
 
 
 
-class Image(models.Model):
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-    picture = models.ImageField(blank=True, null=True)
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='images', null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='images')
-    
-    def __img__(self):
-        return self.picture
+
     
 
     
