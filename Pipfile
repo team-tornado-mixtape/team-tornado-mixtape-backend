@@ -23,6 +23,7 @@ black = "*"
 boto3 = "*"
 django-storages = "*"
 spotipy = "*"
+rq = "*"
 
 [dev-packages]
 
