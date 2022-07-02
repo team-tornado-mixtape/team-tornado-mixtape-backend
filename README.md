@@ -50,7 +50,7 @@ NOTE: API Root is /api/
 |GET|[/api/mixtapes/{id}/spotify](#Send-Mixtape-To-Spotify)|Create spotify playlist from mixtape|
 |PATCH|[/api/mixtapes/<int:mixtape_pk>/songs/<int:song_pk>](#update-mixtape-songs)|add or remove songs from a mixtape (creator only)|
 |POST|[/my/profile/<int:profile_pk>/image](#add-a-profile-pic)|Add new profile Piture|
-
+|POST|[/api/profiles/](#add-a-profile)|Add new profile for logged in user|
 
 
 
@@ -993,5 +993,36 @@ GET /api/mixtapes/1/spotify
 
 
 
+## Add a Profile
+
+### Request
+
+Required fields: (not required...but spotify or apple music username should be added here)
+
+
+```json
+POST api/profiles/
+
+{
+"spotify_username": ""
+}
+```
+
+### Response
+
+```json
+201 Created
+
+{
+	"id": 5,
+	"get_user_id": 5,
+	"get_username": "Funkobunks",
+	"get_first_name": "Funko",
+	"get_last_name": "Bunks",
+	"spotify_username": "",
+	"apple_username": ""
+}
+
+```
 
 

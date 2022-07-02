@@ -14,7 +14,7 @@ from rest_framework.permissions import (
     IsAuthenticatedOrReadOnly,
 )
 from api.helpers import *
-
+from rest_framework.parsers import MultiPartParser
 
 class MixtapeViewSet(ModelViewSet):
     queryset = Mixtape.objects.all()
@@ -240,8 +240,8 @@ class ImageUploadView(ModelViewSet):
 
     def perform_create(self, serializer):
         if 'file' in self.request.data:
-            profile = get_object_or_404(Profile, pk=self.kwargs['profile_pk'])
-        serializer.save(picture=self.request.data['file'], user=self.request.user, profile=profile)
+            profile = Profile.objects.filter(pk=self.kwargs['profile_pk'])
+        serializer.save(picture=self.request.data['file'], profile=profile)
 
     def perform_update(self, serializer):
         if self.request.user == serializer.instance.user and 'file' in self.request.data:
