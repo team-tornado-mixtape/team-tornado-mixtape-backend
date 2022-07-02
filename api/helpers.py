@@ -225,7 +225,7 @@ def create_spotify_playlist(username, mixtape):
 
     spotifyObject.user_playlist_create(user=username, name=playlist_name, public=True, description=playlist_description)
 
-    list_of_songs = [mixtape.songs.all()[i].spotify_uri for i in range(len(mixtape.songs.all()))]
+    list_of_songs = [song.spotify_uri for song in mixtape.songs.all()]
 
     prePlaylist = spotifyObject.user_playlists(user=username)
     playlist = prePlaylist['items'][0]['id']
