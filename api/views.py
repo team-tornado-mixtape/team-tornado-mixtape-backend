@@ -1,20 +1,6 @@
 from api.models import Mixtape, User, Profile, Song, Image
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-from api.serializers import (
-    FollowingUpdateSerializer,
-    ImagePostPutSerializer,
-    MixtapeDetailSerializer,
-    MixtapeListSerializer,
-    ProfileSerializer,
-    SongSerializer,
-    Userserializer,
-    UserFollowersSerializer,
-    FavoriteMixtapeUpdateSerializer,
-    MixtapeUpdateSerializer,
-    MixtapeCreateSerializer,
-    ImageSerializer,
-    ImagePostPutSerializer,
-)
+from api.serializers import *
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
 from django.views.generic.edit import CreateView
 from django.db.models import Q, Count
@@ -96,6 +82,11 @@ class ProfileViewSet(ModelViewSet):
         else:
             results = Profile.objects.annotate(total_mixtapes=Count('user__mixtapes'))
         return results
+
+    def get_serializer_class(self):
+        if self.action in ["create"]:
+            return ProfilePostSerializer
+        return super().get_serializer_class()
 
     def perform_create(self, serializer):
             serializer.save(user=self.request.user)
