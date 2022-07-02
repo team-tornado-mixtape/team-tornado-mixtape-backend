@@ -40,13 +40,11 @@ class Profile(models.Model):
 class Image(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     picture = models.ImageField(blank=True, null=True)
-    profile = models.ManyToManyField(Profile, related_name="images", blank=True,null=True)
+    profile = models.ManyToManyField(Profile, related_name="images", blank=True)
 
 
     def __img__(self):
         return self.picture
-
-    
 
 
 # The following lines of code can be added to add functionality to the connection model.
