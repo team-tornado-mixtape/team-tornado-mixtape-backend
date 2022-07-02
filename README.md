@@ -51,7 +51,7 @@ NOTE: API Root is /api/
 |PATCH|[/api/mixtapes/<int:mixtape_pk>/songs/<int:song_pk>](#update-mixtape-songs)|add or remove songs from a mixtape (creator only)|
 |POST|[/my/profile/<int:profile_pk>/image](#add-a-profile-pic)|Add new profile Piture|
 |POST|[/api/profiles/](#add-a-profile)|Add new profile for logged in user|
-
+|PATCH|[/api/profiles/{id}/](#update-a-profile)|Update profile for logged in user|
 
 
 ## Create a new user
@@ -1026,3 +1026,34 @@ POST api/profiles/
 ```
 
 
+## Update a Profile
+
+### Request
+
+Required fields: (not required...but spotify or apple music username should be added here)
+
+
+```json
+PATCH api/profiles/1/
+
+{
+"spotify_username": "some stuff"
+}
+```
+
+### Response
+
+```json
+200 OK
+
+{
+	"id": 5,
+	"get_user_id": 5,
+	"get_username": "Funkobunks",
+	"get_first_name": "Funko",
+	"get_last_name": "Bunks",
+	"spotify_username": "somestuf",
+	"apple_username": ""
+}
+
+```
