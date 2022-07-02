@@ -311,3 +311,4 @@ class TransferSpotifyMixtape(ListAPIView):
         username = self.request.user.profiles.spotify_username
 
         create_spotify_playlist(username, mixtape)
+        return
