@@ -1,7 +1,7 @@
 import os
 import redis
 from rq import Worker, Queue, Connection
-from spotipy import user_playlist_add_tracks
+from api.helpers import create_spotify_playlist
 from worker import conn
 
 listen = ['high', 'default', 'low']
@@ -15,7 +15,7 @@ if __name__ == '__main__':
         worker = Worker(map(Queue, listen))
         worker.work()
 
-q=Queue(connection=conn)
+q = Queue(connection=conn)
 
 
-result = q.enqueue(user_playlist_add_tracks, 'https://team-tornado-mixtape.herokuapp.com/')
+result = q.enqueue(create_spotify_playlist, 'https://team-tornado-mixtape.herokuapp.com/')
