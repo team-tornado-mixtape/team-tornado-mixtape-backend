@@ -1,20 +1,6 @@
 from api.models import Mixtape, User, Profile, Song, Image
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-from api.serializers import (
-    FollowingUpdateSerializer,
-    ImagePostPutSerializer,
-    MixtapeDetailSerializer,
-    MixtapeListSerializer,
-    ProfileSerializer,
-    SongSerializer,
-    Userserializer,
-    UserFollowersSerializer,
-    FavoriteMixtapeUpdateSerializer,
-    MixtapeUpdateSerializer,
-    MixtapeCreateSerializer,
-    ImageSerializer,
-    ImagePostPutSerializer,
-)
+from api.serializers import *
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
 from django.views.generic.edit import CreateView
 from django.db.models import Q, Count
@@ -28,7 +14,7 @@ from rest_framework.permissions import (
     IsAuthenticatedOrReadOnly,
 )
 from api.helpers import *
-
+from rest_framework.parsers import MultiPartParser
 
 class MixtapeViewSet(ModelViewSet):
     queryset = Mixtape.objects.all()
@@ -96,6 +82,11 @@ class ProfileViewSet(ModelViewSet):
         else:
             results = Profile.objects.annotate(total_mixtapes=Count('user__mixtapes'))
         return results
+
+    def get_serializer_class(self):
+        if self.action in ["create"]:
+            return ProfilePostSerializer
+        return super().get_serializer_class()
 
     def perform_create(self, serializer):
             serializer.save(user=self.request.user)
@@ -249,8 +240,8 @@ class ImageUploadView(ModelViewSet):
 
     def perform_create(self, serializer):
         if 'file' in self.request.data:
-            profile = get_object_or_404(Profile, pk=self.kwargs['profile_pk'])
-        serializer.save(picture=self.request.data['file'], user=self.request.user, profile=profile)
+            profile = Profile.objects.filter(pk=self.kwargs['profile_pk'])
+        serializer.save(picture=self.request.data['file'], profile=profile)
 
     def perform_update(self, serializer):
         if self.request.user == serializer.instance.user and 'file' in self.request.data:
