@@ -10,6 +10,9 @@ import os
 import base64
 import queue
 from difflib import SequenceMatcher
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
+
 
 env = environ.Env(DEBUG=(bool, False))
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -207,3 +210,24 @@ def SearchSpotifyAPI(q=None, search_track=None, search_artist=None, limit=25):
 
 # spotify_search_results = SearchSpotifyAPI(search_track='Enter Galactic', search_artist='Kid Cudi')
 # print(spotify_search_results)
+
+
+def create_spotify_playlist(username, mixtape):
+    spotify_client = SpotifyAPI()
+    access_token = spotify_client.access_token
+    scope = "playlist-modify-public"
+
+    token = SpotifyOAuth(scope=scope, username=username)
+    spotifyObject = spotipy.Spotify(auth_manager=token)
+
+    playlist_name = mixtape.title
+    playlist_description = mixtape.description
+
+    spotifyObject.user_playlist_create(user=username, name=playlist_name, public=True, description=playlist_description)
+
+    list_of_songs = [mixtape.songs.all()[i].spotify_uri for i in range(len(mixtape.songs.all()))]
+
+    prePlaylist = spotifyObject.user_playlists(user=username)
+    playlist = prePlaylist['items'][0]['id']
+
+    spotifyObject.user_playlist_add_tracks(user=username, playlist_id=playlist, tracks=list_of_songs)
