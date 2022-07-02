@@ -46,8 +46,6 @@ class Image(models.Model):
     def __img__(self):
         return self.picture
 
-    
-
 
 # The following lines of code can be added to add functionality to the connection model.
 # def get_connections(self):
