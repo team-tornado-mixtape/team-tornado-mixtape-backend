@@ -41,7 +41,7 @@ class Profile(models.Model):
 class Image(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     picture = models.ImageField(blank=True, null=True)
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='images', blank=True)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='images', null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='images')
     
     def __img__(self):
