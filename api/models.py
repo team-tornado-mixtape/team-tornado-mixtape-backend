@@ -23,7 +23,7 @@ class Profile(models.Model):
     followed_by = models.ManyToManyField(User, related_name="followers", blank=True)
     spotify_username = models.CharField(max_length=255, default="", blank=True)
     apple_username = models.CharField(max_length=255, default="",blank=True)
-    image = models.ManyToManyField(Image, related_name="profiles", blank=True)
+    image = models.ManyToManyField(Image, related_name="profiles", blank=True,null=True)
 
     def follower_count(self):
         return self.followed_by.count()

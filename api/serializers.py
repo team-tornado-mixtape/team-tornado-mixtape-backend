@@ -74,7 +74,7 @@ class ImagePostPutSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     followed_by = serializers.SlugRelatedField(read_only=True, slug_field="username",many=True)
     total_mixtapes  = serializers.IntegerField(read_only=True)
-    images = ImagePostPutSerializer(many=True)
+    image = ImagePostPutSerializer(many=True)
     
     class Meta:
         model = Profile
@@ -89,7 +89,7 @@ class ProfileSerializer(serializers.ModelSerializer):
                 "total_mixtapes",
                 "spotify_username",
                 "apple_username",
-                "images",
+                "image",
                 ]
 
 class UserFollowersSerializer(serializers.ModelSerializer):
