@@ -213,8 +213,6 @@ def SearchSpotifyAPI(q=None, search_track=None, search_artist=None, limit=25):
 
 
 def create_spotify_playlist(username, mixtape):
-    spotify_client = SpotifyAPI()
-    access_token = spotify_client.access_token
     scope = "playlist-modify-public"
 
     token = SpotifyOAuth(scope=scope, username=username)

@@ -24,6 +24,7 @@ boto3 = "*"
 django-storages = "*"
 spotipy = "*"
 rq = "*"
+django-debug-toolbar = "*"
 
 [dev-packages]
 
