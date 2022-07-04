@@ -11,6 +11,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('api/auth/', include('djoser.urls')),
     path('api/auth/', include('djoser.urls.authtoken')),
+    path('__debug__/', include('debug_toolbar.urls')),
 
     path('api/', include(router.urls)),
     path('api/my/mixtapes', api_views.UserMixtapeListView.as_view(), name='user_mixtapes'),
