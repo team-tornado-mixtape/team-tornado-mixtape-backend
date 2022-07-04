@@ -2,7 +2,7 @@ import os
 import redis
 from rq import Worker, Queue, Connection
 from api.helpers import create_spotify_playlist
-from worker import conn
+
 
 listen = ['high', 'default', 'low']
 
