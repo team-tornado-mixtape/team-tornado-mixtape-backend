@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0014_alter_mixtape_creator'),
+        ("api", "0014_alter_mixtape_creator"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='mixtape',
-            name='description',
-            field=models.TextField(default=''),
+            model_name="mixtape",
+            name="description",
+            field=models.TextField(default=""),
         ),
     ]

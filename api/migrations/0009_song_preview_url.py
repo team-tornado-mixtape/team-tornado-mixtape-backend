@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0008_merge_0007_alter_profile_user_0007_song_spotify_uri'),
+        ("api", "0008_merge_0007_alter_profile_user_0007_song_spotify_uri"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='song',
-            name='preview_url',
-            field=models.TextField(default='', max_length=255),
+            model_name="song",
+            name="preview_url",
+            field=models.TextField(default="", max_length=255),
         ),
     ]

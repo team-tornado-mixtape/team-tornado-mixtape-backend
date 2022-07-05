@@ -9,29 +9,28 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profiles')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profiles")
     created_at = models.DateTimeField(auto_now_add=True)
     followed_by = models.ManyToManyField(User, related_name="followers", blank=True)
     spotify_username = models.CharField(max_length=255, default="", blank=True)
-    apple_username = models.CharField(max_length=255, default="",blank=True)
-    
+    apple_username = models.CharField(max_length=255, default="", blank=True)
 
     def follower_count(self):
         return self.followed_by.count()
-    
+
     def get_user_id(self):
         return self.user.pk
-    
+
     def get_username(self):
         return self.user.username
 
     def get_first_name(self):
         return self.user.first_name
-    
+
     def get_last_name(self):
         return self.user.last_name
-
 
     def __str__(self):
         return self.user.username
@@ -41,7 +40,6 @@ class Image(models.Model):
     uploaded_at = models.DateTimeField(auto_now_add=True)
     picture = models.ImageField(blank=True, null=True)
     profile = models.ManyToManyField(Profile, related_name="images", blank=True)
-
 
     def __img__(self):
         return self.picture
@@ -60,7 +58,9 @@ class Image(models.Model):
 class Mixtape(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
-    creator = models.ForeignKey(User, related_name="mixtapes", on_delete=models.CASCADE,null=True)
+    creator = models.ForeignKey(
+        User, related_name="mixtapes", on_delete=models.CASCADE, null=True
+    )
     title = models.CharField(max_length=255, default="")
     is_public = models.BooleanField(default=True)
     description = models.TextField(default="")

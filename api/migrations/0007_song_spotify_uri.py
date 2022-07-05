@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0006_remove_song_favorited_by'),
+        ("api", "0006_remove_song_favorited_by"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='song',
-            name='spotify_uri',
-            field=models.TextField(default='', max_length=255),
+            model_name="song",
+            name="spotify_uri",
+            field=models.TextField(default="", max_length=255),
         ),
     ]

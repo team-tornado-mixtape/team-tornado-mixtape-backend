@@ -6,17 +6,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0025_alter_profile_image'),
+        ("api", "0025_alter_profile_image"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='profile',
-            name='image',
+            model_name="profile",
+            name="image",
         ),
         migrations.AddField(
-            model_name='image',
-            name='profile',
-            field=models.ManyToManyField(blank=True, null=True, related_name='profiles', to='api.profile'),
+            model_name="image",
+            name="profile",
+            field=models.ManyToManyField(
+                blank=True, null=True, related_name="profiles", to="api.profile"
+            ),
         ),
     ]
