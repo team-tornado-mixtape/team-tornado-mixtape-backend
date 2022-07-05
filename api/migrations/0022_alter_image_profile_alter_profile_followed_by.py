@@ -8,18 +8,25 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0021_alter_profile_apple_username_and_more'),
+        ("api", "0021_alter_profile_apple_username_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='image',
-            name='profile',
-            field=models.ForeignKey(blank=True, on_delete=django.db.models.deletion.CASCADE, related_name='images', to='api.profile'),
+            model_name="image",
+            name="profile",
+            field=models.ForeignKey(
+                blank=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="images",
+                to="api.profile",
+            ),
         ),
         migrations.AlterField(
-            model_name='profile',
-            name='followed_by',
-            field=models.ManyToManyField(blank=True, related_name='followers', to=settings.AUTH_USER_MODEL),
+            model_name="profile",
+            name="followed_by",
+            field=models.ManyToManyField(
+                blank=True, related_name="followers", to=settings.AUTH_USER_MODEL
+            ),
         ),
     ]

@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0018_remove_profile_image_image'),
+        ("api", "0018_remove_profile_image_image"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='mixtape',
-            name='is_public',
+            model_name="mixtape",
+            name="is_public",
             field=models.BooleanField(default=True),
         ),
     ]

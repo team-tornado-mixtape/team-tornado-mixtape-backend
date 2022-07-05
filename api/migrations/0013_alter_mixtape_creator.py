@@ -8,13 +8,17 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0012_alter_song_user'),
+        ("api", "0012_alter_song_user"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='mixtape',
-            name='creator',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='mixtapes', to=settings.AUTH_USER_MODEL),
+            model_name="mixtape",
+            name="creator",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="mixtapes",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

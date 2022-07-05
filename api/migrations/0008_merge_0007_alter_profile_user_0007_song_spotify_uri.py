@@ -6,9 +6,8 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0007_alter_profile_user'),
-        ('api', '0007_song_spotify_uri'),
+        ("api", "0007_alter_profile_user"),
+        ("api", "0007_song_spotify_uri"),
     ]
 
-    operations = [
-    ]
+    operations = []

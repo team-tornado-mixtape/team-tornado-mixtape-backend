@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0019_alter_mixtape_is_public'),
+        ("api", "0019_alter_mixtape_is_public"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='profile',
-            name='apple_username',
-            field=models.CharField(default='', max_length=255),
+            model_name="profile",
+            name="apple_username",
+            field=models.CharField(default="", max_length=255),
         ),
         migrations.AddField(
-            model_name='profile',
-            name='spotify_username',
-            field=models.CharField(default='', max_length=255),
+            model_name="profile",
+            name="spotify_username",
+            field=models.CharField(default="", max_length=255),
         ),
     ]

@@ -7,13 +7,19 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0022_alter_image_profile_alter_profile_followed_by'),
+        ("api", "0022_alter_image_profile_alter_profile_followed_by"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='image',
-            name='profile',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='images', to='api.profile'),
+            model_name="image",
+            name="profile",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="images",
+                to="api.profile",
+            ),
         ),
     ]
