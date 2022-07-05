@@ -2,19 +2,17 @@ from api.models import Mixtape, User, Profile, Song, Image
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from api.serializers import *
 from .custom_permissions import IsCreatorOrReadOnly, IsUserOrReadOnly
-from django.views.generic.edit import CreateView
 from django.db.models import Q, Count
 
 from rest_framework.generics import ListCreateAPIView, ListAPIView, UpdateAPIView, get_object_or_404
-from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import (
     SAFE_METHODS,
     IsAuthenticated,
-    IsAuthenticatedOrReadOnly,
 )
 from api.helpers import *
-from rest_framework.parsers import MultiPartParser
+from requests.exceptions import ReadTimeout
+
 
 class MixtapeViewSet(ModelViewSet):
     queryset = Mixtape.objects.all()
@@ -313,7 +311,12 @@ class TransferSpotifyMixtape(ListAPIView):
     def list(self, request, *args, **kwargs):
         mixtape = get_object_or_404(Mixtape, pk=self.kwargs["mixtape_pk"])
         username = self.request.user.profiles.spotify_username
-        create_spotify_playlist(username, mixtape)
+
+        try:
+            create_spotify_playlist(username, mixtape)
+        except ReadTimeout:
+            print('Spotify timed out... trying again...')
+            create_spotify_playlist(username, mixtape)
 
         serializer = self.get_serializer(mixtape)
         return Response(serializer.data)
