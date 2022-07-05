@@ -320,3 +320,45 @@ class TransferSpotifyMixtape(ListAPIView):
 
         serializer = self.get_serializer(mixtape)
         return Response(serializer.data)
+
+
+class TransferAppleMixtape(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = MixtapeDetailSerializer
+
+    def get_queryset(self):
+        return
+
+    def list(self, request, *args, **kwargs):
+        mixtape = get_object_or_404(Mixtape, pk=self.kwargs["mixtape_pk"])
+        username = self.request.user.profiles.apple_username
+
+        time_now = datetime.datetime.now()
+        time_expired = time_now + datetime.timedelta(hours=12)
+
+        headers = {"alg": alg, "kid": KEY_ID}
+
+        payload = {
+            "iss": TEAM_ID,
+            "exp": int(time_expired.strftime("%s")),
+            "iat": int(time_now.strftime("%s")),
+        }
+
+        token = jwt.encode(payload, secret, algorithm=alg, headers=headers)
+
+        url = f"https://api.music.apple.com/v1/catalog/US/"
+
+        req = requests.post(url, headers={"Authorization": f"Bearer {token}"})
+
+        playlist_id = apple_playlist_create(
+            mixtape.title,
+            description=mixtape.description,
+        )["data"][0]["id"]
+
+        list_of_songs = mixtape.songs.all()
+        track_ids = [song.apple_id for song in list_of_songs]
+
+        apple_playlist_add_tracks(playlist_id, track_ids)
+
+        serializer = self.get_serializer(mixtape)
+        return Response(serializer.data)

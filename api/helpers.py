@@ -85,9 +85,8 @@ secret = f"""
 -----END PRIVATE KEY-----
 """
 
-# SearchAppleMusicAPI 
+
 def SearchAppleMusicAPI(q=None, search_track=None, search_artist=None, limit=25):
-# lines 84-95 are for getting a token from Apple Music with Developer Credentials, hidden in my .env for security
     time_now = datetime.datetime.now()
     time_expired = time_now + datetime.timedelta(hours=12)
 
@@ -100,20 +99,20 @@ def SearchAppleMusicAPI(q=None, search_track=None, search_artist=None, limit=25)
     }
 
     token = jwt.encode(payload, secret, algorithm=alg, headers=headers)
-# lines 97-102 check which kwargs were passed in line 82 so that url is customized properly
+
     if search_track is not None and search_artist is None:
         data = urlencode({"types": "songs", "term": f"{search_track}", "limit": f"{limit}"})
     elif search_track is None and search_artist is not None:
         data = urlencode({"types": "songs", "term": f"{search_artist}", "limit": f"{limit}"})
     elif search_track is not None and search_artist is not None:
         data = urlencode({"types": "songs", "term": f"{search_track} {search_artist}", "limit": f"{limit}"})
-# line 104 is search url for Apple Music in US
+
     url = f"https://api.music.apple.com/v1/catalog/US/search?{data}"
-# line 106 uses requests library to get data from Apple Music API
+
     req = requests.get(url, headers={"Authorization": f"Bearer {token}"})
 
     results = []
-# lines 110-122 extract relevant data from Apple Music API search results as per api.models
+
     for i in range(len(req.json()["results"]["songs"]["data"])):
         result = {"apple_id": req.json()["results"]["songs"]["data"][i]["id"]}
         result["apple_title"] = req.json()["results"]["songs"]["data"][i]["attributes"][
@@ -128,12 +127,12 @@ def SearchAppleMusicAPI(q=None, search_track=None, search_artist=None, limit=25)
         result["apple_url"] = req.json()["results"]["songs"]["data"][i]["attributes"]["url"]
         result["apple_preview_url"] = req.json()["results"]["songs"]["data"][i]["attributes"]["previews"][0]["url"]
         results.append(result)
-# line 125 can be uncommented to analyze raw data by printing them
+
     # print(json.dumps(req.json(), sort_keys=4,indent=4))
     q.put(results)
     q.task_done()
 
-# lines 130-131 can be uncommented to analyze results
+
 # apple_search_results = SearchAppleMusicAPI(search_track="Enter Galactic", search_artist='Kid Cudi')
 # print(apple_search_results)
 
@@ -227,6 +226,27 @@ def create_spotify_playlist(username, mixtape):
     list_of_uris = [song.spotify_uri for song in list_of_songs]
 
     prePlaylist = spotifyObject.user_playlists(user=username)
-    playlist = prePlaylist['items'][0]['id']
+    playlist_id = prePlaylist['items'][0]['id']
 
-    spotifyObject.user_playlist_add_tracks(user=username, playlist_id=playlist, tracks=list_of_uris)
+    spotifyObject.user_playlist_add_tracks(user=username, playlist_id=playlist_id, tracks=list_of_uris)
+
+
+def apple_playlist_create(mixtape):
+    # https://developer.apple.com/documentation/applemusicapi/libraryplaylistcreationrequest
+    payload = {'attributes': {'name': mixtape.title}}
+    payload['attributes']['description'] = mixtape.description
+
+    return requests.post(
+        endpoint='/me/library/playlists',
+        payload=payload,
+    )
+
+def apple_playlist_add_tracks(playlist_id, track_ids):
+    """https://developer.apple.com/documentation/applemusicapi/add_tracks_to_library_playlist
+    """
+    payload = {'data': track_ids}
+    return self._make_request(
+        method='POST',
+        endpoint="/me/library/playlists/%s/tracks" % playlist_id,
+        payload=payload,
+    )
