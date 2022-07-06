@@ -295,7 +295,8 @@ class SearchView(ListAPIView):
 
         queryset = Song.objects.none()
         if len(songs) == 0:
-            return queryset
+            serializer = self.get_serializer(queryset, many=True)
+            return Response(serializer.data)
 
         count = 0
         """
