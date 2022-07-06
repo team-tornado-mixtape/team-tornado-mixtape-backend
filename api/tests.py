@@ -18,43 +18,42 @@ class SearchTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]["title"], "Yellow Submarine")
         self.assertEqual(response.data[1]["title"], "Yellow Submarine")
-        self.assertEqual(Song.objects.count(), 2)
+        self.assertEqual(Song.objects.count(), 3)
 
     def test_search_track2(self):
         url = "/api/search?track=Yellow"
         response = self.client.get(url, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[0]["title"], "Yellow")
-        self.assertEqual(response.data[1]["title"], "Bodak Yellow")
-        self.assertEqual(Song.objects.count(), 4)
+        self.assertEqual(response.data[0]["title"], "Bodak Yellow")
+        self.assertEqual(response.data[1]["title"], "Yellow")
+        self.assertEqual(Song.objects.count(), 2)
 
-    # def test_search_track3(self):
-    #     url = "/api/search?track=You're+So+Vain"
-    #     response = self.client.get(url, format="json")
+    def test_search_track3(self):
+        url = "/api/search?track=Youre+So+Vain"
+        response = self.client.get(url, format="json")
 
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     self.assertEqual(response.data[0]["title"], "")
-    #     self.assertEqual(response.data[1]["title"], "")
-    #     self.assertEqual(Song.objects.count(), 3)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data[0]["title"], "You're So Vain")
+        self.assertEqual(response.data[1]["title"], "You're So Vain")
+        self.assertEqual(Song.objects.count(), 8)
 
     def test_search_artist1(self):
         url = "/api/search?artist=Beatles"
         response = self.client.get(url, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[0]["title"], "Eleanor Rigby")
-        self.assertEqual(Song.objects.count(), 1)
+        self.assertEqual(Song.objects.count(), 0)
 
-    # def test_search_artist2(self):
-    #     url = '/api/search?artist=Arctic+Monkeys'
-    #     response = self.client.get(url, format="json")
+    def test_search_artist2(self):
+        url = '/api/search?artist=Arctic+Monkeys'
+        response = self.client.get(url, format="json")
 
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     self.assertEqual(response.data[0]["title"], "No. 1 Party Anthem")
-    #     self.assertEqual(response.data[1]["title"], "Old Yellow Bricks")
-    #     self.assertEqual(response.data[2]["title"], "Brianstorm")
-    #     self.assertEqual(response.data[3]["title"], "Mardy Bum")
-    #     self.assertEqual(response.data[4]["title"], "Baby I'm Yours")
-    #     self.assertEqual(response.data[5]["title"], "Knee Socks")
-    #     self.assertEqual(Song.objects.count(), 13)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data[0]["title"], "Fireside")
+        self.assertEqual(response.data[1]["title"], "Crying Lightning")
+        self.assertEqual(response.data[2]["title"], "No. 1 Party Anthem")
+        self.assertEqual(response.data[3]["title"], "Mardy Bum")
+        self.assertEqual(response.data[4]["title"], "When the Sun Goes Down")
+        self.assertEqual(response.data[5]["title"], "I Bet You Look Good on the Dancefloor")
+        self.assertEqual(Song.objects.count(), 13)
